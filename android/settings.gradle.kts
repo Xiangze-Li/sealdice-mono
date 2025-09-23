@@ -12,5 +12,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "Mshell"
-include ':app'
+rootProject.name = "SealDice"
+include(":app")

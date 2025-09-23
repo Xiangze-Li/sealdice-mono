@@ -429,7 +429,7 @@ jobs:
       - name: Set Version
         working-directory: ./android/app
         run: |
-          sed -i 's/versionName ".*"/versionName "${{ env.APP_CHANNEL }}-${{ env.PROJECT_VERSION_DOT }}"/g' build.gradle
+          sed -i 's/versionName = ".*"/versionName = "${{ env.APP_CHANNEL }}-${{ env.PROJECT_VERSION_DOT }}"/g' build.gradle.kts
 
       - name: Move Resources
         run: |
