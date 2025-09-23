@@ -37,6 +37,7 @@ export default defineConfig(({ mode }) => ({
       ],
       imports: ['vue', 'pinia', 'vue-router', '@vueuse/core'],
       dts: true,
+      dtsMode: 'overwrite',
       vueTemplate: true,
       resolvers: [
         ElementPlusResolver({

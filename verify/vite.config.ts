@@ -27,6 +27,7 @@ export default defineConfig({
       ],
       imports: ['vue', '@vueuse/core'],
       dts: true,
+      dtsMode: 'overwrite',
       vueTemplate: true,
       resolvers: [NaiveUiResolver(), IconsResolver()]
     }),
