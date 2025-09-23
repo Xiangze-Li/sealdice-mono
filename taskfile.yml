@@ -148,7 +148,7 @@ tasks:
       - pnpm build:ui
       - rm -rf core/static/frontend
       - mkdir -p core/static/frontend
-      - cp -r ui/dist/ core/static/frontend/
+      - cp -r ui/dist/* core/static/frontend/
     sources:
       - ui/src/**
       - ui/public/**
