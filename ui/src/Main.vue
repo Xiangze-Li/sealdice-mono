@@ -70,7 +70,7 @@
       </el-space>
     </el-header>
 
-    <div class="flex-grow overflow-y-auto flex">
+    <div class="grow overflow-y-auto flex">
       <div class="menu bg-inherit flex-none overflow-y-auto no-scrollbar">
         <Menu v-model:advanced-config-counter="advancedConfigCounter" type="dark" />
       </div>

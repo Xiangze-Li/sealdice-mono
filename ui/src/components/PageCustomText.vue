@@ -665,6 +665,8 @@ watch(props, () => {
 </script>
 
 <style scoped>
+@reference '../styles/index.css';
+
 .import-edit > textarea {
   max-height: 65vh;
 }
@@ -695,6 +697,6 @@ watch(props, () => {
 }
 
 .preview-tip-label {
-  @apply rounded-sm px-1 mr-1 my-1 inline-block w-14 text-center border border-gray-700;
+  @apply rounded-xs px-1 mr-1 my-1 inline-block w-14 text-center border border-gray-700;
 }
 </style>

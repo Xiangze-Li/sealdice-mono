@@ -19,7 +19,7 @@
     <div
       v-for="(i, index) in reactive(store.curDice.conns)"
       :key="index"
-      style="min-width: 20rem; flex: 1 0 50%; flex-grow: 0">
+      style="min-width: 20rem; flex: 1 0 50%; grow: 0">
       <el-card
         class="box-card"
         shadow="hover"

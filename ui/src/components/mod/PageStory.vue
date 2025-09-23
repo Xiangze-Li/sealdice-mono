@@ -3,11 +3,8 @@ import { Back, Delete, Select, Upload } from '@element-plus/icons-vue';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import randomColor from 'randomcolor';
-import resolveConfig from 'tailwindcss/resolveConfig';
-import tailwindConfig from '../../../tailwind.config';
 import { getStoryInfo, getStoryLogPage, getStoryItemPage, deleteStoryLog } from '~/api/story';
 import { postStoryLog } from '~/api/story';
-const twColors = resolveConfig(tailwindConfig).theme.colors;
 
 interface Log {
   id: number;
@@ -59,7 +56,7 @@ const getLogPage = getStoryLogPage;
 // }
 
 // async function getItems(v: Log) {
-//     // ofetch get+params 至少在开发模式有莫名奇妙的 bug ，会丢失 baseURL
+//     // ofetch get+params 至少在开发模式有莫名奇妙的 bug，会丢失 baseURL
 //     // 下面的接口就先不更换了
 //     return await backend.get(url('items'), { params: v, headers: { token } }) as unknown as Item[]
 // }
@@ -244,15 +241,15 @@ function closeItem() {
 
 const randomColorWithIndex = (i: number): string => {
   const presets = [
-    twColors.red[600],
-    twColors.orange[600],
-    twColors.yellow[600],
-    twColors.green[600],
-    twColors.cyan[600],
-    twColors.blue[600],
-    twColors.purple[600],
-    twColors.pink[600],
-    twColors.slate[600],
+    'var(--color-red-600)',
+    'var(--color-orange-600)',
+    'var(--color-yellow-600)',
+    'var(--color-green-600)',
+    'var(--color-cyan-600)',
+    'var(--color-blue-600)',
+    'var(--color-purple-600)',
+    'var(--color-pink-600)',
+    'var(--color-slate-600)',
   ];
   const randomColorSystems = [
     'red',
@@ -265,7 +262,7 @@ const randomColorWithIndex = (i: number): string => {
     'monochrome',
   ];
   if (i < presets.length) {
-    return presets[i];
+    return presets[i] as string;
   } else {
     return randomColor({
       hue: randomColorSystems[i % randomColorSystems.length],

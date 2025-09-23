@@ -1,7 +1,7 @@
 import { delay, transform, isEqual, isObject } from 'lodash-es';
 
 export function sleep(duration: number) {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line no-unused-vars
   return new Promise<void>((resolve, reject) => {
     delay(resolve, duration);
   });

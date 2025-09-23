@@ -269,10 +269,10 @@ const uploadForm = reactive<UploadForm>({
 });
 const uploadRules = reactive<FormRules>({
   group: [
-    { required: true, message: '请选择分组', trigger: 'blur' },
-    { pattern: '^(?!builtin).*', message: '不能为内置分组', trigger: 'blur' },
+    { required: true, message: '请选择分组', trigger: 'blur-sm' },
+    { pattern: '^(?!builtin).*', message: '不能为内置分组', trigger: 'blur-sm' },
   ],
-  files: [{ required: true, message: '请选择文件', trigger: 'blur' }],
+  files: [{ required: true, message: '请选择文件', trigger: 'blur-sm' }],
 });
 
 const fileChange = (_f: any, newFiles: any) => {
@@ -487,7 +487,7 @@ const addAlias = (groupKey: string, alias: string) => {
 const removeAlias = (groupKey: string, alias: string) => {
   if (helpAliases.value.has(groupKey)) {
     const lst = helpAliases.value.get(groupKey) ?? [];
-    helpAliases.value.set(groupKey, [...lst.filter(v => v !== alias)]);
+    helpAliases.value.set(groupKey, lst.filter(v => v !== alias));
     configNeedSave.value = true;
   }
 };

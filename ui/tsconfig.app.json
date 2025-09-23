@@ -18,7 +18,8 @@
       "ESNext"
     ],
     "paths": {
-      "~/*": ["./src/*"]
+      "~/*": ["./src/*"],
+      "@/*": ["./src/*"]
     },
     "strict": true,
     "target": "ESNext",
