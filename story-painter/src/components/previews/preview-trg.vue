@@ -38,7 +38,7 @@
 import ClipboardJS from 'clipboard';
 import { h, nextTick, onMounted, ref, render, watch } from 'vue';
 import { useStore } from '~/store';
-import { LogItem, packNameId } from '~/logManager/types';
+import { LogItem, packNameId } from '~/types';
 import Item from './preview-trg-item.vue'
 // @ts-ignore
 import VirtualList from 'vue3-virtual-scroll-list';

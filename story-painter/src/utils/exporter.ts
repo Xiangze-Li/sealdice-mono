@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import { saveAs } from 'file-saver';
-import { CharItem, LogItem, packNameId } from "~/logManager/types";
+import { CharItem, LogItem, packNameId } from "~/types";
 import { useStore } from "~/store";
 
 // TODO: 移植到logMan/exporters
@@ -60,11 +60,15 @@ export function exportFileIRC(results: LogItem[], options: any = undefined) {
   return text
 }
 
-export function exportFileRaw(doc: string) {
+export function exportFileRaw(filename: string, blob: Blob) {
+  saveAs(blob, filename)
+}
+
+export function exportTextFile(doc: string) {
   saveAs(new Blob([doc],  {type: "text/plain;charset=utf-8"}), '跑团记录(未处理).txt')
 }
 
-export function exportFileDoc(html: string, options: any = undefined) {
+export function exportDocFile(html: string, options: any = undefined) {
   const text = `MIME-Version: 1.0
 Content-Type: multipart/related; boundary="----=_NextPart_WritingBug"
 

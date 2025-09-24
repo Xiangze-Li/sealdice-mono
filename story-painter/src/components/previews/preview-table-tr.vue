@@ -10,7 +10,7 @@
   
   <script setup lang="ts">
   import dayjs from 'dayjs';
-  import { LogItem, packNameId } from '~/logManager/types';
+  import { LogItem, packNameId } from '~/types';
   import { useStore } from '~/store';
   import { escapeHTML, getCanvasFontSize, getTextWidth, msgCommandFormat, msgImageFormat, msgIMUseridFormat, msgOffTopicFormat, msgAtFormat } from '~/utils';
   

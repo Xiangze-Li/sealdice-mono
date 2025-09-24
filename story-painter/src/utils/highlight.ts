@@ -7,7 +7,7 @@ import {
   syntaxHighlighting,
 } from "@codemirror/language"
 import { completeFromList } from "@codemirror/autocomplete"
-import { CharItem } from "~/logManager/types"
+import { CharItem } from "~/types"
 import { Extension } from "@codemirror/state";
 import * as twColors from 'tailwindcss/colors'
 export const reNameLine = /^([^(<\n]+(\((?!\d+\))[^(\n]+\))?)(\(\d+\))?(\s+)(\d{4}\/\d{1,2}\/\d{1,2} )?(\d{1,2}:\d{1,2}:\d{2})( #\d+)?/

@@ -1,4 +1,4 @@
-import { CharItem, LogItem } from "../types";
+import { CharItem, LogItem } from "../../types";
 import { LogImporter, TextInfo } from "./_logImpoter";
 
 

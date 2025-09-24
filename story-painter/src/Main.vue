@@ -60,6 +60,7 @@
               <!-- <n-button secondary type="primary" v-show="false" @click="exportRecordIRC">下载IRC风格记录</n-button>-->
               <n-button secondary type="primary" @click="exportRecordDOC">下载Word</n-button>
               <n-button secondary type="primary" @click="exportRecordTalkDOC">下载对话Word</n-button>
+              <n-button secondary type="primary" @click="exportRecordDocx">下载Docx（实验性）</n-button>
             </n-flex>
             <!-- <n-button @click="showPreview">预览</n-button> -->
             <div>
@@ -115,7 +116,8 @@ import { nextTick, ref, onMounted, watch, h, render, renderList, computed } from
 import { useStore } from './store'
 import CodeMirror from './components/CodeMirror.vue'
 import { debounce, delay } from 'lodash-es'
-import { exportFileRaw, exportFileQQ, exportFileIRC, exportFileDoc } from "./utils/exporter";
+import { exportTextFile, exportFileQQ, exportFileIRC, exportDocFile, exportFileRaw } from "./utils/exporter";
+import { toDocx } from '~/export'
 import { strFromU8, unzlibSync } from 'fflate';
 import uaParser from 'ua-parser-js'
 
@@ -127,7 +129,7 @@ import previewBbs from "./components/previews/preview-bbs.vue";
 import previewTrg from "./components/previews/preview-trg.vue";
 import PreviewItem from './components/previews/preview-main-item.vue'
 import PreviewTableTR from './components/previews/preview-table-tr.vue'
-import { LogItem, CharItem, packNameId } from "./logManager/types";
+import { LogItem, CharItem, packNameId, RenderConfig } from "~/types";
 import { setCharInfo } from './logManager/importers/_logImpoter'
 import { msgCommandFormat, msgImageFormat, msgIMUseridFormat, msgOffTopicFormat, msgAtFormat } from "./utils";
 import { NButton, NText, useMessage, useModal, useNotification } from "naive-ui";
@@ -370,7 +372,7 @@ onMounted(async () => {
 
 function exportRecordRaw() {
   browserAlert()
-  exportFileRaw(store.editor.state.doc.toString())
+  exportTextFile(store.editor.state.doc.toString())
 }
 
 function exportRecordQQ() {
@@ -426,7 +428,7 @@ function exportRecordDOC() {
     items.push(c.innerHTML);
   }
 
-  exportFileDoc(items.join('\n'));
+  exportDocFile(items.join('\n'));
 }
 
 function exportRecordTalkDOC() {
@@ -469,9 +471,37 @@ function exportRecordTalkDOC() {
     solveImg(c);
     items.push(c.innerHTML);
   }
-  exportFileDoc(`<table style="border-collapse: collapse;"><tbody>${items.join('\n')}</tbody></table>`);
+  exportDocFile(`<table style="border-collapse: collapse;"><tbody>${items.join('\n')}</tbody></table>`);
 }
 
+function exportRecordDocx() {
+  browserAlert()
+  showPreview()
+
+  const pcMap = store.pcMap;
+
+  const items: LogItem[] = []
+  for (let i of previewItems.value) {
+    if (i.isRaw) continue;
+    const id = packNameId(i);
+    if (pcMap.get(id)?.role === '隐藏') continue;
+
+    const pc = pcMap.get(packNameId(i));
+    items.push({
+      ...i,
+      color: pc?.color,
+    })
+  }
+
+  const conf = store.exportOptions
+  if (!conf?.imageHide) {
+    message.warning('由于需要加载图片数据，导出过程可能非常缓慢。如果出现长时间无响应，可以尝试勾选「表情图片过滤」以关闭图片导出。')
+  }
+
+  toDocx(items, conf).then((docx: Blob) => {
+    exportFileRaw('跑团记录.docx', docx)
+  })
+}
 
 const previewItems = ref<LogItem[]>([])
 

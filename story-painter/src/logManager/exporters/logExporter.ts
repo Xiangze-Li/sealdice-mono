@@ -1,4 +1,4 @@
-import { LogItem } from "../types";
+import { LogItem } from "../../types";
 
 export interface indexInfoListItem {
     indexStart: number;

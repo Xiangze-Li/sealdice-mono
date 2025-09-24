@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import { LogItem, packNameId } from '~/logManager/types';
+import { LogItem, packNameId } from '~/types';
 import { useStore } from '~/store';
 import { escapeHTML, msgCommandFormat, msgImageFormat, msgIMUseridFormat, msgOffTopicFormat, msgAtFormat } from '~/utils';
 

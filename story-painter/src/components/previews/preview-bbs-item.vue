@@ -12,7 +12,7 @@
 <script setup lang="ts">
 import dayjs from 'dayjs';
 import { computed } from 'vue';
-import { LogItem, packNameId } from '~/logManager/types';
+import { LogItem, packNameId } from '~/types';
 import { useStore } from '~/store';
 import { escapeHTML, msgCommandFormat, msgImageFormat, msgIMUseridFormat, msgOffTopicFormat, msgAtFormat } from '~/utils';
 import * as twColors from 'tailwindcss/colors';

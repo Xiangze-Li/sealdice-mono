@@ -28,3 +28,13 @@ export interface LogItem {
 export function packNameId(i: CharItem | LogItem) {
   return `${(i as any).name || (i as any).nickname}-${i.IMUserId}`
 }
+
+export interface RenderConfig {
+  commandHide: boolean,
+  imageHide: boolean,
+  offTopicHide: boolean,
+  timeHide: boolean,
+  userIdHide: boolean,
+  yearHide: boolean,
+  textIndentAll: boolean,
+}

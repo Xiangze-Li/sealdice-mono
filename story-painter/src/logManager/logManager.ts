@@ -6,7 +6,7 @@ import { EditLogExporter } from "./exporters/EditLogExporter";
 import { Emitter } from "./event";
 import { indexInfoListItem } from "./exporters/logExporter";
 import { EditLogImporter } from "./importers/EditLogImporter";
-import { CharItem, LogItem } from "./types";
+import { CharItem, LogItem } from "~/types";
 import { DiceKokonaLogImporter } from "./importers/DiceKokonaLogImporter";
 import { RenderedLogImporter } from "./importers/RenderedLogImporter";
 import { FvttLogImporter } from "./importers/FvttLogImporter";

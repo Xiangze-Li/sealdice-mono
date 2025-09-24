@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import { useStore } from "~/store";
-import { CharItem, LogItem } from "../types";
+import { CharItem, LogItem } from "~/types";
 import { LogImporter } from "./_logImpoter";
 
 import customParseFormat from 'dayjs/plugin/customParseFormat';

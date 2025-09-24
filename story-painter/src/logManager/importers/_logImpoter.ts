@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import type { LogManager } from "../logManager";
-import { CharItem, LogItem, packNameId } from "../types";
+import { CharItem, LogItem, packNameId } from "../../types";
 
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 dayjs.extend(customParseFormat);

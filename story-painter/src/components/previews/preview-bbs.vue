@@ -39,7 +39,7 @@ import dayjs from 'dayjs';
 import ClipboardJS from 'clipboard';
 import { h, nextTick, onMounted, render, watch } from 'vue';
 import { useStore } from '~/store';
-import { LogItem, packNameId } from '~/logManager/types';
+import { LogItem, packNameId } from '~/types';
 // @ts-ignore
 import VirtualList from 'vue3-virtual-scroll-list';
 import Item from './preview-bbs-item.vue'

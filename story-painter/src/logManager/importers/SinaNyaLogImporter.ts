@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import { useStore } from "~/store";
-import { CharItem, LogItem } from "../types";
+import { CharItem, LogItem } from "../../types";
 import { LogImporter, TextInfo } from "./_logImpoter";
 
 export const reSinaNyaLineTest = /^<(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d)>\s+\[?([^\]]+)\]?:\s+([^\n]+)$/m

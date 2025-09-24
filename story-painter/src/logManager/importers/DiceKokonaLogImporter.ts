@@ -1,5 +1,5 @@
 import { useStore } from "~/store";
-import { CharItem, LogItem, packNameId } from "../types";
+import { CharItem, LogItem, packNameId } from "../../types";
 import { LogImporter, TextInfo } from "./_logImpoter";
 
 // 注: 某种情况下，发言条的句末会带一个空格，已调整（某版本赵骰，原始文件及从上方文本框复制时）
