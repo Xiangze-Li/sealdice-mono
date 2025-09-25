@@ -294,8 +294,8 @@ import { useStore } from '~/store';
 import dayjs from 'dayjs';
 import { filesize } from 'filesize';
 import { CircleCheckFilled, CircleCloseFilled } from '@element-plus/icons-vue';
-import { getUtilsCheckNetWorkHealth } from '~/api/utils';
-import { postUpgrade } from '~/api/dice';
+import { getUtilsCheckNetWorkHealth } from '~/api/v1/utils';
+import { postUpgrade } from '~/api/v1/dice';
 
 const store = useStore();
 

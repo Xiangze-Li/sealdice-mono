@@ -105,7 +105,7 @@
 import { QuestionFilled } from '@element-plus/icons-vue';
 import { useStore } from '~/store';
 import type { AdvancedConfig } from '~/type.d.ts';
-import { getCustomReplyDebug, postCustomReplyDebug } from '~/api/configs';
+import { getCustomReplyDebug, postCustomReplyDebug } from '~/api/v1/configs';
 
 const emit = defineEmits(['update:advanced-settings-show']);
 

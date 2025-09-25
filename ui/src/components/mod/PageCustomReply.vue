@@ -254,8 +254,8 @@ import {
   postCustomReplyNew,
   saveCustomReply,
   uploadCustomReply,
-} from '~/api/configs';
-import type { DiceConfig } from '~/api/dice';
+} from '~/api/v1/configs';
+import type { DiceConfig } from '~/api/v1/dice';
 
 const store = useStore();
 const dialogFormVisible = ref(false);

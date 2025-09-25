@@ -826,7 +826,7 @@ import { basicSetup, EditorView } from 'codemirror';
 import { javascript } from '@codemirror/lang-javascript';
 import { isEqual, size } from 'es-toolkit/compat';
 import type { JsPluginConfig, JsPluginConfigItem, JsScriptInfo } from '~/type.d.ts';
-import { postUtilsCheckCronExpr } from '~/api/utils';
+import { postUtilsCheckCronExpr } from '~/api/v1/utils';
 import {
   checkJsUpdate,
   deleteJs,
@@ -844,7 +844,7 @@ import {
   shutDownJS,
   updateJs,
   uploadJs,
-} from '~/api/js';
+} from '~/api/v1/js';
 import type { UploadRawFile } from 'element-plus';
 
 const jsEnable = ref(false);

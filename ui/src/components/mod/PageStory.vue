@@ -3,8 +3,8 @@ import { Back, Delete, Select, Upload } from '@element-plus/icons-vue';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import randomColor from 'randomcolor';
-import { getStoryInfo, getStoryLogPage, getStoryItemPage, deleteStoryLog } from '~/api/story';
-import { postStoryLog } from '~/api/story';
+import { getStoryInfo, getStoryLogPage, getStoryItemPage, deleteStoryLog } from '~/api/v1/story';
+import { postStoryLog } from '~/api/v1/story';
 
 interface Log {
   id: number;

@@ -239,7 +239,7 @@ import {
   postHelpDocConfig,
   reloadHelpDoc,
   uploadHelpDoc,
-} from '~/api/helpdoc';
+} from '~/api/v1/helpdoc';
 
 interface Group {
   key: string;

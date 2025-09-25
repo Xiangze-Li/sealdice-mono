@@ -168,8 +168,8 @@ import 'dayjs/locale/zh-cn';
 import relativeTime from 'dayjs/plugin/relativeTime';
 
 import { passwordHash } from './utils';
-import { getNewUtils, postUtilsCheckNews } from './api/utils';
-import { checkSecurity } from './api/others';
+import { getNewUtils, postUtilsCheckNews } from './api/v1/utils';
+import { checkSecurity } from './api/v1/others';
 
 dayjs.locale('zh-cn');
 dayjs.extend(relativeTime);

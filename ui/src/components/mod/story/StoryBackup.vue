@@ -70,8 +70,8 @@ import type { CheckboxValueType } from 'element-plus';
 import { Delete } from '@element-plus/icons-vue';
 import { filesize } from 'filesize';
 import { useStore } from '~/store';
-import type { Backup } from '~/api/story';
-import { getStoryBackUpList, postStoryBatchDel } from '~/api/story';
+import type { Backup } from '~/api/v1/story';
+import { getStoryBackUpList, postStoryBatchDel } from '~/api/v1/story';
 import { urlBase } from '~/backend';
 
 const store = useStore();

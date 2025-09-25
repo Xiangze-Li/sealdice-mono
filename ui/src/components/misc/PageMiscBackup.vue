@@ -227,7 +227,7 @@ import {
   postBackupDel,
   postDoBackup,
   setBackupConfig,
-} from '~/api/backup';
+} from '~/api/v1/backup';
 
 const store = useStore();
 

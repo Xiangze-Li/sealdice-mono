@@ -1,11 +1,11 @@
-import { getCustomText, saveCustomText } from '~/api/configs';
+import { getCustomText, saveCustomText } from '~/api/v1/configs';
 import {
   getAdvancedConfig,
   getDiceConfig,
   setAdvancedConfig,
   setDiceConfig,
   type DiceConfig,
-} from '~/api/dice';
+} from '~/api/v1/dice';
 import {
   getConnectionList,
   postAddDingtalk,
@@ -25,9 +25,9 @@ import {
   postAddSlack,
   postAddTelegram,
   postAddWalleQ,
-} from '~/api/im_connections';
-import { getBaseInfo, getHello, getLogFetchAndClear, getPreInfo } from '~/api/others';
-import { getSalt, signin } from '~/api/signin';
+} from '~/api/v1/im_connections';
+import { getBaseInfo, getHello, getLogFetchAndClear, getPreInfo } from '~/api/v1/others';
+import { getSalt, signin } from '~/api/v1/signin';
 
 import type { addImConnectionForm } from '~/components/PageConnectInfoItems.vue';
 import type { AdvancedConfig } from '~/type.d.ts';

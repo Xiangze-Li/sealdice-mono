@@ -225,7 +225,7 @@
 <script lang="ts" setup>
 import { DocumentChecked, QuestionFilled } from '@element-plus/icons-vue';
 import { isArray, isEqual, isObject, transform } from 'es-toolkit/compat';
-import { getCensorConfig, postCensorConfig } from '~/api/censor';
+import { getCensorConfig, postCensorConfig } from '~/api/v1/censor';
 import { useCensorStore } from '~/components/mod/censor/censor';
 
 onBeforeMount(async () => {

@@ -188,7 +188,7 @@ import { DocumentChecked, Close } from '@element-plus/icons-vue';
 import * as dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { now, sortBy } from 'es-toolkit/compat';
-import { getGroupList, postQuitGroup, setGroup } from '~/api/group';
+import { getGroupList, postQuitGroup, setGroup } from '~/api/v1/group';
 
 dayjs.extend(relativeTime);
 

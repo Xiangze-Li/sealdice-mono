@@ -177,7 +177,7 @@
 import imgSeal from '~/assets/seal.png';
 import { DocumentChecked, QuestionFilled } from '@element-plus/icons-vue';
 import type { TableInstance } from 'element-plus';
-import { getDicePublicInfo, setDicePublicInfo } from '~/api/public_dice';
+import { getDicePublicInfo, setDicePublicInfo } from '~/api/v1/public_dice';
 const config = ref<any>({});
 const multipleTableRef = ref<TableInstance>();
 // let selectedRows: any[] = [];

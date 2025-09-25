@@ -64,7 +64,7 @@
 import dayjs from 'dayjs';
 import { useCensorStore } from '~/components/mod/censor/censor';
 import { Refresh } from '@element-plus/icons-vue';
-import { getCensorLogs } from '~/api/censor';
+import { getCensorLogs } from '~/api/v1/censor';
 
 const censorStore = useCensorStore();
 

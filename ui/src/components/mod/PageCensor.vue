@@ -42,7 +42,7 @@
 
 <script lang="ts" setup>
 import { Refresh } from '@element-plus/icons-vue';
-import { getCensorStatus } from '~/api/censor';
+import { getCensorStatus } from '~/api/v1/censor';
 onBeforeMount(() => {
   refreshCensorStatus();
 });

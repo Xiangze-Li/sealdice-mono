@@ -4,7 +4,7 @@ import { Download, Delete, Plus, Upload } from '@element-plus/icons-vue';
 import { urlBase } from '~/backend';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { getBanConfigList, importBanConfig, postMapAddOne, postMapDelOne } from '~/api/banconfig';
+import { getBanConfigList, importBanConfig, postMapAddOne, postMapDelOne } from '~/api/v1/banconfig';
 
 dayjs.extend(relativeTime);
 

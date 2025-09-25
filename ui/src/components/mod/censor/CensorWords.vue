@@ -26,7 +26,7 @@
 <script setup lang="tsx">
 import { useCensorStore } from '~/components/mod/censor/censor';
 import type { Column } from 'element-plus';
-import { getCensorWords } from '~/api/censor';
+import { getCensorWords } from '~/api/v1/censor';
 
 const columns: Column<any>[] = [
   {

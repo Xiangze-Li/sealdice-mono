@@ -1928,8 +1928,8 @@ import {
   postGoCqHttpRelogin,
   postSmsCodeSet,
   type SignInfo,
-} from '~/api/im_connections';
-import { postToolOnebot } from '~/api/others';
+} from '~/api/v1/im_connections';
+import { postToolOnebot } from '~/api/v1/others';
 
 dayjs.extend(relativeTime);
 

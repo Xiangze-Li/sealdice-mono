@@ -182,7 +182,7 @@ import {
   DocumentChecked,
   Warning,
 } from '@element-plus/icons-vue';
-import { getBackupConfig } from '~/api/backup';
+import { getBackupConfig } from '~/api/v1/backup';
 import {
   checkDeckUpdate,
   deleteDeck,
@@ -190,7 +190,7 @@ import {
   reloadDeck,
   updateDeck,
   uploadDeck,
-} from '~/api/deck';
+} from '~/api/v1/deck';
 import type { UploadRawFile } from 'element-plus/es/components/upload/src/upload.mjs';
 
 const mode = ref<string>('list');

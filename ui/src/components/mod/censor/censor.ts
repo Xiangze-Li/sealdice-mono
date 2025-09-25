@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { postCensorRestart, postCensorStop } from '~/api/censor';
+import { postCensorRestart, postCensorStop } from '~/api/v1/censor';
 import { useStore } from '~/store';
 
 export const useCensorStore = defineStore('censor', () => {

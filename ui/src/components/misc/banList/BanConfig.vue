@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { DocumentChecked } from '@element-plus/icons-vue';
-import { getBanConfig, setBanConfig } from '~/api/banconfig';
+import { getBanConfig, setBanConfig } from '~/api/v1/banconfig';
 import type { BanConfig } from '~/type';
 
 const banConfig = ref<BanConfig>({} as BanConfig);

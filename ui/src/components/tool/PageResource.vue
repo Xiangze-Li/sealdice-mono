@@ -9,7 +9,7 @@ import {
   createResource,
   deleteResource as deleteResourceApi,
   getResourcePage,
-} from '~/api/resource';
+} from '~/api/v1/resource';
 
 const store = useStore();
 

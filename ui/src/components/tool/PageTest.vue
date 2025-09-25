@@ -62,10 +62,10 @@ import { useStore } from '~/store';
 import imgSeal from '~/assets/seal.png';
 import imgMe from '~/assets/me.jpg';
 import { Plus } from '@element-plus/icons-vue';
-import { getRecentMessage, postExec } from '~/api/dice';
-import { reloadDeck as postReloadDeck } from '~/api/deck';
-import { reloadHelpDoc } from '~/api/helpdoc';
-import { reloadJS } from '~/api/js';
+import { getRecentMessage, postExec } from '~/api/v1/dice';
+import { reloadDeck as postReloadDeck } from '~/api/v1/deck';
+import { reloadHelpDoc } from '~/api/v1/helpdoc';
+import { reloadJS } from '~/api/v1/js';
 const store = useStore();
 
 const mode = ref<'private' | 'group'>('private');

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Resource } from '~/store';
 import { Microphone, Picture, VideoCamera } from '@element-plus/icons-vue';
-import { getResourceData } from '~/api/resource';
+import { getResourceData } from '~/api/v1/resource';
 
 const url = ref<string>('');
 
