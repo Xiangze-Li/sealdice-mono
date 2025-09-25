@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { VueQueryDevtools } from '@tanstack/vue-query-devtools'
 import { useStore } from '~/store';
 import Main from '~/Main.vue';
 
@@ -21,4 +22,5 @@ onMounted(async () => {
       <Main />
     </el-watermark>
   </div>
+  <VueQueryDevtools />
 </template>

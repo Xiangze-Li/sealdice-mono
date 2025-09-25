@@ -1,3 +1,4 @@
+import { VueQueryPlugin } from '@tanstack/vue-query'
 import { createApp } from 'vue';
 import App from './App.vue';
 
@@ -46,7 +47,8 @@ app
   .use(VueDiff, {
     componentName: 'VueDiff',
   })
-  .use(router);
+  .use(router)
+  .use(VueQueryPlugin)
 
 const store = useStore();
 
