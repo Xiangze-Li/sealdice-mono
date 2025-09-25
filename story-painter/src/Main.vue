@@ -115,7 +115,7 @@
 import { nextTick, ref, onMounted, watch, h, render, renderList, computed } from "vue";
 import { useStore } from './store'
 import CodeMirror from './components/CodeMirror.vue'
-import { debounce, delay } from 'lodash-es'
+import { debounce, delay } from 'es-toolkit/compat'
 import { exportTextFile, exportFileQQ, exportFileIRC, exportDocFile, exportFileRaw } from "./utils/exporter";
 import { toDocx } from '~/export'
 import { strFromU8, unzlibSync } from 'fflate';

@@ -322,9 +322,9 @@ import {
   startsWith,
   trim,
   uniq,
-  entries,
   mapValues,
-} from 'lodash-es';
+} from 'es-toolkit/compat';
+import entries from 'es-toolkit/compat';
 import ClipboardJS from 'clipboard';
 
 const store = useStore();

@@ -824,7 +824,7 @@ import {
 import * as dayjs from 'dayjs';
 import { basicSetup, EditorView } from 'codemirror';
 import { javascript } from '@codemirror/lang-javascript';
-import { isEqual, size } from 'lodash-es';
+import { isEqual, size } from 'es-toolkit/compat';
 import type { JsPluginConfig, JsPluginConfigItem, JsScriptInfo } from '~/type.d.ts';
 import { postUtilsCheckCronExpr } from '~/api/utils';
 import {

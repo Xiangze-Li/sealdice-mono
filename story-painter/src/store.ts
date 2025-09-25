@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 import { EditorView } from '@codemirror/view';
 import axios from 'axios';
 import { CharItem, LogItem, packNameId } from '~/types';
-import { random } from 'lodash-es';
+import { random } from 'es-toolkit/compat';
 import * as twColors from 'tailwindcss/colors';
 
 export const useStore = defineStore('main', {

@@ -17,9 +17,9 @@ importers:
       dayjs:
         specifier: ^1.11.18
         version: 1.11.18
-      lodash-es:
-        specifier: ^4.17.21
-        version: 4.17.21
+      es-toolkit:
+        specifier: ^1.39.10
+        version: 1.39.10
       pinia:
         specifier: ^3.0.3
         version: 3.0.3(typescript@5.9.2)(vue@3.5.21(typescript@5.9.2))
@@ -186,6 +186,9 @@ importers:
       docx:
         specifier: ^9.5.1
         version: 9.5.1
+      es-toolkit:
+        specifier: ^1.39.10
+        version: 1.39.10
       fflate:
         specifier: ^0.8.2
         version: 0.8.2
@@ -210,9 +213,6 @@ importers:
       image-size:
         specifier: ^2.0.2
         version: 2.0.2
-      lodash-es:
-        specifier: ^4.17.21
-        version: 4.17.21
       pinia:
         specifier: ^3.0.3
         version: 3.0.3(typescript@5.9.2)(vue@3.5.21(typescript@5.9.2))
@@ -238,9 +238,6 @@ importers:
       '@types/file-saver':
         specifier: ^2.0.7
         version: 2.0.7
-      '@types/lodash-es':
-        specifier: ^4.17.12
-        version: 4.17.12
       '@types/node':
         specifier: ^24.5.2
         version: 24.5.2
@@ -337,15 +334,15 @@ importers:
       element-plus:
         specifier: ^2.10.4
         version: 2.11.2(vue@3.5.21(typescript@5.9.2))
+      es-toolkit:
+        specifier: ^1.39.10
+        version: 1.39.10
       filesize:
         specifier: ^11.0.2
         version: 11.0.2
       highlight.js:
         specifier: ^11.11.1
         version: 11.11.1
-      lodash-es:
-        specifier: ^4.17.21
-        version: 4.17.21
       pinia:
         specifier: ^3.0.3
         version: 3.0.3(typescript@5.9.2)(vue@3.5.21(typescript@5.9.2))
@@ -392,9 +389,6 @@ importers:
       '@tsconfig/node22':
         specifier: ^22.0.2
         version: 22.0.2
-      '@types/lodash-es':
-        specifier: ^4.17.12
-        version: 4.17.12
       '@types/node':
         specifier: ^24.5.2
         version: 24.5.2
@@ -513,9 +507,6 @@ importers:
       '@types/jsrsasign':
         specifier: ^10.5.15
         version: 10.5.15
-      '@types/lodash-es':
-        specifier: ^4.17.12
-        version: 4.17.12
       '@types/msgpack-lite':
         specifier: ^0.1.11
         version: 0.1.11
@@ -3574,6 +3565,9 @@ packages:
     resolution: {integrity: sha512-j6vWzfrGVfyXxge+O0x5sh6cvxAog0a/4Rdd2K36zCMV5eJ+/+tOAngRO8cODMNWbVRdVlmGZQL2YS3yR8bIUA==}
     engines: {node: '>= 0.4'}
 
+  es-toolkit@1.39.10:
+    resolution: {integrity: sha512-E0iGnTtbDhkeczB0T+mxmoVlT4YNweEKBLq7oaU4p11mecdsZpNWOglI4895Vh4usbQ+LsJiuLuI2L0Vdmfm2w==}
+
   esbuild@0.21.5:
     resolution: {integrity: sha512-mg3OPMV4hXywwpoDxu3Qda5xCKQi+vCTZq8S9J/EpkhB2HzKXq4SNFZE3+NK93JYxc8VMSep+lOUSC/RVKaBqw==}
     engines: {node: '>=12'}
@@ -4732,8 +4726,8 @@ packages:
     peerDependencies:
       postcss: ^8.0.0
 
-  postcss-js@4.0.1:
-    resolution: {integrity: sha512-dDLF8pEO191hJMtlHFPRa8xsizHaM82MLfNkUHdUtVEV3tgTp5oj+8qbEqYM57SLfc74KSbw//4SeJma2LRVIw==}
+  postcss-js@4.1.0:
+    resolution: {integrity: sha512-oIAOTqgIo7q2EOwbhb8UalYePMvYoIeRY2YKntdpFQXNosSu3vLrniGgmH9OKs/qAkfoj5oB3le/7mINW1LCfw==}
     engines: {node: ^12 || ^14 || >= 16}
     peerDependencies:
       postcss: ^8.4.21
@@ -8724,6 +8718,8 @@ snapshots:
       has-tostringtag: 1.0.2
       hasown: 2.0.2
 
+  es-toolkit@1.39.10: {}
+
   esbuild@0.21.5:
     optionalDependencies:
       '@esbuild/aix-ppc64': 0.21.5
@@ -10034,7 +10030,7 @@ snapshots:
       read-cache: 1.0.0
       resolve: 1.22.10
 
-  postcss-js@4.0.1(postcss@8.5.6):
+  postcss-js@4.1.0(postcss@8.5.6):
     dependencies:
       camelcase-css: 2.0.1
       postcss: 8.5.6
@@ -10506,7 +10502,7 @@ snapshots:
       picocolors: 1.1.1
       postcss: 8.5.6
       postcss-import: 15.1.0(postcss@8.5.6)
-      postcss-js: 4.0.1(postcss@8.5.6)
+      postcss-js: 4.1.0(postcss@8.5.6)
       postcss-load-config: 4.0.2(postcss@8.5.6)
       postcss-nested: 6.2.0(postcss@8.5.6)
       postcss-selector-parser: 6.1.2

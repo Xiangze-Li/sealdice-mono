@@ -75,7 +75,7 @@ export default defineConfig(({ mode }) => ({
         manualChunks: {
           base: ['vue', 'pinia', 'vue-router'],
           codemirror: ['codemirror', '@codemirror/lang-javascript'],
-          common: ['element-plus', 'lodash-es'],
+          common: ['element-plus', 'es-toolkit'],
           utils: [
             '@vueuse/core',
             'asmcrypto.js',

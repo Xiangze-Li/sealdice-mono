@@ -224,7 +224,7 @@
 
 <script lang="ts" setup>
 import { DocumentChecked, QuestionFilled } from '@element-plus/icons-vue';
-import { isArray, isEqual, isObject, transform } from 'lodash-es';
+import { isArray, isEqual, isObject, transform } from 'es-toolkit/compat';
 import { getCensorConfig, postCensorConfig } from '~/api/censor';
 import { useCensorStore } from '~/components/mod/censor/censor';
 

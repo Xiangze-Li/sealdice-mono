@@ -1,7 +1,7 @@
 import { LogItem, RenderConfig } from "~/types";
 import { AlignmentType, Document, ImageRun, Packer, Paragraph, TextRun } from "docx";
 import dayjs from "dayjs";
-import { trim } from "lodash-es";
+import { trim } from "es-toolkit/compat";
 import { extractImageUrl } from "~/utils/images";
 import axios from "axios";
 import { imageSize } from "image-size";

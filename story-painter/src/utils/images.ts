@@ -1,4 +1,4 @@
-import { trim } from "lodash-es";
+import { trim } from "es-toolkit/compat";
 
 export function extractImageUrl(text: string | undefined): string | undefined {
   if (!text || !trim(text)) {

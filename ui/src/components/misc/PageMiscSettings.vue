@@ -676,7 +676,7 @@
 
 <script lang="ts" setup>
 import { CirclePlusFilled, CircleClose, QuestionFilled, Upload } from '@element-plus/icons-vue';
-import { cloneDeep, toNumber } from 'lodash-es';
+import { cloneDeep, toNumber } from 'es-toolkit/compat';
 import { postMailTest, postUploadToUpgrade } from '~/api/dice';
 import { useStore } from '~/store';
 import { objDiff, passwordHash } from '~/utils';

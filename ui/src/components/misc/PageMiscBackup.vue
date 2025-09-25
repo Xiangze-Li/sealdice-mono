@@ -218,7 +218,7 @@ import { useStore } from '~/store';
 import { urlBase } from '~/backend';
 import { filesize } from 'filesize';
 import { Delete, QuestionFilled, DocumentChecked } from '@element-plus/icons-vue';
-import { sum } from 'lodash-es';
+import { sum } from 'es-toolkit/compat';
 import { dayjs } from 'element-plus';
 import {
   getBackupConfig,

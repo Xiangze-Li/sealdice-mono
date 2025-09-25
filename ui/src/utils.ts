@@ -1,4 +1,4 @@
-import { delay, transform, isEqual, isObject } from 'lodash-es';
+import { delay, transform, isEqual, isObject } from 'es-toolkit/compat';
 
 export function sleep(duration: number) {
   // eslint-disable-next-line no-unused-vars
