@@ -1,17 +1,13 @@
 <template>
   <template v-if="group !== '__others__'">
-    <el-collapse-item :title="group" :name="group">
-      <el-row :gutter="20">
-        <slot name="values" />
-      </el-row>
-    </el-collapse-item>
+    <n-collapse-item :title="group" :name="group">
+      <slot name="values" />
+    </n-collapse-item>
   </template>
   <template v-else>
-    <el-collapse-item title="无分组" :name="group">
-      <el-row :gutter="20">
-        <slot name="values" />
-      </el-row>
-    </el-collapse-item>
+    <n-collapse-item title="无分组" :name="group">
+      <slot name="values" />
+    </n-collapse-item>
   </template>
 </template>
 

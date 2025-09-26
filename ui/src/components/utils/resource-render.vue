@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import type { Resource } from '~/store';
-import { Microphone, Picture, VideoCamera } from '@element-plus/icons-vue';
+import { useStore, type Resource } from '~/store';
 import { getResourceData } from '~/api/v1/resource';
+import { urlBase } from '~/backend';
+const store = useStore();
 
 const url = ref<string>('');
 
@@ -27,32 +28,38 @@ const props = withDefaults(
 
 <template>
   <template v-if="data.type === 'image'">
-    <el-image :key="url" :alt="data.name" :src="url" fit="contain" loading="lazy">
+    <n-image
+      :key="url"
+      :alt="data.name"
+      :src="url"
+      :preview-src="`${urlBase}/sd-api/resource/download?path=${encodeURIComponent(data.path)}&token=${encodeURIComponent(store.token)}`"
+      object-fit="contain"
+      lazy>
       <template #placeholder>
         <div>
-          <el-icon>
-            <Picture />
-          </el-icon>
+          <n-icon>
+            <i-carbon-image />
+          </n-icon>
         </div>
       </template>
       <template #error>
         <div>
-          <el-icon>
-            <Picture />
-          </el-icon>
+          <n-icon>
+            <i-carbon-image />
+          </n-icon>
         </div>
       </template>
-    </el-image>
+    </n-image>
   </template>
   <template v-else-if="data.type === 'audio'">
-    <el-icon>
-      <Microphone />
-    </el-icon>
+    <n-icon>
+      <i-carbon-microphone />
+    </n-icon>
   </template>
   <template v-else-if="data.type === 'video'">
-    <el-icon>
-      <VideoCamera />
-    </el-icon>
+    <n-icon>
+      <i-carbon-video />
+    </n-icon>
   </template>
   <template v-else>
     {{ '未知格式' }}

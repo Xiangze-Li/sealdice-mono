@@ -1,4 +1,4 @@
-import type { AdvancedConfig } from '~/type';
+import type { AdvancedConfig } from '#';
 import { createRequest } from '../index.ts';
 
 const baseUrl = '/dice/';
@@ -35,7 +35,9 @@ export function postExec(message: string, messageType: 'private' | 'group') {
 }
 
 export function postUploadToUpgrade(files: Blob) {
-  return request('post', 'upload_to_upgrade', { files }, 'formdata');
+  return request('post', 'upload_to_upgrade', { files }, 'formdata', {
+    timeout: 60000,
+  });
 }
 
 export function getRecentMessage() {

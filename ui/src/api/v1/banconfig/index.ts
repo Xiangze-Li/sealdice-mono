@@ -1,6 +1,6 @@
-import type { BanConfig } from '~/type';
+import type { BanConfig } from '#';
 import { createRequest } from '../index.ts';
-import type { UploadUserFile } from 'element-plus';
+import type { UploadFileInfo } from 'naive-ui';
 
 const baseUrl = '/banconfig/';
 const request = createRequest(baseUrl);
@@ -30,7 +30,7 @@ export function postMapAddOne(ID: string, rank: number, name: string, reason: st
   });
 }
 
-export function importBanConfig(file: UploadUserFile | Blob) {
+export function importBanConfig(file: UploadFileInfo | Blob) {
   return request<
     | { result: true }
     | {

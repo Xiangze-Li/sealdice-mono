@@ -1,4 +1,4 @@
-import type { JsPluginConfig, JsScriptInfo } from '~/type';
+import type { JsPluginConfig, JsScriptInfo } from '#';
 import { createRequest } from '../index.ts';
 import type { UploadRawFile } from 'element-plus';
 

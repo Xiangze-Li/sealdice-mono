@@ -18,6 +18,18 @@
   }
 }
 
+@utility title-main {
+  @apply text-2xl font-bold my-8;
+}
+
+@utility title-sub {
+  @apply text-xl font-semibold my-6;
+}
+
+@utility title-tertiary {
+  @apply text-lg font-semibold my-4;
+}
+
 @utility no-scrollbar {
   /* Hide scrollbar for Chrome, Safari and Opera */
   &::-webkit-scrollbar {
@@ -29,15 +41,15 @@
 }
 
 h2 {
-  @apply text-2xl font-bold my-8;
+  @apply title-main;
 }
 
 h3 {
-  @apply text-xl font-semibold my-6;
+  @apply title-sub;
 }
 
 h4 {
-  @apply text-lg font-semibold my-4;
+  @apply title-tertiary;
 }
 
 p {

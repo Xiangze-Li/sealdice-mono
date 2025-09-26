@@ -7,19 +7,22 @@
     "src/**/*.tsx",
     "tailwind.config.ts",
     "auto-imports.d.ts",
-    "components.d.ts"
+    "components.d.ts",
+    "types/index.d.ts"
   ],
   "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {
     "composite": true,
+    "baseUrl": ".",
+    "esModuleInterop": true,
     "jsx": "preserve",
     "jsxImportSource": "vue",
-    "lib": [
-      "ESNext"
-    ],
+    "lib": ["ESNext"],
     "paths": {
-      "~/*": ["./src/*"],
-      "@/*": ["./src/*"]
+      "~": ["src"],
+      "~/*": ["src/*"],
+      "#": ["types"],
+      "#/*": ["types/*"]
     },
     "strict": true,
     "target": "ESNext",

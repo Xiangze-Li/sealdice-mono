@@ -1,31 +1,30 @@
 <template>
-  <el-space
+  <n-flex
     style="margin-left: 1rem; display: flex; justify-content: space-between; align-items: center">
-    <el-text v-if="changed" type="primary" size="large">
-      <el-icon>
-        <QuestionFilled />
-      </el-icon>
+    <n-text v-if="changed" type="info" class="flex items-center gap-x-1">
+      <n-icon><i-carbon-help-filled /></n-icon>
       变更如下：
-    </el-text>
-    <el-text v-else type="info" size="large">
-      <el-icon>
-        <InfoFilled />
-      </el-icon>
+    </n-text>
+    <n-text v-else type="info" size="large">
+      <n-icon><i-carbon-information-filled /></n-icon>
       无变更
-    </el-text>
-    <el-space v-if="changed" direction="vertical" alignment="center" wrap>
-      <el-switch v-model="split" active-text="双列" inactive-text="单列" />
-      <el-checkbox v-model="folding">折叠无变更</el-checkbox>
-    </el-space>
-  </el-space>
+    </n-text>
+    <n-flex v-if="changed" vertical align="center" wrap>
+      <n-switch v-model:value="split">
+        <template #checked>双列</template>
+        <template #unchecked>单列</template>
+      </n-switch>
+      <n-checkbox v-model:checked="folding">折叠无变更</n-checkbox>
+    </n-flex>
+  </n-flex>
   <div v-show="split" style="display: flex; justify-content: space-around; align-items: center">
     <h3 style="padding-left: 2rem">原内容</h3>
-    <el-icon>
-      <ArrowRightBold />
-    </el-icon>
+    <n-icon>
+      <i-carbon-chevron-right />
+    </n-icon>
     <h3 style="padding-right: 2rem">新内容</h3>
   </div>
-  <VueDiff
+  <vue-diff
     v-if="changed"
     :mode="mode"
     theme="light"
@@ -36,8 +35,6 @@
 </template>
 
 <script lang="ts" setup>
-import { InfoFilled, QuestionFilled, ArrowRightBold } from '@element-plus/icons-vue';
-
 interface Props {
   old: string;
   new: string;
