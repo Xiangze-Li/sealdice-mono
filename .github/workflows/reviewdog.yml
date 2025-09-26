@@ -28,6 +28,36 @@ jobs:
         with:
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           ref: ${{ github.head_ref }}
+
+      # Build UI
+      - name: Restore UI Dist
+        id: restore-ui-dist
+        uses: actions/cache/restore@v4
+        with:
+          path: ui/dist
+          key: sealdice-ui-${{ hashFiles('ui/**') }}
+      - uses: pnpm/action-setup@v4
+        if: steps.restore-ui-dist.outputs.cache-hit != 'true'
+        with:
+          version: 10
+          run_install: false
+      - uses: actions/setup-node@v5
+        if: steps.restore-ui-dist.outputs.cache-hit != 'true'
+        with:
+          node-version: 22
+          cache: 'pnpm'
+      - name: Install pnpm dependencies
+        if: steps.restore-ui-dist.outputs.cache-hit != 'true'
+        run: pnpm install
+        working-directory: .
+      - name: Build UI
+        if: steps.restore-ui-dist.outputs.cache-hit != 'true'
+        run: pnpm run build:ui
+        working-directory: .
+      - name: Move UI Dist to Core
+        run: mv ui/dist core/static/frontend
+        working-directory: .
+
       - name: Install Go
         uses: actions/setup-go@v5
         with:
@@ -76,6 +106,6 @@ jobs:
       - name: Run eslint & reviewdog (UI)
         env:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        working-directory: ./ui
+        working-directory: ui
         run: |
           pnpm exec eslint -f rdjson . | reviewdog -f=rdjson -reporter=github-pr-review -filter-mode=nofilter -fail-level=any
