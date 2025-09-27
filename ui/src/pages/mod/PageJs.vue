@@ -1052,9 +1052,6 @@ onMounted(async () => {
     parent: el,
     doc: defaultText.join('\n'),
   });
-  el.onclick = () => {
-    editor.focus();
-  };
   try {
     (globalThis as any).editor = editor;
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
