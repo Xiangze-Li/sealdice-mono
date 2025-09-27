@@ -10,6 +10,8 @@ declare global {
   const ElMessage: typeof import('element-plus/es')['ElMessage']
   const ElMessageBox: typeof import('element-plus/es')['ElMessageBox']
   const NIcon: typeof import('naive-ui')['NIcon']
+  const NTag: typeof import('naive-ui')['NTag']
+  const NTooltip: typeof import('naive-ui')['NTooltip']
   const acceptHMRUpdate: typeof import('pinia')['acceptHMRUpdate']
   const asyncComputed: typeof import('@vueuse/core')['asyncComputed']
   const autoResetRef: typeof import('@vueuse/core')['autoResetRef']

@@ -20,7 +20,7 @@
     </tip-box>
   </n-affix>
 
-  <n-tabs v-model:value="tab" justify-content="space-evenly">
+  <n-tabs v-model:value="tab" justify-content="space-evenly" class="pb-8">
     <n-tab-pane tab="文件" name="file">
       <n-flex justify="end" class="mb-4 flex-1">
         <n-button v-show="showDeleteFile" type="error" secondary @click="deleteFiles">
@@ -118,38 +118,15 @@
           <n-text size="large" tag="b">文件名</n-text>
           <n-text size="large" tag="b">分组</n-text>
         </header>
-        <el-tree
+        <n-tree
           ref="fileTreeRef"
-          class="file-tree"
           :data="docTree"
-          :props="treeNodeProps"
-          node-key="key"
+          label-field="name"
+          block-line
           default-expand-all
-          show-checkbox>
-          <template #default="{ node, data }">
-            <div class="file-line">
-              <div class="file-info flex">
-                <span class="mr-px">
-                  <i-bi-folder2 v-if="data.isDir" color="#303133" />
-                  <i-bi-filetype-json v-else-if="data.type === '.json'" color="#E6A23C" />
-                  <i-bi-filetype-xlsx v-else-if="data.type === '.xlsx'" color="#67C23A" />
-                  <i-bi-file-break v-else />
-                </span>
-                <span :class="{ 'del-line': data.deleted }" truncated>
-                  {{ node.label }}
-                </span>
-              </div>
-              <div v-if="!data.isDir" class="file-tag">
-                <el-tag
-                  :type="getHelpDocTag(data.loadStatus, data.deleted, data.group).type"
-                  size="small"
-                  :disable-transitions="true">
-                  {{ getHelpDocTag(data.loadStatus, data.deleted, data.group).label }}
-                </el-tag>
-              </div>
-            </div>
-          </template>
-        </el-tree>
+          :show-line="true"
+          cascade
+          checkable />
       </main>
     </n-tab-pane>
 
@@ -186,30 +163,7 @@
             </n-form-item>
           </n-form>
         </header>
-        <el-table
-          class="item-list"
-          table-layout="auto"
-          :header-cell-style="{ 'text-align': 'center' }"
-          :data="textItems">
-          <el-table-column prop="id" label="序号" />
-          <el-table-column prop="group" label="分组">
-            <template #default="scope">
-              <el-tag type="success" size="small" :disable-transitions="true">{{
-                scope.row.group
-              }}</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column prop="from" label="来源文件" />
-          <el-table-column prop="title" label="词条名" />
-          <el-table-column prop="content" label="内容">
-            <template #default="scope">
-              <el-tooltip :content="getHelpTextTooltip(scope.row.content)" raw-content>
-                {{ getHelpText(scope.row.content) }}
-              </el-tooltip>
-            </template>
-          </el-table-column>
-          <el-table-column prop="packageName" label="分类" />
-        </el-table>
+        <n-data-table class="item-list" :columns="columns" :data="textItems" size="small" />
         <footer>
           <n-pagination
             class="item-list-pagination"
@@ -219,16 +173,17 @@
             :page-sizes="[10, 20, 30, 50]"
             :page-slot="5"
             :item-count="textItemQuery.total"
-            @change="handleCurrentPageChange"
-            @page-size-change="handleCurrentPageChange" />
+            @update:page="handleCurrentPageChange"
+            @update:page-size="handleCurrentPageChange" />
         </footer>
       </main>
     </n-tab-pane>
   </n-tabs>
 </template>
 
-<script lang="ts" setup>
-import type { FormRules, FormInstance, ElTree } from 'element-plus';
+<script lang="tsx" setup>
+import type { FormRules, DataTableColumns, TreeOption, NTree } from 'naive-ui';
+import { useMessage, useDialog } from 'naive-ui';
 import { trim } from 'es-toolkit/compat';
 import type { HelpDoc, HelpTextItem, HelpTextItemQuery } from '#';
 import {
@@ -248,6 +203,9 @@ interface Group {
 
 const tab = ref('file');
 
+const message = useMessage();
+const dialog = useDialog();
+
 const needReload = ref<boolean>(false);
 
 interface UploadForm {
@@ -259,7 +217,7 @@ const treeNodeProps = {
   label: 'name',
   disabled: 'deleted',
 };
-const docTree = ref<HelpDoc[]>([] as any);
+const docTree = ref<TreeOption[]>([]);
 const docGroups = ref<Group[]>([]);
 const uploadDialogVisible = ref<boolean>(false);
 const uploadFormRef = ref<FormInstance>();
@@ -292,9 +250,9 @@ const submitUpload = async (formData: FormInstance | undefined) => {
 
       const res = await uploadHelpDoc(uploadForm);
       if (res.result) {
-        ElMessage.success('上传完成，请在全部操作完成后，手动重载帮助文件');
+        message.success('上传完成，请在全部操作完成后，手动重载帮助文件');
       } else {
-        ElMessage.error(res.err ?? '上传失败');
+        message.error(res.err ?? '上传失败');
       }
       formData.resetFields();
       needReload.value = true;
@@ -304,40 +262,34 @@ const submitUpload = async (formData: FormInstance | undefined) => {
   });
 };
 
-const fileTreeRef = ref<InstanceType<typeof ElTree>>();
+const fileTreeRef = ref<InstanceType<typeof NTree>>();
+const checkedFileKeys = computed(() => {
+  return (fileTreeRef.value?.getCheckedData().keys as string[]) ?? [];
+});
 const showDeleteFile = computed(() => {
-  const checkedFileKeys = fileTreeRef.value?.getCheckedKeys(false) as string[];
-  return checkedFileKeys?.length !== 0;
+  return checkedFileKeys.value.length > 0;
 });
 const deleteFiles = async () => {
-  const checkedFileKeys = fileTreeRef.value?.getCheckedKeys(false) as string[];
-  if (checkedFileKeys && checkedFileKeys.length !== 0) {
-    ElMessageBox.confirm('确认删除选择的文件吗？', '删除', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning',
-    }).then(() => {
-      deleteHelpDoc(checkedFileKeys).then(res => {
-        if (res.result) {
-          ElMessage({
-            type: 'success',
-            message: '删除文件成功',
-          });
-          refreshFileTree();
-        } else {
-          ElMessage({
-            type: 'success',
-            message: res.err ?? '删除文件失败',
-          });
-        }
-      });
-      needReload.value = true;
+  if (checkedFileKeys && checkedFileKeys.value.length !== 0) {
+    dialog.warning({
+      title: '删除',
+      content: '确认删除选择的文件吗？',
+      positiveText: '确定',
+      negativeText: '取消',
+      onPositiveClick: () => {
+        deleteHelpDoc(checkedFileKeys.value).then(res => {
+          if (res.result) {
+            message.success('删除文件成功');
+            refreshFileTree();
+          } else {
+            message.error(res.err ?? '删除文件失败');
+          }
+        });
+        needReload.value = true;
+      },
     });
   } else {
-    ElMessage({
-      type: 'error',
-      message: '未选择文件',
-    });
+    message.error('未选择文件');
   }
 };
 
@@ -345,10 +297,12 @@ const getHelpDocTag = (
   loadStatus: number,
   deleted: boolean,
   group: string,
-): {
-  type: 'primary' | 'success' | 'warning' | 'info' | 'danger';
-  label: string;
-} => {
+):
+  | { type: 'primary'; label: string }
+  | { type: 'success'; label: string }
+  | { type: 'warning'; label: string }
+  | { type: 'info'; label: string }
+  | { type: 'error'; label: string } => {
   if (loadStatus === 0) {
     return {
       type: 'warning',
@@ -356,7 +310,7 @@ const getHelpDocTag = (
     };
   } else if (loadStatus === 2) {
     return {
-      type: 'danger',
+      type: 'error',
       label: '格式有误',
     };
   } else if (deleted) {
@@ -372,25 +326,44 @@ const getHelpDocTag = (
   }
 };
 
+const convertHelpDocInfo = (doc: HelpDoc): TreeOption => {
+  let option = {
+    ...doc,
+    children: doc.children?.map(e => {
+      return convertHelpDocInfo(e);
+    }),
+    prefix: () => {
+      if (doc.isDir) {
+        return <i-bi-folder2 color="var(--color-stone-600)" />;
+      } else if (doc.type === '.json') {
+        return <i-bi-filetype-json color="var(--color-amber-600)" />;
+      } else if (doc.type === '.xlsx') {
+        return <i-bi-filetype-xlsx color="var(--color-green-600)" />;
+      } else {
+        return <i-bi-file-break />;
+      }
+    },
+    suffix: () => {
+      if (doc.isDir) {
+        return <></>;
+      }
+      const tagInfo = getHelpDocTag(doc.loadStatus, doc.deleted, doc.group);
+      return (
+        <n-tag class="ml-auto" size="small" type={tagInfo.type} bordered={false}>
+          {tagInfo.label}
+        </n-tag>
+      );
+    },
+  };
+
+  return option;
+};
+
 const refreshFileTree = async () => {
   const resp = await getHelpDocTree();
   if (resp?.result) {
     docTree.value = resp.data.map(entry => {
-      const e: any = { ...entry };
-      if (entry.loadStatus === 0) {
-        e.groupLabelType = 'warning';
-        e.groupLabel = '未加载';
-      } else if (entry.loadStatus === 2) {
-        e.groupLabelType = 'error';
-        e.groupLabel = '加载失败';
-      } else if (entry.deleted) {
-        e.groupLabelType = 'warning';
-        e.groupLabel = entry.group;
-      } else {
-        e.groupLabelType = 'success';
-        e.groupLabel = entry.group;
-      }
-      return e;
+      return convertHelpDocInfo(entry);
     });
     docGroups.value = [
       { label: '默认', value: 'default' },
@@ -403,7 +376,7 @@ const refreshFileTree = async () => {
         }),
     ];
   } else {
-    ElMessage.error('无法获取帮助文件信息');
+    message.error('无法获取帮助文件信息');
   }
 };
 
@@ -424,6 +397,35 @@ const getHelpText = (row: string) => {
 const getHelpTextTooltip = (row: string) => {
   return trim(row).replaceAll('\n', '<br />');
 };
+
+const columns: DataTableColumns<HelpTextItem> = [
+  { title: '序号', key: 'id', align: 'center' },
+  {
+    title: '分组',
+    key: 'group',
+    align: 'center',
+    render: row => (
+      <n-tag type="success" size="small" bordered={false}>
+        {row.group}
+      </n-tag>
+    ),
+  },
+  { title: '来源文件', key: 'from' },
+  { title: '词条名', key: 'title' },
+  {
+    title: '内容',
+    key: 'content',
+    render: row => (
+      <n-tooltip content-class="">
+        {{
+          trigger: () => getHelpText(row.content),
+          default: () => getHelpTextTooltip(row.content),
+        }}
+      </n-tooltip>
+    ),
+  },
+  { title: '分类', key: 'packageName' },
+];
 const handleCurrentPageChange = async (val: number) => {
   textItemQuery.value.pageNum = val;
   await refreshTextItems();
@@ -434,7 +436,7 @@ const refreshTextItems = async () => {
     textItems.value = resp.data;
     textItemQuery.value.total = resp.total;
   } else {
-    ElMessage.error('无法获取帮助词条信息');
+    message.error('无法获取帮助词条信息');
   }
 };
 
@@ -443,13 +445,13 @@ const reload = async () => {
   reloadLoading.value = true;
   const resp = await reloadHelpDoc();
   if (resp?.result) {
-    ElMessage.success('重载帮助文件成功');
+    message.success('重载帮助文件成功');
     needReload.value = false;
     await refreshFileTree();
     await refreshTextItems();
     await refreshConfig();
   } else {
-    ElMessage.error(resp.err ?? '重载帮助文件失败');
+    message.error(resp.err ?? '重载帮助文件失败');
   }
   reloadLoading.value = false;
 };
@@ -472,7 +474,7 @@ const addAlias = (groupKey: string, alias: string) => {
   // 别名不能重复
   for (const aliases of helpAliases.value.values()) {
     if (aliases.includes(alias)) {
-      ElMessage.error('别名 ' + alias + ' 已被使用');
+      message.error('别名 ' + alias + ' 已被使用');
       return;
     }
   }
@@ -502,13 +504,13 @@ const summitConfig = async () => {
       aliases: Object.fromEntries(helpAliases.value),
     });
     if (res.result) {
-      ElMessage.success('保存设置成功');
+      message.success('保存设置成功');
       configDialogClose();
       nextTick(async () => {
         await refreshConfig();
       });
     } else {
-      ElMessage.error('保存设置失败！' + res.err);
+      message.error('保存设置失败！' + res.err);
     }
   }
 };
@@ -535,16 +537,11 @@ onBeforeMount(async () => {
 
 .file-tree-title {
   padding: 0 23px 6px 50px;
-  border-bottom: #dcdfe6 solid 1px;
   margin-bottom: 10px;
 
   flex: 1;
   display: flex;
   justify-content: space-between;
-}
-
-.file-tree {
-  background-color: #f3f5f7;
 }
 
 .file-line {
@@ -568,17 +565,8 @@ onBeforeMount(async () => {
   align-items: center;
 }
 
-.item-list {
-  background-color: #f3f5f7;
-}
-
-.el-table .cell {
-  white-space: pre-line;
-}
-
 .item-list-pagination {
   margin-top: 10px;
-  background-color: #f3f5f7;
 }
 
 .del-line {
