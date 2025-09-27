@@ -79,9 +79,22 @@
       </n-flex>
     </n-layout-header>
 
-    <n-layout class="mt-16 flex grow overflow-y-auto" position="absolute" has-sider>
-      <n-layout-sider bordered class="menu no-scrollbar flex-none overflow-y-auto bg-inherit">
-        <Menu v-model:advancedConfigCounter="advancedConfigCounter" type="dark" />
+    <n-layout class="mt-16 flex grow" position="absolute" has-sider>
+      <n-layout-sider
+        collapse-mode="width"
+        :collapsed-width="64"
+        :width="240"
+        :collapsed="collapsedMenu"
+        show-trigger
+        @collapse="collapsedMenu = true"
+        @expand="collapsedMenu = false"
+        bordered
+        :native-scrollbar="false"
+        class="menu no-scrollbar flex-none bg-inherit">
+        <Menu
+          v-model:advancedConfigCounter="advancedConfigCounter"
+          :collapsed="collapsedMenu"
+          type="dark" />
       </n-layout-sider>
 
       <n-layout-content
@@ -103,7 +116,7 @@
   </n-layout>
 
   <n-drawer v-model:show="drawerMenu" class="drawer-menu" default-width="50%" placement="left">
-    <n-drawer-content body-content-style="padding: 0;">
+    <n-drawer-content body-content-style="padding: 0;" :native-scrollbar="false">
       <template #header>
         <n-flex size="small">
           <n-flex :size="0" :v-show="store.canAccess" align="flex-start" vertical>
@@ -212,15 +225,21 @@ import 'dayjs/locale/zh-cn';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { getNewUtils, postUtilsCheckNews } from '~/api/v1/utils';
 import { checkSecurity } from '~/api/v1/others';
+import { breakpointsTailwind } from '@vueuse/core';
 
 const isDark = useDark({ disableTransition: false });
 const toggleDark = useToggle(isDark);
 const message = useMessage();
 
+const breakpoints = useBreakpoints(breakpointsTailwind);
+const isDesktop = breakpoints.greater('md');
+
 dayjs.locale('zh-cn');
 dayjs.extend(relativeTime);
 
 const loading = useStorage('router-view-loading', true);
+
+const collapsedMenu = ref<boolean>(!isDesktop.value);
 
 const store = useStore();
 const password = ref('');

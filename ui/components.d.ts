@@ -57,6 +57,7 @@ declare module 'vue' {
     ICarbonAddFilled: typeof import('~icons/carbon/add-filled')['default']
     ICarbonAddLarge: typeof import('~icons/carbon/add-large')['default']
     ICarbonAsleep: typeof import('~icons/carbon/asleep')['default']
+    ICarbonCaretRight: typeof import('~icons/carbon/caret-right')['default']
     ICarbonCheckmark: typeof import('~icons/carbon/checkmark')['default']
     ICarbonCheckmarkFilled: typeof import('~icons/carbon/checkmark-filled')['default']
     ICarbonChevronDown: typeof import('~icons/carbon/chevron-down')['default']

@@ -1,6 +1,13 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-  <n-menu :options="options" :value="route.path" accordion />
+  <n-menu
+    :collapsed="props.collapsed"
+    :collapsed-width="64"
+    :collapsed-icon-size="22"
+    :options="options"
+    :value="route.path"
+    :expand-icon="expandIcon"
+    accordion />
 </template>
 
 <script lang="tsx" setup>
@@ -11,10 +18,26 @@ import type { MenuOption } from 'naive-ui';
 const advancedConfigCounter: ModelRef<number> = defineModel('advancedConfigCounter', {
   default: 0,
 });
+const props = withDefaults(
+  defineProps<{
+    collapsed?: boolean;
+  }>(),
+  {
+    collapsed: false,
+  },
+);
 
 const store = useStore();
 
 const route = useRoute();
+
+function expandIcon() {
+  return (
+    <n-icon>
+      <i-carbon-caret-right></i-carbon-caret-right>
+    </n-icon>
+  );
+}
 
 const customTextOptions: ComputedRef<MenuOption[]> = computed(() =>
   Object.keys(store.curDice.customTexts ?? {}).map(k => ({

@@ -152,8 +152,7 @@
             :row-key="rowKey"
             checkable
             v-model:checked-row-keys="checkedRowKeys"
-            @update:checked-rows="handleSelectionChange"
-          />
+            @update:checked-rows="handleSelectionChange" />
         </div>
       </template>
     </n-card>
