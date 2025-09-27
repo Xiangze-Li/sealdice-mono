@@ -159,15 +159,23 @@
     :mask-closable="false"
     transform-origin="center">
     <n-text>
-      如果您的服务开启在公网，为了保证您的安全性，请前往 <strong>「综合设置」>「基本设置」</strong> 界面，设置 <strong>UI 界面密码</strong>。或切换为只有本机可访问。<br/>
+      如果您的服务开启在公网，为了保证您的安全性，请前往
+      <strong>「综合设置」>「基本设置」</strong> 界面，设置
+      <strong>UI 界面密码</strong>。或切换为只有本机可访问。<br />
     </n-text>
-    <n-gradient-text type="warning" class="mt-4">如果您不了解上面在说什么，请务必设置一个密码！</n-gradient-text>
+    <n-gradient-text type="warning" class="mt-4"
+      >如果您不了解上面在说什么，请务必设置一个密码！</n-gradient-text
+    >
 
     <template #action>
       <n-button type="primary" :disabled="!canSkip" @click="dialogCheckPassword = false">
         我已知晓！
         <template v-if="!canSkip">
-          （<n-countdown :duration="5 * 1000" :render="renderCheckPasswordCountDown" @finish="canSkip = true" /> 秒后可点击）
+          （<n-countdown
+            :duration="5 * 1000"
+            :render="renderCheckPasswordCountDown"
+            @finish="canSkip = true" />
+          秒后可点击）
         </template>
       </n-button>
     </template>
@@ -264,14 +272,14 @@ const doUnlock = async () => {
 };
 
 const dialogCheckPassword = ref(false);
-const canSkip = ref<boolean>(false)
+const canSkip = ref<boolean>(false);
 const checkPassword = async () => {
   if (!(await checkSecurity()).isOk) {
     dialogCheckPassword.value = true;
     canSkip.value = false;
   }
 };
-const renderCheckPasswordCountDown = ({ seconds }) => <span>{ seconds }</span>
+const renderCheckPasswordCountDown = ({ seconds }) => <span>{seconds}</span>;
 
 onBeforeMount(async () => {
   store.getBaseInfo();

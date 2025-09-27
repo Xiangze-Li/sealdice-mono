@@ -217,7 +217,7 @@
                           </template>
                           {{
                             index === 0
-                              ? '点击添加一个回复语，SealDice将会随机抽取一个回复'
+                              ? '点击添加一个回复语，SealDice 将会随机抽取一个回复'
                               : '点击删除你不想要的回复语'
                           }}
                         </n-tooltip>
@@ -339,7 +339,6 @@ import {
   uniq,
   mapValues,
 } from 'es-toolkit/compat';
-import entries from 'es-toolkit/compat';
 import ClipboardJS from 'clipboard';
 import { useDialog, useMessage } from 'naive-ui';
 
@@ -394,7 +393,7 @@ const doSort = (category: string) => {
   // 子类别元素超过 4 个的，展示上需要打包
   const boxedGroups = map(
     filter(
-      entries(
+      Object.entries(
         groupBy(
           map(items, item => {
             const subType = helpInfo[item[0]].subType;
@@ -403,12 +402,12 @@ const doSort = (category: string) => {
           group => group,
         ),
       ),
-      group => group[1].length >= 4,
+      group => group?.[1]?.length >= 4,
     ),
     group => group[0],
   );
 
-  const outMap = entries(
+  const outMap = Object.entries(
     mapValues(
       groupBy(items, item => {
         const group = helpInfo[item[0]].subType.split(' ')[0];

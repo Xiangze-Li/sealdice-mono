@@ -41,11 +41,7 @@
   </div>
 
   <main class="logs pb-8">
-    <n-data-table
-      :data="logData"
-      :class="isMobile ? 'w-full' : ''"
-      :columns="columns"
-    />
+    <n-data-table :data="logData" :class="isMobile ? 'w-full' : ''" :columns="columns" />
 
     <n-back-top :right="30" />
   </main>
@@ -106,12 +102,12 @@ import dayjs from 'dayjs';
 import { filesize } from 'filesize';
 import { postUpgrade } from '~/api/v1/dice';
 import { useDialog, type DataTableColumns } from 'naive-ui';
-import { useThemeVars } from 'naive-ui'
-import { breakpointsTailwind } from '@vueuse/core'
+import { useThemeVars } from 'naive-ui';
+import { breakpointsTailwind } from '@vueuse/core';
 
-const themeVars = useThemeVars()
-const breakpoints = useBreakpoints(breakpointsTailwind)
-const isMobile = breakpoints.smaller('md')
+const themeVars = useThemeVars();
+const breakpoints = useBreakpoints(breakpointsTailwind);
+const isMobile = breakpoints.smaller('md');
 
 type LogRow = {
   ts: number;
@@ -125,10 +121,10 @@ const dialog = useDialog();
 const displayReverse = ref<boolean>(true);
 const logData = computed(() => {
   if (displayReverse.value) {
-    return [...store.curDice.logs].reverse()
+    return [...store.curDice.logs].reverse();
   }
-  return store.curDice.logs
-})
+  return store.curDice.logs;
+});
 
 const upgradeDialogVisible = ref(false);
 const autoRefresh = ref(true);
@@ -145,42 +141,48 @@ const getMsgColor = (row: LogRow): string | undefined => {
 };
 
 const columns: ComputedRef<DataTableColumns<LogRow>> = computed(() => {
-  let data = []
+  let data = [];
   data.push({
     title: '时间',
     key: 'ts',
     width: isMobile.value ? 70 : 100,
-    render: (row) => {
+    render: row => {
       const color = getMsgColor(row);
       return (
         <div class="flex items-center" style={{ color }}>
-          { isMobile.value ? <></> : <n-icon><i-carbon-time/></n-icon> }
+          {isMobile.value ? (
+            <></>
+          ) : (
+            <n-icon>
+              <i-carbon-time />
+            </n-icon>
+          )}
           <span class="ml-1">
-            { dayjs.unix(row.ts).format(isMobile.value ? 'HH:mm' : 'HH:mm:ss') }
+            {dayjs.unix(row.ts).format(isMobile.value ? 'HH:mm' : 'HH:mm:ss')}
           </span>
         </div>
       );
-    }
-  })
+    },
+  });
   if (!isMobile.value) {
     data.push({
       title: '级别',
       key: 'level',
       width: 55,
-      render: (row) => {
+      render: row => {
         const color = getMsgColor(row);
         return <span style={{ color }}>{row.level}</span>;
       },
-    })
+    });
   }
   data.push({
     title: '信息',
     key: 'msg',
-    render: (row) => {
+    render: row => {
       const color = getMsgColor(row);
       return <span style={{ color }}>{row.msg}</span>;
     },
-  })
+  });
   return data;
 });
 
@@ -204,7 +206,7 @@ const doUpgrade = async () => {
 
 const scrollDown = () => {
   const panel = document.querySelector<HTMLElement>('.logs')?.parentElement;
-  console.log('scrollDown: ', panel)
+  console.log('scrollDown: ', panel);
   if (panel) {
     panel.scrollTop = panel.scrollHeight;
   }
