@@ -535,7 +535,11 @@ func Bind(e *echo.Echo, _myDice *dice.DiceManager) {
 	dm = _myDice
 	myDice = _myDice.Dice[0]
 
-	prefix := "/sd-api"
+	bindApiV1(e)
+}
+
+func bindApiV1(e *echo.Echo) {
+	prefix := "/sd-api/v1"
 
 	e.GET(prefix+"/preInfo", preInfo)
 	e.GET(prefix+"/baseInfo", baseInfo)

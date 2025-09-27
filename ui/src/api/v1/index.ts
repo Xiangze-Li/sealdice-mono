@@ -1,7 +1,7 @@
 import axios, { type AxiosRequestConfig } from 'axios';
 import qs from 'qs';
 const http = axios.create({
-  baseURL: '/sd-api',
+  baseURL: '/sd-api/v1',
   timeout: 10000,
 });
 
