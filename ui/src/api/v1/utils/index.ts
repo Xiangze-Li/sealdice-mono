@@ -25,8 +25,12 @@ export function getUtilsCheckNetWorkHealth() {
     | {
         result: true;
         total: number;
-        ok: string[];
         timestamp: number;
+        targets: {
+          target: string;
+          ok: boolean;
+          duration: number;
+        }[];
       }
     | { result: false }
   >('get', 'check_network_health');

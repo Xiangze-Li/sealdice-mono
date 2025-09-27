@@ -9,21 +9,26 @@ let checkTimerId: number;
 const autoRefresh = ref(true);
 const networkHealth = ref({
   total: 0,
-  ok: [],
   timestamp: 0,
+  targets: [],
 } as {
   total: number;
-  ok: string[];
   timestamp: number;
+  targets: {
+    target: string;
+    ok: boolean;
+    duration: number;
+  }[];
 });
+const networkHealths = ref<Map<string, number>>(new Map());
 
 const getWebsiteHealthComponent = (key: string, name: string): VNode => {
-  const ok = networkHealth.value.ok?.includes(key);
-  if (ok) {
+  const duration = networkHealths.value.get(key);
+  if (duration) {
     return (
       <n-tag round bordered={false} type="success" size="small">
         {{
-          default: () => name,
+          default: () => <span>{`${name} - ${(duration / 1000000).toFixed(2)}ms`}</span>,
           icon: () => (
             <n-icon>
               <i-carbon-checkmark-filled />
@@ -52,6 +57,11 @@ const refreshNetworkHealth = async () => {
   networkHealth.value.timestamp = 0;
   const ret = await getUtilsCheckNetWorkHealth();
   if (ret.result) {
+    for (let target of ret.targets) {
+      if (target.ok) {
+        networkHealths.value.set(target.target, target.duration);
+      }
+    }
     networkHealth.value = ret;
   }
 };
@@ -90,17 +100,13 @@ onBeforeUnmount(() => {
     <n-text v-if="networkHealth.timestamp === 0">检测中…… 🤔</n-text>
     <n-text
       type="success"
-      v-else-if="networkHealth.total !== 0 && networkHealth.total === networkHealth.ok?.length">
+      v-else-if="networkHealth.total !== 0 && networkHealth.total === networkHealths?.size">
       优 😄
     </n-text>
-    <n-text
-      type="default"
-      v-else-if="networkHealth.ok?.includes('sign') && networkHealth.ok?.includes('seal')">
+    <n-text type="default" v-else-if="networkHealths?.get('sign') && networkHealths?.get('seal')">
       一般 😐️
     </n-text>
-    <n-text
-      type="error"
-      v-else-if="networkHealth.total !== 0 && (networkHealth.ok ?? []).length === 0">
+    <n-text type="error" v-else-if="networkHealth.total !== 0 && networkHealths?.size === 0">
       网络中断 😱
     </n-text>
     <template v-else>

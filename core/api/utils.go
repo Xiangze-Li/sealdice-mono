@@ -188,7 +188,7 @@ func checkHTTPConnectivity(url string) (bool, time.Duration) {
 	once := func(url string) {
 		myDice.Logger.Debugf("check http connectivity, url=%s", url)
 		start := time.Now()
-		req, _ := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
+		req, _ := http.NewRequestWithContext(ctx, http.MethodOptions, url, nil)
 		resp, err := http.DefaultClient.Do(req)
 		duration := time.Since(start)
 		if err == nil {
@@ -274,18 +274,13 @@ func checkNetworkHealth(c echo.Context) error {
 	wg.Wait()
 	close(rsChan)
 
-	var ok []string
 	var targets []rs
 	for target := range rsChan {
 		targets = append(targets, target)
-		if target.Ok {
-			ok = append(ok, target.Target)
-		}
 	}
 
 	return Success(&c, Response{
 		"total":     total,
-		"ok":        ok, // 被 targets 代替，可废弃，但先为接口兼容保留
 		"targets":   targets,
 		"timestamp": time.Now().Unix(),
 	})
