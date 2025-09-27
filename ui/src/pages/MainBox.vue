@@ -142,13 +142,35 @@
   <n-modal
     v-model:show="dialogLostConnectionVisible"
     :closable="false"
-    class="the-dialog"
     preset="card"
     style="width: 30%"
     title="主程序离线"
     :mask-closable="false"
     transform-origin="center">
     <n-text>与主程序的连接断开，请耐心等待连接恢复。如果失去响应过久，请登录服务器处理。</n-text>
+  </n-modal>
+
+  <n-modal
+    v-model:show="dialogCheckPassword"
+    :closable="false"
+    preset="dialog"
+    style="width: 30%"
+    title="欢迎使用海豹核心"
+    :mask-closable="false"
+    transform-origin="center">
+    <n-text>
+      如果您的服务开启在公网，为了保证您的安全性，请前往 <strong>「综合设置」>「基本设置」</strong> 界面，设置 <strong>UI 界面密码</strong>。或切换为只有本机可访问。<br/>
+    </n-text>
+    <n-gradient-text type="warning" class="mt-4">如果您不了解上面在说什么，请务必设置一个密码！</n-gradient-text>
+
+    <template #action>
+      <n-button type="primary" :disabled="!canSkip" @click="dialogCheckPassword = false">
+        我已知晓！
+        <template v-if="!canSkip">
+          （<n-countdown :duration="5 * 1000" :render="renderCheckPasswordCountDown" @finish="canSkip = true" /> 秒后可点击）
+        </template>
+      </n-button>
+    </template>
   </n-modal>
 
   <n-modal
@@ -173,7 +195,7 @@
   </n-modal>
 </template>
 
-<script setup lang="ts">
+<script setup lang="tsx">
 import { useStore } from '~/store';
 import { useMessage } from 'naive-ui';
 import { passwordHash } from '~/utils';
@@ -241,15 +263,15 @@ const doUnlock = async () => {
   }
 };
 
+const dialogCheckPassword = ref(false);
+const canSkip = ref<boolean>(false)
 const checkPassword = async () => {
   if (!(await checkSecurity()).isOk) {
-    ElMessageBox.alert(
-      '欢迎使用海豹核心。<br/>如果您的服务开启在公网，为了保证您的安全性，请前往<b>“综合设置->基本设置”</b>界面，设置<b>UI 界面密码</b>。<br/>或切换为只有本机可访问。<br><b>如果您不了解上面在说什么，请务必设置一个密码</b>',
-      '提示',
-      { dangerouslyUseHTMLString: true },
-    );
+    dialogCheckPassword.value = true;
+    canSkip.value = false;
   }
 };
+const renderCheckPasswordCountDown = ({ seconds }) => <span>{ seconds }</span>
 
 onBeforeMount(async () => {
   store.getBaseInfo();

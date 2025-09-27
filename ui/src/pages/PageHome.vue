@@ -1,12 +1,4 @@
 <template>
-  <Teleport v-if="store.curDice.logs.length" to="#root">
-    <n-button type="default" class="btn-scrolldown" circle @click="scrollDown" content="最新日志">
-      <template #icon>
-        <n-icon><i-carbon-chevron-down /></n-icon>
-      </template>
-    </n-button>
-  </Teleport>
-
   <div style="display: flex; justify-content: flex-end; align-items: center">
     <div style="display: flex; flex-direction: column">
       <n-tooltip
@@ -42,140 +34,21 @@
 
   <div class="flex items-center justify-between">
     <h4>日志</h4>
-    <n-checkbox v-model:checked="autoRefresh">保持刷新</n-checkbox>
+    <div class="flex items-center justify-end">
+      <n-checkbox v-model:checked="displayReverse">最新日志展示在最上方</n-checkbox>
+      <n-checkbox v-model:checked="autoRefresh">保持刷新</n-checkbox>
+    </div>
   </div>
 
-  <n-divider>
-    <n-text type="warning" class="text-xs hover:cursor-pointer" @click="scrollDown">
-      点击下拉到底查看最新
-    </n-text>
-  </n-divider>
+  <main class="logs pb-8">
+    <n-data-table
+      :data="logData"
+      :class="isMobile ? 'w-full' : ''"
+      :columns="columns"
+    />
 
-  <div class="logs hidden p-0 md:block">
-    <el-table
-      :data="store.curDice.logs"
-      :row-class-name="getLogRowClassName"
-      :header-cell-style="{ backgroundColor: '#f3f5f7' }">
-      <el-table-column label="时间" width="90">
-        <template #default="scope">
-          <div style="display: flex; align-items: center">
-            <n-icon v-if="scope.row.msg.startsWith('onebot | ')" color="var(--el-color-warning)">
-              <i-carbon-time />
-            </n-icon>
-            <n-icon v-else-if="scope.row.msg.startsWith('发给')" color="var(--el-color-primary)">
-              <i-carbon-time />
-            </n-icon>
-            <n-icon v-else-if="scope.row.level === 'warn'" color="var(--el-color-warning)">
-              <i-carbon-time />
-            </n-icon>
-            <n-icon v-else-if="scope.row.level === 'error'" color="var(--el-color-danger)">
-              <i-carbon-time />
-            </n-icon>
-            <n-icon v-else><i-carbon-time /></n-icon>
-            <span style="margin-left: 0.3rem">
-              <span
-                v-if="scope.row.msg.startsWith('onebot | ')"
-                style="color: var(--el-color-warning)"
-                >{{ dayjs.unix(scope.row.ts).format('HH:mm:ss') }}</span
-              >
-              <span
-                v-else-if="scope.row.msg.startsWith('发给')"
-                style="color: var(--el-color-primary)"
-                >{{ dayjs.unix(scope.row.ts).format('HH:mm:ss') }}</span
-              >
-              <span v-else-if="scope.row.level === 'warn'" style="color: var(--el-color-warning)">{{
-                dayjs.unix(scope.row.ts).format('HH:mm:ss')
-              }}</span>
-              <span v-else-if="scope.row.level === 'error'" style="color: var(--el-color-danger)">{{
-                dayjs.unix(scope.row.ts).format('HH:mm:ss')
-              }}</span>
-              <span v-else>{{ dayjs.unix(scope.row.ts).format('HH:mm:ss') }}</span>
-            </span>
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column prop="level" label="级别" width="55">
-        <template #default="scope">
-          <n-text v-if="scope.row.msg.startsWith('onebot | ')" type="warning">
-            {{ scope.row.level }}
-          </n-text>
-          <n-text v-else-if="scope.row.msg.startsWith('发给')" type="primary">
-            {{ scope.row.level }}
-          </n-text>
-          <n-text v-else-if="scope.row.level === 'warn'" type="warning">
-            {{ scope.row.level }}
-          </n-text>
-          <n-text v-else-if="scope.row.level === 'error'" type="error">
-            {{ scope.row.level }}
-          </n-text>
-          <n-text v-else>{{ scope.row.level }}</n-text>
-        </template>
-      </el-table-column>
-      <el-table-column prop="msg" label="信息">
-        <template #default="scope">
-          <span v-if="scope.row.msg.startsWith('onebot | ')" style="color: var(--el-color-warning)">
-            {{ scope.row.msg }}
-          </span>
-          <span v-else-if="scope.row.msg.startsWith('发给')" style="color: var(--el-color-primary)">
-            {{ scope.row.msg }}
-          </span>
-          <span v-else-if="scope.row.level === 'warn'" style="color: var(--el-color-warning)">
-            {{ scope.row.msg }}
-          </span>
-          <span v-else-if="scope.row.level === 'error'" style="color: var(--el-color-danger)">
-            {{ scope.row.msg }}
-          </span>
-          <span v-else>{{ scope.row.msg }}</span>
-        </template>
-      </el-table-column>
-    </el-table>
-  </div>
-  <el-table
-    :data="store.curDice.logs"
-    class="logs w-full md:hidden"
-    :row-class-name="getLogRowClassName"
-    :header-cell-style="{ backgroundColor: '#f3f5f7' }">
-    <el-table-column label="时间" width="60">
-      <template #default="scope">
-        <div style="display: flex; align-items: center">
-          <span
-            v-if="scope.row.msg.startsWith('onebot | ')"
-            style="color: var(--el-color-warning)"
-            >{{ dayjs.unix(scope.row.ts).format('HH:mm') }}</span
-          >
-          <span
-            v-else-if="scope.row.msg.startsWith('发给')"
-            style="color: var(--el-color-primary)"
-            >{{ dayjs.unix(scope.row.ts).format('HH:mm') }}</span
-          >
-          <span v-else-if="scope.row.level === 'warn'" style="color: var(--el-color-warning)">{{
-            dayjs.unix(scope.row.ts).format('HH:mm')
-          }}</span>
-          <span v-else-if="scope.row.level === 'error'" style="color: var(--el-color-danger)">{{
-            dayjs.unix(scope.row.ts).format('HH:mm')
-          }}</span>
-          <span v-else>{{ dayjs.unix(scope.row.ts).format('HH:mm') }}</span>
-        </div>
-      </template>
-    </el-table-column>
-    <el-table-column prop="msg" label="信息">
-      <template #default="scope">
-        <span v-if="scope.row.msg.startsWith('onebot | ')" style="color: var(--el-color-warning)">{{
-          scope.row.msg
-        }}</span>
-        <span v-else-if="scope.row.msg.startsWith('发给')" style="color: var(--el-color-primary)">{{
-          scope.row.msg
-        }}</span>
-        <span v-else-if="scope.row.level === 'warn'" style="color: var(--el-color-warning)">{{
-          scope.row.msg
-        }}</span>
-        <span v-else-if="scope.row.level === 'error'" style="color: var(--el-color-danger)">{{
-          scope.row.msg
-        }}</span>
-        <span v-else>{{ scope.row.msg }}</span>
-      </template>
-    </el-table-column>
-  </el-table>
+    <n-back-top :right="30" />
+  </main>
 
   <n-modal
     v-model:show="upgradeDialogVisible"
@@ -227,21 +100,89 @@
   </div> -->
 </template>
 
-<script lang="ts" setup>
+<script lang="tsx" setup>
 import { useStore } from '~/store';
 import dayjs from 'dayjs';
 import { filesize } from 'filesize';
 import { postUpgrade } from '~/api/v1/dice';
-import { useDialog } from 'naive-ui';
+import { useDialog, type DataTableColumns } from 'naive-ui';
+import { useThemeVars } from 'naive-ui'
+import { breakpointsTailwind } from '@vueuse/core'
+
+const themeVars = useThemeVars()
+const breakpoints = useBreakpoints(breakpointsTailwind)
+const isMobile = breakpoints.smaller('md')
+
+type LogRow = {
+  ts: number;
+  msg: string;
+  level: 'info' | 'warn' | 'error' | string;
+};
 
 const store = useStore();
 const dialog = useDialog();
+
+const displayReverse = ref<boolean>(true);
+const logData = computed(() => {
+  if (displayReverse.value) {
+    return [...store.curDice.logs].reverse()
+  }
+  return store.curDice.logs
+})
 
 const upgradeDialogVisible = ref(false);
 const autoRefresh = ref(true);
 const now = ref<dayjs.Dayjs>(dayjs());
 
 let timerId: number;
+
+const getMsgColor = (row: LogRow): string | undefined => {
+  if (row.msg.startsWith('onebot | ')) return themeVars.value.warningColor;
+  if (row.msg.startsWith('发给')) return themeVars.value.infoColor;
+  if (row.level === 'warn') return themeVars.value.warningColor;
+  if (row.level === 'error') return themeVars.value.errorColor;
+  return undefined;
+};
+
+const columns: ComputedRef<DataTableColumns<LogRow>> = computed(() => {
+  let data = []
+  data.push({
+    title: '时间',
+    key: 'ts',
+    width: isMobile.value ? 70 : 100,
+    render: (row) => {
+      const color = getMsgColor(row);
+      return (
+        <div class="flex items-center" style={{ color }}>
+          { isMobile.value ? <></> : <n-icon><i-carbon-time/></n-icon> }
+          <span class="ml-1">
+            { dayjs.unix(row.ts).format(isMobile.value ? 'HH:mm' : 'HH:mm:ss') }
+          </span>
+        </div>
+      );
+    }
+  })
+  if (!isMobile.value) {
+    data.push({
+      title: '级别',
+      key: 'level',
+      width: 55,
+      render: (row) => {
+        const color = getMsgColor(row);
+        return <span style={{ color }}>{row.level}</span>;
+      },
+    })
+  }
+  data.push({
+    title: '信息',
+    key: 'msg',
+    render: (row) => {
+      const color = getMsgColor(row);
+      return <span style={{ color }}>{row.msg}</span>;
+    },
+  })
+  return data;
+});
 
 const doUpgrade = async () => {
   upgradeDialogVisible.value = false;
@@ -263,19 +204,9 @@ const doUpgrade = async () => {
 
 const scrollDown = () => {
   const panel = document.querySelector<HTMLElement>('.logs')?.parentElement;
+  console.log('scrollDown: ', panel)
   if (panel) {
     panel.scrollTop = panel.scrollHeight;
-  }
-};
-
-const getLogRowClassName = ({ row }: { row: any }) => {
-  switch (row.level) {
-    case 'warn':
-      return 'no-hover warning-row';
-    case 'error':
-      return 'no-hover danger-row';
-    default:
-      return 'no-hover normal-row';
   }
 };
 
@@ -289,7 +220,7 @@ onBeforeMount(async () => {
       store.logFetchAndClear();
     }
     now.value = dayjs();
-  }, 5000) as any;
+  }, 5000);
 });
 
 onBeforeUnmount(() => {
@@ -318,40 +249,5 @@ onBeforeUnmount(() => {
 .btn-scrolldown:hover {
   transition: all 0.3s;
   opacity: 1;
-}
-
-.latest-log-warn {
-  margin-top: 0;
-  margin-bottom: 1rem;
-  :deep(.el-divider__text) {
-    background: #f3f4f6;
-  }
-}
-</style>
-
-<style lang="css">
-.el-table .warning-row {
-  --el-table-tr-bg-color: var(--el-color-warning-light-8);
-  &:hover {
-    --el-table-tr-bg-color: var(--el-color-warning-light-9);
-  }
-}
-
-.el-table .danger-row {
-  --el-table-tr-bg-color: var(--el-color-danger-light-8);
-  &:hover {
-    --el-table-tr-bg-color: var(--el-color-danger-light-9);
-  }
-}
-
-.el-table .normal-row {
-  --el-table-tr-bg-color: #f3f5f7;
-  &:hover {
-    --el-table-tr-bg-color: var(--el-color-primary-light-9);
-  }
-}
-
-.no-hover:hover > td {
-  background-color: initial !important;
 }
 </style>

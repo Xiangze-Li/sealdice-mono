@@ -16,4 +16,14 @@ export default defineConfigWithVueTs(
   vueTsConfigs.recommended,
   ...pluginOxlint.configs['flat/recommended'],
   skipFormatting,
+
+  {
+    "vue/block-lang": ["error",
+      {
+        "script": {
+          "lang": ['ts', 'tsx']
+        }
+      }
+    ]
+  }
 );
