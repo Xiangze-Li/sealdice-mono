@@ -329,11 +329,11 @@ const convertHelpDocInfo = (doc: HelpDoc): TreeOption => {
     }),
     prefix: () => {
       if (doc.isDir) {
-        return <i-bi-folder2 color="var(--color-stone-600)" />;
+        return <i-bi-folder2 color='var(--color-stone-600)' />;
       } else if (doc.type === '.json') {
-        return <i-bi-filetype-json color="var(--color-amber-600)" />;
+        return <i-bi-filetype-json color='var(--color-amber-600)' />;
       } else if (doc.type === '.xlsx') {
-        return <i-bi-filetype-xlsx color="var(--color-green-600)" />;
+        return <i-bi-filetype-xlsx color='var(--color-green-600)' />;
       } else {
         return <i-bi-file-break />;
       }
@@ -344,7 +344,7 @@ const convertHelpDocInfo = (doc: HelpDoc): TreeOption => {
       }
       const tagInfo = getHelpDocTag(doc.loadStatus, doc.deleted, doc.group);
       return (
-        <n-tag class="ml-auto" size="small" type={tagInfo.type} bordered={false}>
+        <n-tag class='ml-auto' size='small' type={tagInfo.type} bordered={false}>
           {tagInfo.label}
         </n-tag>
       );
@@ -400,7 +400,7 @@ const columns: DataTableColumns<HelpTextItem> = [
     key: 'group',
     align: 'center',
     render: row => (
-      <n-tag type="success" size="small" bordered={false}>
+      <n-tag type='success' size='small' bordered={false}>
         {row.group}
       </n-tag>
     ),
@@ -411,7 +411,7 @@ const columns: DataTableColumns<HelpTextItem> = [
     title: '内容',
     key: 'content',
     render: row => (
-      <n-tooltip content-class="">
+      <n-tooltip content-class=''>
         {{
           trigger: () => getHelpText(row.content),
           default: () => getHelpTextTooltip(row.content),

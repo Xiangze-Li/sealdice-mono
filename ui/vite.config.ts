@@ -51,19 +51,22 @@ export default defineConfig(({ mode }) => ({
         /\.vue\?vue/, // .vue
       ],
       imports: ['vue', 'pinia', 'vue-router', '@vueuse/core'],
+      dirs: ['src/api/v2/**'],
       dts: true,
       vueTemplate: true,
-      resolvers: [
-        NaiveUiResolver(),
-        IconsResolver(),
-      ],
+      resolvers: [NaiveUiResolver(), IconsResolver()],
     }),
     Components({
       dirs: ['src/components', 'src/pages', 'src/views'],
-      resolvers: [
-        NaiveUiResolver(),
-        IconsResolver(),
+      extensions: ['vue', 'jsx', 'tsx'],
+      include: [
+        /\.vue$/,
+        /\.vue\?vue/,
+        /\.vue\.[tj]sx?\?vue/, // for vue-loader with experimentalInlineMatchResource enabled
+        /\.vue\?v=/,
+        /\.[tj]sx/,
       ],
+      resolvers: [NaiveUiResolver(), IconsResolver()],
     }),
     Icons({
       compiler: 'vue3',

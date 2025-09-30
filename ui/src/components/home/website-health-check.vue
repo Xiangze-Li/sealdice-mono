@@ -26,7 +26,7 @@ const getWebsiteHealthComponent = (key: string, name: string): VNode => {
   const duration = networkHealths.value.get(key);
   if (duration) {
     return (
-      <n-tag round bordered={false} type="success" size="small">
+      <n-tag round bordered={false} type='success' size='small'>
         {{
           default: () => <span>{`${name} - ${(duration / 1000000).toFixed(2)}ms`}</span>,
           icon: () => (
@@ -39,7 +39,7 @@ const getWebsiteHealthComponent = (key: string, name: string): VNode => {
     );
   } else {
     return (
-      <n-tag round bordered={false} type="error" size="small">
+      <n-tag round bordered={false} type='error' size='small'>
         {{
           default: () => name,
           icon: () => (

@@ -163,6 +163,7 @@ declare module 'vue' {
     ResourceRender: typeof import('./src/components/utils/resource-render.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SensitiveTag: typeof import('./src/components/mod/censor/sensitive-tag.tsx')['default']
     StoryBackup: typeof import('./src/components/mod/story/StoryBackup.vue')['default']
     TipBox: typeof import('./src/components/tip-box.vue')['default']
     WebsiteHealthCheck: typeof import('./src/components/home/website-health-check.vue')['default']

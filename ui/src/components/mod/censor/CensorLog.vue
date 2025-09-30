@@ -24,7 +24,6 @@
 <script lang="tsx" setup>
 import dayjs from 'dayjs';
 import { useCensorStore } from '~/components/mod/censor/censor';
-import SensitiveTag from '~/components/mod/censor/sensitive-tag';
 import { getCensorLogs } from '~/api/v1/censor';
 import { useMessage, type DataTableColumns } from 'naive-ui';
 
@@ -55,15 +54,15 @@ const columns: DataTableColumns<CensorLog> = [
     render: ({ highestLevel }) => {
       switch (highestLevel) {
         case '1':
-          return <SensitiveTag type="default" />;
+          return <sensitive-tag type='default' />;
         case '2':
-          return <SensitiveTag type="info" />;
+          return <sensitive-tag type='info' />;
         case '3':
-          return <SensitiveTag type="warning" />;
+          return <sensitive-tag type='warning' />;
         case '4':
-          return <SensitiveTag type="error" />;
+          return <sensitive-tag type='error' />;
         default:
-          return <SensitiveTag type="default" message="未知" />;
+          return <sensitive-tag type='default' message='未知' />;
       }
     },
   },

@@ -50,29 +50,29 @@ const miscOptions: ComputedRef<MenuOption[]> = computed(() => {
   const list = [
     {
       key: '/misc/base-setting',
-      label: () => <router-link to="/misc/base-setting">基本设置</router-link>,
+      label: () => <router-link to='/misc/base-setting'>基本设置</router-link>,
     },
     {
       key: '/misc/group',
-      label: () => <router-link to="/misc/group">群组管理</router-link>,
+      label: () => <router-link to='/misc/group'>群组管理</router-link>,
     },
     {
       key: '/misc/ban',
-      label: () => <router-link to="/misc/ban">黑白名单</router-link>,
+      label: () => <router-link to='/misc/ban'>黑白名单</router-link>,
     },
     {
       key: '/misc/dice-public',
-      label: () => <router-link to="/misc/dice-public">公骰设置</router-link>,
+      label: () => <router-link to='/misc/dice-public'>公骰设置</router-link>,
     },
     {
       key: '/misc/backup',
-      label: () => <router-link to="/misc/backup">备份</router-link>,
+      label: () => <router-link to='/misc/backup'>备份</router-link>,
     },
   ];
   if (advancedConfigCounter.value >= 8) {
     list.push({
       key: '/misc/advanced-setting',
-      label: () => <router-link to="/misc/advanced-setting">高级设置</router-link>,
+      label: () => <router-link to='/misc/advanced-setting'>高级设置</router-link>,
     });
   }
   return list;
@@ -81,7 +81,7 @@ const miscOptions: ComputedRef<MenuOption[]> = computed(() => {
 const options: ComputedRef<MenuOption[]> = computed(() => [
   {
     key: '/home',
-    label: () => <router-link to="/home">主页</router-link>,
+    label: () => <router-link to='/home'>主页</router-link>,
     icon: () => (
       <n-icon>
         <i-carbon-home />
@@ -90,7 +90,7 @@ const options: ComputedRef<MenuOption[]> = computed(() => [
   },
   {
     key: '/connect',
-    label: () => <router-link to="/connect">账号设置</router-link>,
+    label: () => <router-link to='/connect'>账号设置</router-link>,
     icon: () => (
       <n-icon>
         <i-carbon-link />
@@ -118,27 +118,27 @@ const options: ComputedRef<MenuOption[]> = computed(() => [
     children: [
       {
         key: '/mod/reply',
-        label: () => <router-link to="/mod/reply">自定义回复</router-link>,
+        label: () => <router-link to='/mod/reply'>自定义回复</router-link>,
       },
       {
         key: '/mod/deck',
-        label: () => <router-link to="/mod/deck">牌堆管理</router-link>,
+        label: () => <router-link to='/mod/deck'>牌堆管理</router-link>,
       },
       {
         key: '/mod/story',
-        label: () => <router-link to="/mod/story">跑团日志</router-link>,
+        label: () => <router-link to='/mod/story'>跑团日志</router-link>,
       },
       {
         key: '/mod/js',
-        label: () => <router-link to="/mod/js">JS 扩展</router-link>,
+        label: () => <router-link to='/mod/js'>JS 扩展</router-link>,
       },
       {
         key: '/mod/helpdoc',
-        label: () => <router-link to="/mod/helpdoc">帮助文档</router-link>,
+        label: () => <router-link to='/mod/helpdoc'>帮助文档</router-link>,
       },
       {
         key: '/mod/censor',
-        label: () => <router-link to="/mod/censor">拦截管理</router-link>,
+        label: () => <router-link to='/mod/censor'>拦截管理</router-link>,
       },
     ],
   },
@@ -163,17 +163,17 @@ const options: ComputedRef<MenuOption[]> = computed(() => [
     children: [
       {
         key: '/tool/test',
-        label: () => <router-link to="/tool/test">测试</router-link>,
+        label: () => <router-link to='/tool/test'>测试</router-link>,
       },
       {
         key: '/tool/resource',
-        label: () => <router-link to="/tool/resource">资源管理</router-link>,
+        label: () => <router-link to='/tool/resource'>资源管理</router-link>,
       },
     ],
   },
   {
     key: '/about',
-    label: () => <router-link to="/about">关于</router-link>,
+    label: () => <router-link to='/about'>关于</router-link>,
     icon: () => (
       <n-icon>
         <i-carbon-star />

@@ -49,7 +49,6 @@
 <script setup lang="tsx">
 import { urlBase } from '~/backend';
 import { useCensorStore } from '~/components/mod/censor/censor';
-import SensitiveTag from '~/components/mod/censor/sensitive-tag';
 import { deleteCensorFiles, getCensorFiles, uploadCensorFile } from '~/api/v1/censor';
 import { useMessage, type UploadFileInfo, type DataTableColumns } from 'naive-ui';
 
@@ -73,19 +72,19 @@ const columns: DataTableColumns<SensitiveWordFile> = [
     key: 'name',
   },
   {
-    title: () => <SensitiveTag type="default" />,
+    title: () => <sensitive-tag type='default' />,
     key: 'count[1]',
   },
   {
-    title: () => <SensitiveTag type="info" />,
+    title: () => <sensitive-tag type='info' />,
     key: 'count[2]',
   },
   {
-    title: () => <SensitiveTag type="warning" />,
+    title: () => <sensitive-tag type='warning' />,
     key: 'count[3]',
   },
   {
-    title: () => <SensitiveTag type="error" />,
+    title: () => <sensitive-tag type='error' />,
     key: 'count[4]',
   },
 ];

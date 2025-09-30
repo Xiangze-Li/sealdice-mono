@@ -579,15 +579,15 @@ const getPreviewInfo = (k: string, text: string) => {
     return (
       <div>
         <n-descriptions
-          label-placement="left"
-          label-align="left"
-          separator=" "
+          label-placement='left'
+          label-align='left'
+          separator=' '
           column={1}
-          content-class="whitespace-nowrap break-words">
+          content-class='whitespace-nowrap break-words'>
           <n-descriptions-item>
             {{
               label: () => (
-                <n-tag type="success" size="small" bordered={false}>
+                <n-tag type='success' size='small' bordered={false}>
                   引擎版本
                 </n-tag>
               ),
@@ -597,7 +597,7 @@ const getPreviewInfo = (k: string, text: string) => {
           <n-descriptions-item>
             {{
               label: () => (
-                <n-tag type="info" size="small" bordered={false}>
+                <n-tag type='info' size='small' bordered={false}>
                   V2 预览
                 </n-tag>
               ),
@@ -607,7 +607,7 @@ const getPreviewInfo = (k: string, text: string) => {
           <n-descriptions-item>
             {{
               label: () => (
-                <n-tag type="warning" size="small" bordered={false}>
+                <n-tag type='warning' size='small' bordered={false}>
                   V1 预览
                 </n-tag>
               ),
@@ -617,7 +617,7 @@ const getPreviewInfo = (k: string, text: string) => {
           <n-descriptions-item>
             {{
               label: () => (
-                <n-tag type="success" size="small" bordered={false}>
+                <n-tag type='success' size='small' bordered={false}>
                   存在预设
                 </n-tag>
               ),

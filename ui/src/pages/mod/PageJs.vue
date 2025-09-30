@@ -259,7 +259,8 @@
             :title="(config as JsPluginConfig)['pluginName']"
             class="js-item">
             <template #header-extra>
-              <n-tooltip v-if="getDeprecatedKeys(config as JsPluginConfig).length > 0">
+              <n-tooltip
+                v-if="getDeprecatedKeys(config as JsPluginConfig).length > 0"
                 placement="bottom-end">
                 <template #trigger>
                   <n-button

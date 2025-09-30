@@ -1570,17 +1570,17 @@ const openSocks = async () => {
       positiveText: '确定',
       content: () => (
         <>
-          <n-text tag="p">将在服务器上开启临时 socks5 服务，端口 13325</n-text>
-          <n-text tag="p">默认持续时长为 20 分钟</n-text>
-          <n-text tag="p">
+          <n-text tag='p'>将在服务器上开启临时 socks5 服务，端口 13325</n-text>
+          <n-text tag='p'>默认持续时长为 20 分钟</n-text>
+          <n-text tag='p'>
             可能的公网 IP：
-            <n-text type="success">{ret.ip}</n-text>
+            <n-text type='success'>{ret.ip}</n-text>
           </n-text>
-          <n-text tag="p" type="warning">
+          <n-text tag='p' type='warning'>
             注：ip 不一定对仅供参考
           </n-text>
-          <n-text tag="p">请于服务器管理面板放行 13325 端口，协议 TCP</n-text>
-          <n-text tag="p">
+          <n-text tag='p'>请于服务器管理面板放行 13325 端口，协议 TCP</n-text>
+          <n-text tag='p'>
             如果为 Windows Server 系统，请再额外关闭系统防火墙或设置放行规则。
           </n-text>
         </>
@@ -1592,20 +1592,20 @@ const openSocks = async () => {
       positiveText: '确定',
       content: () => (
         <>
-          <n-text tag="p">启动服务失败，或已经启动</n-text>
-          <n-text tag="p">
+          <n-text tag='p'>启动服务失败，或已经启动</n-text>
+          <n-text tag='p'>
             报错信息：
-            <n-text type="error">{ret.errText}</n-text>
+            <n-text type='error'>{ret.errText}</n-text>
           </n-text>
-          <n-text tag="p">
+          <n-text tag='p'>
             可能的公网 IP：
-            <n-text type="success">{ret.ip}</n-text>
+            <n-text type='success'>{ret.ip}</n-text>
           </n-text>
-          <n-text tag="p" type="warning">
+          <n-text tag='p' type='warning'>
             注：ip 不一定对仅供参考
           </n-text>
-          <n-text tag="p">请于服务器管理面板放行 13325 端口，协议 TCP</n-text>
-          <n-text tag="p">
+          <n-text tag='p'>请于服务器管理面板放行 13325 端口，协议 TCP</n-text>
+          <n-text tag='p'>
             如果为 Windows Server 系统，请再额外关闭系统防火墙或设置放行规则。
           </n-text>
         </>

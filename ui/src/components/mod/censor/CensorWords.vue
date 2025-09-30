@@ -22,7 +22,6 @@
 </template>
 <script setup lang="tsx">
 import { useCensorStore } from '~/components/mod/censor/censor';
-import SensitiveTag from '~/components/mod/censor/sensitive-tag';
 import { getCensorWords } from '~/api/v1/censor';
 import type { DataTableColumns } from 'naive-ui';
 
@@ -33,15 +32,15 @@ const columns: DataTableColumns<SensitiveWord> = [
     render: ({ level }) => {
       switch (level) {
         case 1:
-          return <SensitiveTag type="default" />;
+          return <sensitive-tag type='default' />;
         case 2:
-          return <SensitiveTag type="info" />;
+          return <sensitive-tag type='info' />;
         case 3:
-          return <SensitiveTag type="warning" />;
+          return <sensitive-tag type='warning' />;
         case 4:
-          return <SensitiveTag type="error" />;
+          return <sensitive-tag type='error' />;
         default:
-          return <SensitiveTag type="default" message="未知" />;
+          return <sensitive-tag type='default' message='未知' />;
       }
     },
   },
@@ -51,7 +50,7 @@ const columns: DataTableColumns<SensitiveWord> = [
     render: ({ related, main }) => {
       if (related) {
         return (
-          <n-flex size="small">
+          <n-flex size='small'>
             {related.map((word: { word: string }) => (
               <n-text key={word.word}>{word.word}</n-text>
             ))}

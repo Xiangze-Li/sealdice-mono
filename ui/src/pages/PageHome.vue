@@ -149,7 +149,7 @@ const columns: ComputedRef<DataTableColumns<LogRow>> = computed(() => {
     render: row => {
       const color = getMsgColor(row);
       return (
-        <div class="flex items-center" style={{ color }}>
+        <div class='flex items-center' style={{ color }}>
           {isMobile.value ? (
             <></>
           ) : (
@@ -157,7 +157,7 @@ const columns: ComputedRef<DataTableColumns<LogRow>> = computed(() => {
               <i-carbon-time />
             </n-icon>
           )}
-          <span class="ml-1">
+          <span class='ml-1'>
             {dayjs.unix(row.ts).format(isMobile.value ? 'HH:mm' : 'HH:mm:ss')}
           </span>
         </div>
