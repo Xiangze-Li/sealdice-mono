@@ -15,15 +15,9 @@
     </n-flex>
   </n-flex>
 
-  <main class="mt-2">
-    <div class="w-full">
-      <n-data-table
-        class="w-full"
-        :columns="columns"
-        :data="filteredWords"
-        virtual-scroll>
-      </n-data-table>
-    </div>
+  <main class="mt-2 mb-8">
+    <n-data-table class="w-full" :columns="columns" :data="filteredWords" virtual-scroll>
+    </n-data-table>
   </main>
 </template>
 <script setup lang="tsx">
@@ -54,28 +48,28 @@ const columns: DataTableColumns<SensitiveWord> = [
   {
     key: 'related',
     title: '匹配词汇',
-    render: ({related, main}) => {
+    render: ({ related, main }) => {
       if (related) {
         return (
-          <el-space size="small" wrap>
+          <n-flex size="small">
             {related.map((word: { word: string }) => (
-              <el-text key={word.word}>{word.word}</el-text>
+              <n-text key={word.word}>{word.word}</n-text>
             ))}
-          </el-space>
+          </n-flex>
         );
       } else {
         return (
-          <el-space>
-            <el-text>{ main }</el-text>
-          </el-space>
+          <n-flex>
+            <n-text>{main}</n-text>
+          </n-flex>
         );
       }
     },
   },
 ];
 
-onMounted(() => {
-  refreshWords();
+onMounted(async () => {
+  await refreshWords();
 });
 
 const censorStore = useCensorStore();

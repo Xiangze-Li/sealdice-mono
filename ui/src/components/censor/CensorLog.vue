@@ -7,69 +7,25 @@
         </template>
         刷新
       </n-button>
-      <el-pagination
-        class="pagination"
-        layout="sizes, prev, pager, next"
-        background
-        small
-        :current-page="logQuery.pageNum"
-        :total="logQuery.total"
-        :pager-count="5"
+      <n-pagination size="small"
+        v-model:page="logQuery.pageNum"
+        v-model:page-size="logQuery.pageSize"
+        :item-count="logQuery.total"
+        :page-slot="5"
         :default-page-size="20"
-        :page-size="logQuery.pageSize"
-        @current-change="handleCurrentPageChange"
-        @size-change="handlePageSizeChange" />
+        @update:page="handleCurrentPageChange"
+        @update:page-size="handlePageSizeChange" />
     </header>
-    <el-table style="margin-top: 1rem" table-layout="auto" :data="logs">
-      <el-table-column label="命中级别" width="60px">
-        <template #default="scope">
-          <el-tag v-if="scope.row.highestLevel === 1" type="info" size="small" disable-transitions
-            >提醒</el-tag
-          >
-          <el-tag v-else-if="scope.row.highestLevel === 2" size="small" disable-transitions
-            >注意</el-tag
-          >
-          <el-tag
-            v-else-if="scope.row.highestLevel === 3"
-            type="warning"
-            size="small"
-            disable-transitions
-            >警告</el-tag
-          >
-          <el-tag
-            v-else-if="scope.row.highestLevel === 4"
-            type="danger"
-            size="small"
-            disable-transitions
-            >危险</el-tag
-          >
-          <el-tag v-else type="info" size="small" disable-transitions>忽略</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column label="消息类型" width="60px">
-        <template #default="scope">
-          <el-text v-if="scope.row.msgType === 'private'">私聊</el-text>
-          <el-text v-else-if="scope.row.msgType === 'group'">群</el-text>
-          <el-text v-else>未知</el-text>
-        </template>
-      </el-table-column>
-      <el-table-column label="用户" prop="userId"></el-table-column>
-      <el-table-column label="群" prop="groupId"></el-table-column>
-      <el-table-column label="内容" prop="content"></el-table-column>
-      <el-table-column label="消息时间">
-        <template #default="scope">
-          {{ dayjs.unix(scope.row.createdAt).format('YYYY-MM-DD HH:mm:ss') }}
-        </template>
-      </el-table-column>
-    </el-table>
+    <n-data-table :columns="columns" :data="logs" class="mt-4" />
   </div>
 </template>
 
-<script lang="ts" setup>
+<script lang="tsx" setup>
 import dayjs from 'dayjs';
 import { useCensorStore } from '~/components/censor/censor';
+import SensitiveTag from '~/components/censor/sensitive-tag.tsx';
 import { getCensorLogs } from '~/api/v1/censor';
-import { useMessage } from 'naive-ui';
+import { useMessage, type DataTableColumns } from 'naive-ui';
 
 const message = useMessage();
 const censorStore = useCensorStore();
@@ -90,6 +46,59 @@ const logQuery = ref({
   pageSize: 10,
   total: 0,
 });
+
+const columns: DataTableColumns<CensorLog> = [
+  {
+    title: '命中级别',
+    key: 'highestLevel',
+    render: ({ highestLevel }) => {
+      switch (highestLevel) {
+        case '1':
+          return <SensitiveTag type="default" />;
+        case '2':
+          return <SensitiveTag type="info" />;
+        case '3':
+          return <SensitiveTag type="warning" />;
+        case '4':
+          return <SensitiveTag type="error" />;
+        default:
+          return <SensitiveTag type="default" message="未知" />;
+      }
+    },
+  },
+  {
+    title: '消息类型',
+    key: 'msgType',
+    render: ({ msgType }) => {
+      if (msgType === 'private') {
+        return <n-text>私聊</n-text>;
+      } else if (msgType === 'group') {
+        return <n-text>群</n-text>;
+      } else {
+        return <n-text>未知</n-text>;
+      }
+    },
+  },
+  {
+    title: '用户',
+    key: 'userId',
+  },
+  {
+    title: '群',
+    key: 'groupId',
+  },
+  {
+    title: '内容',
+    key: 'content',
+  },
+  {
+    title: '消息时间',
+    key: 'createAt',
+    render: ({ createAt }) => {
+      return <>{dayjs.unix(createAt).format('YYYY-MM-DD HH:mm:ss')}</>;
+    },
+  },
+];
 
 censorStore.$subscribe(async (_, state) => {
   if (state.logsNeedRefresh === true) {

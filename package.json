@@ -27,7 +27,7 @@
     "preview:story-painter": "pnpm -r --filter='./story-painter' run preview",
     "preview:verify": "pnpm -r --filter='./verify' run preview",
     "build": "run-p build:*",
-    "build:ui": "pnpm -r --filter='./ui' run build-only",
+    "build:ui": "pnpm -r --filter='./ui' run build",
     "build:manual": "pnpm -r --filter='./manual' run docs:build",
     "build:story-painter": "pnpm -r --filter='./story-painter' run build-only",
     "build:verify": "pnpm -r --filter='./verify' run build-only"

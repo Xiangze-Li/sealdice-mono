@@ -19,7 +19,6 @@ declare module 'vue' {
     CustomTextBox: typeof import('./src/components/customText/CustomTextBox.vue')['default']
     DiffViewer: typeof import('./src/components/utils/diff-viewer.vue')['default']
     ElAlert: typeof import('element-plus/es')['ElAlert']
-    ElAutoResizer: typeof import('element-plus/es')['ElAutoResizer']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCard: typeof import('element-plus/es')['ElCard']
     ElCol: typeof import('element-plus/es')['ElCol']
