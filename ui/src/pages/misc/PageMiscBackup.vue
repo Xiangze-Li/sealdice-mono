@@ -222,12 +222,11 @@
 </template>
 
 <script lang="ts" setup>
-import type { CheckboxValueType } from 'element-plus';
 import { useStore } from '~/store';
 import { urlBase } from '~/backend';
 import { filesize } from 'filesize';
 import { sum } from 'es-toolkit/compat';
-import { dayjs } from 'element-plus';
+import dayjs from 'dayjs';
 import {
   getBackupConfig,
   getBackupList,
@@ -399,12 +398,12 @@ const enterBatchDelete = async () => {
   showBatchDelete.value = true;
 };
 
-const handleCheckAllChange = (val: CheckboxValueType) => {
+const handleCheckAllChange = (val: any) => {
   selectedBaks.value = val ? data.value.items : [];
   isIndeterminate.value = false;
 };
 
-const handleCheckedBakChange = (value: CheckboxValueType[]) => {
+const handleCheckedBakChange = (value: any[]) => {
   const checkedCount = value.length;
   checkAllBaks.value = checkedCount === data.value.items.length;
   isIndeterminate.value = checkedCount > 0 && checkedCount < data.value.items.length;

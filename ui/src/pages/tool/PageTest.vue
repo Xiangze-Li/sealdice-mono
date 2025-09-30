@@ -35,7 +35,7 @@
         v-model:value="input"
         :options="querySearch"
         placeholder="来试一试，回车键发送"
-        @on-select="inputChanged"
+        @select="inputChanged"
         @keyup.enter="doSend" />
       <n-button class="mx-2 min-w-12" type="primary" @click="doSend">发送</n-button>
       <n-popover placement="top">

@@ -3,7 +3,7 @@
     <n-card title="公骰设置">
       <template #header-extra>
         <n-flex size="large" align="center">
-          <n-switch v-model:value="config.publicDiceEnable" @on-update:value="enableChange">
+          <n-switch v-model:value="config.publicDiceEnable" @update:value="enableChange">
             <template #checked>启用</template>
             <template #unchecked>关闭</template>
           </n-switch>

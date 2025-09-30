@@ -31,7 +31,7 @@ const darkBtnStyle = ({ focused, checked }: { focused: boolean; checked: boolean
   <aside class="flex flex-row justify-end">
     <n-switch
       v-model:value="isDark"
-      @on-update:value="toggleDark"
+      @update:value="toggleDark"
       size="large"
       :rail-style="darkBtnStyle"
     >

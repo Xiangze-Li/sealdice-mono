@@ -7,7 +7,7 @@ import legacy from '@vitejs/plugin-legacy';
 import tailwindcss from '@tailwindcss/vite';
 import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
-import { ElementPlusResolver, NaiveUiResolver } from 'unplugin-vue-components/resolvers';
+import { NaiveUiResolver } from 'unplugin-vue-components/resolvers';
 import Icons from 'unplugin-icons/vite';
 import IconsResolver from 'unplugin-icons/resolver';
 
@@ -54,9 +54,6 @@ export default defineConfig(({ mode }) => ({
       dts: true,
       vueTemplate: true,
       resolvers: [
-        ElementPlusResolver({
-          importStyle: 'css',
-        }),
         NaiveUiResolver(),
         IconsResolver(),
       ],
@@ -64,9 +61,6 @@ export default defineConfig(({ mode }) => ({
     Components({
       dirs: ['src/components', 'src/pages', 'src/views'],
       resolvers: [
-        ElementPlusResolver({
-          importStyle: 'css',
-        }),
         NaiveUiResolver(),
         IconsResolver(),
       ],
@@ -87,7 +81,6 @@ export default defineConfig(({ mode }) => ({
         advancedChunks: {
           groups: [
             { name: 'codemirror', test: /codemirror/ },
-            { name: 'element-plus', test: /element-plus/ },
             { name: 'naive-ui', test: /naive-ui/ },
           ],
         },

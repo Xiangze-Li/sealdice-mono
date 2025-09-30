@@ -7,7 +7,8 @@
         </template>
         刷新
       </n-button>
-      <n-pagination size="small"
+      <n-pagination
+        size="small"
         v-model:page="logQuery.pageNum"
         v-model:page-size="logQuery.pageSize"
         :item-count="logQuery.total"

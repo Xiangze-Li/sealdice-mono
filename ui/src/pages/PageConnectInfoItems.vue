@@ -70,9 +70,9 @@
               <a
                 style="line-break: anywhere"
                 href="javascript:void(0)"
-                @click="captchaUrlSet(i, i.adapter?.goCqHttpLoginDeviceLockUrl)"
-                >{{ i.adapter?.goCqHttpLoginDeviceLockUrl }}</a
-              >
+                @click="captchaUrlSet(i, i.adapter?.goCqHttpLoginDeviceLockUrl)">
+                {{ i.adapter?.goCqHttpLoginDeviceLockUrl }}
+              </a>
             </div>
           </template>
         </div>
@@ -383,7 +383,7 @@
           label="账号"
           :label-width="formLabelWidth"
           required>
-          <n-input v-model:value="form.account" autocomplete="off"></n-input>
+          <n-input v-model:value="form.account"></n-input>
         </n-form-item>
         <n-form-item
           v-if="form.accountType === 15 || form.accountType === 16"
@@ -401,41 +401,45 @@
               </n-tooltip>
             </span>
           </template>
-          <el-select
-            v-model="form.signServerVersion"
-            :disabled="!signInfoLoaded"
-            @change="signServerVersionChange"
-            placeholder="请选择签名版本">
-            <template v-for="info in signInfos">
-              <el-option
-                v-if="!info.ignored"
-                :key="info.version"
-                :label="info.version"
-                :value="info.version">
-                <div style="display: flex; align-items: center">
-                  <span style="float: left; margin-right: 0.5rem">{{ info.version }}</span>
-                  <el-tag v-if="info.selected" type="success">最新</el-tag>
-                </div></el-option
-              ></template
-            >
-            <el-option key="custom" label="自定义" value="自定义"></el-option>
-            <template #label>
+
+          <n-spin size="small" :show="!signInfoLoaded">
+            <n-radio-group
+              v-model:value="form.signServerVersion"
+              :disabled="!signInfoLoaded"
+              @change="signServerVersionChange">
               <template v-for="info in signInfos">
-                <div
+                <n-radio
+                  v-if="!info.ignored"
                   :key="info.version"
-                  v-if="info.version === form.signServerVersion && info.selected"
-                  style="display: flex; align-items: center">
-                  <span style="float: left; margin-right: 0.5rem">{{
-                    form.signServerVersion
-                  }}</span>
-                  <el-tag type="success">最新</el-tag>
-                </div>
+                  :label="info.version"
+                  :value="info.version">
+                  <n-flex size="small">
+                    <n-tag v-if="info.selected" size="small" type="success" :bordered="false">
+                      最新
+                    </n-tag>
+                    {{ info.version }}
+                  </n-flex>
+                </n-radio>
               </template>
-            </template>
-          </el-select>
-          <el-text v-if="signVerWarningText !== ''" type="warning" size="small">{{
-            signVerWarningText
-          }}</el-text>
+              <n-radio key="custom" label="自定义" value="自定义"></n-radio>
+              <template #label>
+                <template v-for="info in signInfos">
+                  <div
+                    :key="info.version"
+                    v-if="info.version === form.signServerVersion && info.selected"
+                    style="display: flex; align-items: center">
+                    <span style="float: left; margin-right: 0.5rem">
+                      {{ form.signServerVersion }}
+                    </span>
+                    <n-tag size="small" type="success" :bordered="false">最新</n-tag>
+                  </div>
+                </template>
+              </template>
+            </n-radio-group>
+            <n-text v-if="signVerWarningText !== ''" type="warning">
+              {{ signVerWarningText }}
+            </n-text>
+          </n-spin>
         </n-form-item>
         <n-form-item
           v-if="form.accountType === 15 || form.accountType === 16"
@@ -452,83 +456,72 @@
               </n-tooltip>
             </span>
           </template>
-          <el-select
-            v-if="form.signServerVersion !== '自定义'"
-            v-model="form.signServerName"
-            :disabled="!signInfoLoaded"
-            @change="signServerServerChange"
-            placeholder="请选择签名服务">
-            <template v-for="info in signInfos">
-              <template v-if="info.version === form.signServerVersion && !info.ignored">
-                <template v-for="server in info.servers">
-                  <el-option
-                    v-if="!server.ignored"
-                    :key="server.name"
-                    :label="server.name"
-                    :value="server.name">
-                    <div style="display: flex; align-items: center">
-                      <span style="float: left; margin-right: 0.5rem">{{ server.name }}</span>
-                      <el-tag v-if="server.latency < 120" type="success"
-                        >{{ server.latency }}ms</el-tag
-                      >
-                      <el-tag
-                        v-else-if="server.latency >= 120 && server.latency < 360"
-                        type="warning"
-                        >{{ server.latency }}ms</el-tag
-                      >
-                      <el-tag v-else-if="server.latency >= 360" type="danger"
-                        >{{ server.latency }}ms</el-tag
-                      >
-                    </div>
-                  </el-option>
-                </template>
-              </template>
-            </template>
-            <template #label>
+
+          <n-spin size="small" :show="!signInfoLoaded">
+            <n-radio-group
+              v-if="form.signServerVersion !== '自定义'"
+              v-model:value="form.signServerName"
+              :disabled="!signInfoLoaded"
+              @change="signServerServerChange">
+              <!-- placeholder -->
+              <n-radio v-if="!signInfoLoaded">海豹 V2</n-radio>
+
               <template v-for="info in signInfos">
                 <template v-if="info.version === form.signServerVersion && !info.ignored">
                   <template v-for="server in info.servers">
-                    <div
+                    <n-radio
+                      v-if="!server.ignored"
                       :key="server.name"
-                      v-if="server.name === form.signServerName"
-                      style="display: flex; align-items: center">
-                      <span style="float: left; margin-right: 0.5rem">{{ server.name }}</span>
-                      <el-tag v-if="server.latency < 120" type="success"
-                        >{{ server.latency }}ms</el-tag
-                      >
-                      <el-tag
-                        v-else-if="server.latency >= 120 && server.latency < 360"
-                        type="warning"
-                        >{{ server.latency }}ms</el-tag
-                      >
-                      <el-tag v-else-if="server.latency >= 360" type="danger"
-                        >{{ server.latency }}ms</el-tag
-                      >
-                    </div>
+                      :label="server.name"
+                      :value="server.name">
+                      <n-flex align="center">
+                        <span>{{ server.name }}</span>
+                        <n-tag
+                          v-if="server.latency < 120"
+                          size="small"
+                          type="success"
+                          :bordered="false">
+                          {{ server.latency }} ms
+                        </n-tag>
+                        <n-tag
+                          v-else-if="server.latency >= 120 && server.latency < 360"
+                          size="small"
+                          :bordered="false"
+                          type="warning">
+                          {{ server.latency }} ms
+                        </n-tag>
+                        <n-tag
+                          v-else-if="server.latency >= 360"
+                          type="error"
+                          size="small"
+                          :bordered="false">
+                          {{ server.latency }} ms
+                        </n-tag>
+                      </n-flex>
+                    </n-radio>
                   </template>
                 </template>
               </template>
-            </template>
-          </el-select>
-          <n-input
-            v-else
-            v-model:value="form.signServerName"
-            autocomplete="off"
-            placeholder="请输入自定义签名地址"></n-input>
-          <n-text v-if="signServerWarningText !== ''" type="warning" size="small">
-            {{ signServerWarningText }}
-          </n-text>
+            </n-radio-group>
+            <n-input
+              v-else
+              v-model:value="form.signServerName"
+              placeholder="请输入自定义签名地址"></n-input>
+            <n-text v-if="signServerWarningText !== ''" type="warning" size="small">
+              {{ signServerWarningText }}
+            </n-text>
+          </n-spin>
         </n-form-item>
         <n-form-item
           v-if="form.accountType === 0"
           label="账号"
           :label-width="formLabelWidth"
           required>
-          <n-input v-model:value="form.account" autocomplete="off"></n-input>
+          <n-input v-model:value="form.account"></n-input>
         </n-form-item>
 
         <n-form-item v-if="form.accountType === 0" label="密码" :label-width="formLabelWidth">
-          <n-input v-model:value="form.password" type="password" autocomplete="off"></n-input>
+          <n-input v-model:value="form.password" type="password"></n-input>
           <small>
             <div>提示：新设备首次登录多半需要手机版扫码，建议先准备好</div>
             <div>能够进行扫码登录（不填写密码即可），但注意扫码登录不支持自动重连。</div>
@@ -547,20 +540,19 @@
           <template #label>
             <div style="display: flex; align-items: center">
               <span>签名服务</span>
-              <el-tooltip
-                content="如果不知道这是什么，请选择 不使用。允许填写签名服务相关信息。"
-                style="">
-                <el-icon>
-                  <i-carbon-help-filled />
-                </el-icon>
-              </el-tooltip>
+              <n-tooltip>
+                <template #trigger>
+                  <n-icon><i-carbon-help-filled /></n-icon>
+                </template>
+                如果不知道这是什么，请选择 不使用。允许填写签名服务相关信息。
+              </n-tooltip>
             </div>
           </template>
-          <el-radio-group v-model="signConfigType" size="small" @change="signConfigTypeChange">
-            <el-radio-button value="none">不使用</el-radio-button>
-            <el-radio-button value="simple">简易配置</el-radio-button>
-            <el-radio-button value="advanced">高级配置</el-radio-button>
-          </el-radio-group>
+          <n-radio-group v-model:value="signConfigType" size="small" @change="signConfigTypeChange">
+            <n-radio-button value="none">不使用</n-radio-button>
+            <n-radio-button value="simple">简易配置</n-radio-button>
+            <n-radio-button value="advanced">高级配置</n-radio-button>
+          </n-radio-group>
         </n-form-item>
         <n-form-item
           v-if="
@@ -572,7 +564,6 @@
           :label-width="formLabelWidth">
           <n-input
             v-model:value="form.signServerConfig.signServers[0].url"
-            autocomplete="off"
             placeholder="http://127.0.0.1:8080"></n-input>
         </n-form-item>
         <n-form-item
@@ -585,7 +576,6 @@
           :label-width="formLabelWidth">
           <n-input
             v-model:value="form.signServerConfig.signServers[0].key"
-            autocomplete="off"
             placeholder="114514"></n-input>
         </n-form-item>
         <n-form-item
@@ -598,7 +588,6 @@
           :label-width="formLabelWidth">
           <n-input
             v-model:value="form.signServerConfig.signServers[0].authorization"
-            autocomplete="off"
             placeholder="Bearer xxxx"></n-input>
         </n-form-item>
 
@@ -608,9 +597,9 @@
             (form.protocol === 1 || form.protocol === 6) &&
             signConfigType === 'advanced'
           ">
-          <el-alert type="warning" :closable="false"
-            >如果不理解以下配置项，请使用 <strong>简易配置</strong></el-alert
-          >
+          <n-alert type="warning" :closable="false">
+            如果不理解以下配置项，请使用 <strong>简易配置</strong>
+          </n-alert>
         </n-form-item>
         <n-form-item
           v-if="
@@ -618,36 +607,16 @@
             (form.protocol === 1 || form.protocol === 6) &&
             signConfigType === 'advanced'
           ">
-          <el-table :data="form.signServerConfig.signServers" table-layout="auto">
-            <el-table-column prop="url" label="服务url">
-              <template #default="scope">
-                <n-input v-model:value="scope.row.url" placeholder="http://127.0.0.1:8080" />
-              </template>
-            </el-table-column>
-            <el-table-column prop="key" label="服务key">
-              <template #default="scope">
-                <n-input v-model:value="scope.row.key" placeholder="114514" />
-              </template>
-            </el-table-column>
-            <el-table-column prop="authorization" label="服务鉴权">
-              <template #default="scope">
-                <n-input v-model:value="scope.row.authorization" placeholder="Bearer xxxx" />
-              </template>
-            </el-table-column>
-            <el-table-column align="right">
-              <!-- eslint-disable-next-line vue/no-unused-vars -->
-              <template #header="scope">
-                <el-button size="small" type="primary" @click="handleSignServerAdd"
-                  >新增一行</el-button
-                >
-              </template>
-              <template #default="scope">
-                <el-button size="small" type="danger" @click="handleSignServerDelete(scope.row.url)"
-                  >删除</el-button
-                >
-              </template>
-            </el-table-column>
-          </el-table>
+          <n-dynamic-input :data="form.signServerConfig.signServers" @create="handleSignServerAdd">
+            <template #create-button-default>新增一行</template>
+            <template #default="{ value }">
+              <n-flex>
+                <n-input v-model:value="value.url" placeholder="http://127.0.0.1:8080" />
+                <n-input v-model:value="value.key" placeholder="114514" />
+                <n-input v-model:value="value.authorization" placeholder="Bearer xxxx" />
+              </n-flex>
+            </template>
+          </n-dynamic-input>
         </n-form-item>
         <n-form-item
           v-if="
@@ -659,25 +628,23 @@
           <template #label>
             <div style="display: flex; align-items: center">
               <span>自动切换规则</span>
-              <el-tooltip style="">
-                <template #content>
-                  判断签名服务不可用（需要切换）的额外规则<br />
-                  - 不设置（此时仅在请求无法返回结果时判定为不可用）<br />
-                  - 在获取到的 sign 为空（若选此建议关闭
-                  auto-register，一般为实例未注册但是请求签名的情况）<br />
-                  - 在获取到的 sign 或 token 为空（若选此建议关闭 auto-refresh-token）
+              <n-tooltip style="">
+                <template #trigger>
+                  <n-icon><i-carbon-help-filled /></n-icon>
                 </template>
-                <el-icon>
-                  <i-carbon-help-filled />
-                </el-icon>
-              </el-tooltip>
+                判断签名服务不可用（需要切换）的额外规则<br />
+                - 不设置（此时仅在请求无法返回结果时判定为不可用）<br />
+                - 在获取到的 sign 为空（若选此建议关闭
+                auto-register，一般为实例未注册但是请求签名的情况）<br />
+                - 在获取到的 sign 或 token 为空（若选此建议关闭 auto-refresh-token）
+              </n-tooltip>
             </div>
           </template>
-          <el-radio-group v-model="form.signServerConfig.ruleChangeSignServer" size="small">
-            <el-radio-button :value="0">不设置</el-radio-button>
-            <el-radio-button :value="1">sign 为空时切换</el-radio-button>
-            <el-radio-button :value="2">sign/token为空时切换</el-radio-button>
-          </el-radio-group>
+          <n-radio-group v-model:value="form.signServerConfig.ruleChangeSignServer" size="small">
+            <n-radio-button :value="0">不设置</n-radio-button>
+            <n-radio-button :value="1">sign 为空时切换</n-radio-button>
+            <n-radio-button :value="2">sign/token为空时切换</n-radio-button>
+          </n-radio-group>
         </n-form-item>
         <n-form-item
           v-if="
@@ -689,17 +656,15 @@
           <template #label>
             <div style="display: flex; align-items: center">
               <span>最大尝试次数</span>
-              <el-tooltip style="">
-                <template #content>
-                  连续寻找可用签名服务器最大尝试次数<br />
-                  为 0 时会在连续 3
-                  次没有找到可用签名服务器后保持使用主签名服务器，不再尝试进行切换备用<br />
-                  否则会在达到指定次数后 <strong>退出</strong> 主程序
+              <n-tooltip>
+                <template #trigger>
+                  <n-icon> <i-carbon-help-filled /></n-icon>
                 </template>
-                <el-icon>
-                  <i-carbon-help-filled />
-                </el-icon>
-              </el-tooltip>
+                连续寻找可用签名服务器最大尝试次数<br />
+                为 0 时会在连续 3
+                次没有找到可用签名服务器后保持使用主签名服务器，不再尝试进行切换备用<br />
+                否则会在达到指定次数后 <strong>退出</strong> 主程序
+              </n-tooltip>
             </div>
           </template>
           <n-input-number
@@ -718,16 +683,16 @@
           <template #label>
             <div style="display: flex; align-items: center">
               <span>请求超时时间</span>
-              <el-tooltip style="">
-                <template #content> 签名服务请求超时时间 (s) </template>
-                <el-icon>
-                  <i-carbon-help-filled />
-                </el-icon>
-              </el-tooltip>
+              <n-tooltip>
+                <template #trigger>
+                  <n-icon><i-carbon-help-filled /></n-icon>
+                </template>
+                签名服务请求超时时间 (s)
+              </n-tooltip>
             </div>
           </template>
-          <el-input-number
-            v-model="form.signServerConfig.signServerTimeout"
+          <n-input-number
+            v-model:value="form.signServerConfig.signServerTimeout"
             size="small"
             :precision="0"
             :min="0" />
@@ -743,24 +708,22 @@
           <template #label>
             <div style="display: flex; align-items: center">
               <span>自动注册实例</span>
-              <el-tooltip style="">
-                <template #content>
-                  在实例可能丢失（获取到的签名为空）时是否尝试重新注册<br />
-                  为 true 时，在签名服务不可用时可能每次发消息都会尝试重新注册并签名。<br />
-                  为 false 时，将不会自动注册实例，在签名服务器重启或实例被销毁后需要重启 go-cqhttp
-                  以获取实例<br />
-                  否则后续消息将不会正常签名。关闭此项后可以考虑开启签名服务器端 auto_register
-                  避免需要重启<br />
-                  由于实现问题，当前建议关闭此项，推荐开启签名服务器的自动注册实例
+              <n-tooltip>
+                <template #trigger>
+                  <n-icon><i-carbon-help-filled /></n-icon>
                 </template>
-                <el-icon>
-                  <i-carbon-help-filled />
-                </el-icon>
-              </el-tooltip>
+                在实例可能丢失（获取到的签名为空）时是否尝试重新注册<br />
+                为 true 时，在签名服务不可用时可能每次发消息都会尝试重新注册并签名。<br />
+                为 false 时，将不会自动注册实例，在签名服务器重启或实例被销毁后需要重启 go-cqhttp
+                以获取实例<br />
+                否则后续消息将不会正常签名。关闭此项后可以考虑开启签名服务器端 auto_register
+                避免需要重启<br />
+                由于实现问题，当前建议关闭此项，推荐开启签名服务器的自动注册实例
+              </n-tooltip>
             </div>
           </template>
-          <el-switch
-            v-model="form.signServerConfig.autoRegister"
+          <n-switch
+            v-model:value="form.signServerConfig.autoRegister"
             style="--el-switch-on-color: #67c23a" />
         </n-form-item>
         <n-form-item
@@ -773,20 +736,18 @@
           <template #label>
             <div style="display: flex; align-items: center">
               <span>自动刷新 token</span>
-              <el-tooltip style="">
-                <template #content>
-                  是否在 token 过期后立即自动刷新签名 token（在需要签名时才会检测到，主要防止 token
-                  意外丢失）<br />
-                  独立于定时刷新
+              <n-tooltip>
+                <template #trigger>
+                  <n-icon><i-carbon-help-filled /></n-icon>
                 </template>
-                <el-icon>
-                  <i-carbon-help-filled />
-                </el-icon>
-              </el-tooltip>
+                是否在 token 过期后立即自动刷新签名 token（在需要签名时才会检测到，主要防止 token
+                意外丢失）<br />
+                独立于定时刷新
+              </n-tooltip>
             </div>
           </template>
-          <el-switch
-            v-model="form.signServerConfig.autoRefreshToken"
+          <n-switch
+            v-model:value="form.signServerConfig.autoRefreshToken"
             style="--el-switch-on-color: #67c23a" />
         </n-form-item>
         <n-form-item
@@ -799,19 +760,17 @@
           <template #label>
             <div style="display: flex; align-items: center">
               <span>刷新间隔</span>
-              <el-tooltip style="">
-                <template #content>
-                  定时刷新 token 间隔时间，单位为分钟，建议 30~40 分钟，不可超过 60 分钟<br />
-                  目前丢失 token 也不会有太大影响，可设置为 0 以关闭，推荐开启
+              <n-tooltip>
+                <template #trigger>
+                  <n-icon><i-carbon-help-filled /></n-icon>
                 </template>
-                <el-icon>
-                  <i-carbon-help-filled />
-                </el-icon>
-              </el-tooltip>
+                定时刷新 token 间隔时间，单位为分钟，建议 30~40 分钟，不可超过 60 分钟<br />
+                目前丢失 token 也不会有太大影响，可设置为 0 以关闭，推荐开启
+              </n-tooltip>
             </div>
           </template>
-          <el-input-number
-            v-model="form.signServerConfig.refreshInterval"
+          <n-input-number
+            v-model:value="form.signServerConfig.refreshInterval"
             size="small"
             :precision="0"
             :min="0" />
@@ -823,7 +782,7 @@
           label="账号"
           :label-width="formLabelWidth"
           required>
-          <n-input v-model:value="form.account" autocomplete="off"></n-input>
+          <n-input v-model:value="form.account"></n-input>
         </n-form-item>
 
         <n-form-item
@@ -834,14 +793,12 @@
           <n-input
             v-model:value="form.connectUrl"
             placeholder="正向WS连接地址，如 ws://127.0.0.1:1234"
-            type="text"
-            autocomplete="off"></n-input>
+            type="text"></n-input>
         </n-form-item>
         <n-form-item v-if="form.accountType === 6" label="访问令牌" :label-width="formLabelWidth">
           <n-input
             v-model:value="form.accessToken"
-            placeholder="gocqhttp配置的access token，没有不用填写"
-            autocomplete="off"></n-input>
+            placeholder="gocqhttp配置的access token，没有不用填写"></n-input>
         </n-form-item>
 
         <n-form-item
@@ -849,7 +806,7 @@
           label="账号"
           :label-width="formLabelWidth"
           required>
-          <n-input v-model:value="form.account" autocomplete="off"></n-input>
+          <n-input v-model:value="form.account"></n-input>
         </n-form-item>
         <n-form-item
           v-if="form.accountType === 11"
@@ -859,8 +816,7 @@
           <n-input
             v-model:value="form.reverseAddr"
             placeholder="反向WS服务地址，如 0.0.0.0:4001 (允许全部IP连入，4001端口)"
-            type="text"
-            autocomplete="off"></n-input>
+            type="text"></n-input>
         </n-form-item>
 
         <n-form-item
@@ -871,8 +827,7 @@
           <n-input
             v-model:value="form.url"
             placeholder="连接地址，如 ws://127.0.0.1:3212/ws/seal"
-            type="text"
-            autocomplete="off"></n-input>
+            type="text"></n-input>
         </n-form-item>
         <n-form-item
           v-if="form.accountType === 13"
@@ -882,7 +837,6 @@
           <n-input
             v-model:value="form.token"
             type="text"
-            autocomplete="off"
             placeholder="填入平台管理界面中获取的token"></n-input>
         </n-form-item>
 
@@ -891,9 +845,9 @@
           label="平台"
           :label-width="formLabelWidth"
           required>
-          <el-radio-group v-model="form.platform">
-            <el-radio-button value="QQ" />
-          </el-radio-group>
+          <n-radio-group v-model:value="form.platform">
+            <n-radio-button value="QQ" />
+          </n-radio-group>
         </n-form-item>
         <n-form-item
           v-if="form.accountType === 14"
@@ -902,23 +856,18 @@
           required>
           <n-input
             v-model:value="form.host"
-            placeholder="Satori 服务的地址，如 127.0.0.1"
-            autocomplete="off"></n-input>
+            placeholder="Satori 服务的地址，如 127.0.0.1"></n-input>
         </n-form-item>
         <n-form-item
           v-if="form.accountType === 14"
           label="端口"
           :label-width="formLabelWidth"
           required>
-          <el-input-number
-            v-model="form.port as any"
-            placeholder="如 5500"
-            autocomplete="off"></el-input-number>
+          <n-input-number v-model:value="form.port as any" placeholder="如 5500" />
         </n-form-item>
         <n-form-item v-if="form.accountType === 14" label="Token" :label-width="formLabelWidth">
           <n-input
             v-model:value="form.token"
-            autocomplete="off"
             placeholder="填入鉴权 token，没有时无需填写"></n-input>
         </n-form-item>
 
@@ -927,30 +876,21 @@
           label="主机"
           :label-width="formLabelWidth"
           required>
-          <n-input
-            v-model:value="form.host"
-            placeholder="Red 服务的地址，如 127.0.0.1"
-            autocomplete="off"></n-input>
+          <n-input v-model:value="form.host" placeholder="Red 服务的地址，如 127.0.0.1"></n-input>
         </n-form-item>
         <n-form-item
           v-if="form.accountType === 7"
           label="端口"
           :label-width="formLabelWidth"
           required>
-          <el-input-number
-            v-model="form.port as any"
-            placeholder="如 16530"
-            autocomplete="off"></el-input-number>
+          <n-input-number v-model:value="form.port as any" placeholder="如 16530" />
         </n-form-item>
         <n-form-item
           v-if="form.accountType === 7"
           label="令牌"
           :label-width="formLabelWidth"
           required>
-          <n-input
-            v-model:value="form.token"
-            placeholder="Red 服务的 token"
-            autocomplete="off"></n-input>
+          <n-input v-model:value="form.token" placeholder="Red 服务的 token"></n-input>
         </n-form-item>
 
         <n-form-item
@@ -958,21 +898,14 @@
           label="机器人ID"
           :label-width="formLabelWidth"
           required>
-          <n-input
-            v-model:value="form.appID"
-            placeholder="填写在开放平台获取的 AppID"
-            autocomplete="off"
-            type="number"></n-input>
+          <n-input v-model:value="form.appID" placeholder="填写在开放平台获取的 AppID" />
         </n-form-item>
         <n-form-item
           v-if="form.accountType === 10"
           label="机器人令牌"
           :label-width="formLabelWidth"
           required>
-          <n-input
-            v-model:value="form.token"
-            placeholder="填写在开放平台获取的 Token"
-            autocomplete="off"></n-input>
+          <n-input v-model:value="form.token" placeholder="填写在开放平台获取的 Token"></n-input>
         </n-form-item>
         <n-form-item
           v-if="form.accountType === 10"
@@ -982,15 +915,14 @@
           <n-input
             v-model:value="form.appSecret"
             placeholder="填写在开放平台获取的AppSecret"
-            type="text"
-            autocomplete="off"></n-input>
+            type="text"></n-input>
         </n-form-item>
         <n-form-item
           v-if="form.accountType === 10"
           label="只在频道使用"
           :label-width="formLabelWidth"
           required>
-          <el-switch v-model="form.onlyQQGuild" />
+          <n-switch v-model:value="form.onlyQQGuild" />
         </n-form-item>
 
         <n-form-item v-if="form.accountType === 10" :label-width="formLabelWidth">
@@ -1007,7 +939,7 @@
           label="Token"
           :label-width="formLabelWidth"
           required>
-          <n-input v-model:value="form.token" autocomplete="off"></n-input>
+          <n-input v-model:value="form.token"></n-input>
           <small>
             <div>提示：首先去 discord 开发者平台创建一个新的 Application</div>
             <div>https://discord.com/developers/applications</div>
@@ -1023,7 +955,6 @@
           <n-input
             v-model:value="form.proxyURL"
             type="string"
-            autocomplete="off"
             placeholder="例：http://127.0.0.1:7890" />
         </n-form-item>
         <n-form-item
@@ -1032,13 +963,9 @@
           :label-width="formLabelWidth">
           <n-input
             v-model:value="form.reverseProxyUrl"
-            type="string"
-            autocomplete="off"
             placeholder="此地址需要代理到 https://discord.com/ 通常来说正向代理和反向代理只需要一个" />
           <n-input
             v-model:value="form.reverseProxyCDNUrl"
-            type="string"
-            autocomplete="off"
             placeholder="此地址需要代理到 https://cdn.discordapp.com/ " />
           <div style="color: #aa4422">
             注意：反向代理是全局生效的，你一旦设置反向代理地址，这个骰子的所有 Discord
@@ -1051,7 +978,7 @@
           label="Token"
           :label-width="formLabelWidth"
           required>
-          <n-input v-model:value="form.token" type="string" autocomplete="off"></n-input>
+          <n-input v-model:value="form.token" type="string"></n-input>
           <small>
             <div>提示：进入 KOOK 开发者平台创建一个新的应用</div>
             <div>https://developer.kookapp.cn/app/index</div>
@@ -1065,7 +992,7 @@
           label="Token"
           :label-width="formLabelWidth"
           required>
-          <n-input v-model:value="form.token" type="string" autocomplete="off"></n-input>
+          <n-input v-model:value="form.token" type="string"></n-input>
           <small>
             <div>提示：私聊 BotFather(https://t.me/BotFather)</div>
             <div>使用/newbot 申请一个新的机器人</div>
@@ -1079,10 +1006,7 @@
           v-if="form.accountType === 3"
           label="http 代理地址"
           :label-width="formLabelWidth">
-          <n-input
-            v-model:value="form.proxyURL"
-            autocomplete="off"
-            placeholder="http://127.0.0.1:7890" />
+          <n-input v-model:value="form.proxyURL" placeholder="http://127.0.0.1:7890" />
         </n-form-item>
 
         <n-form-item
@@ -1090,7 +1014,7 @@
           label="Url"
           :label-width="formLabelWidth"
           required>
-          <n-input v-model:value="form.url" type="string" autocomplete="off"></n-input>
+          <n-input v-model:value="form.url" type="string"></n-input>
           <small>
             <div>提示：前往 https://github.com/sealdice/sealdice-minecraft/releases/latest</div>
             <div>下载最新的 mc 插件然后安装在 mc 服务器中</div>
@@ -1106,7 +1030,7 @@
           label="ClientID"
           :label-width="formLabelWidth"
           required>
-          <n-input v-model:value="form.clientID" type="string" autocomplete="off"></n-input>
+          <n-input v-model:value="form.clientID" type="string"></n-input>
         </n-form-item>
 
         <n-form-item
@@ -1114,7 +1038,7 @@
           label="Token"
           :label-width="formLabelWidth"
           required>
-          <n-input v-model:value="form.token" type="string" autocomplete="off"></n-input>
+          <n-input v-model:value="form.token" type="string"></n-input>
           <small>
             <div>提示：前往 Dodo 开发者平台 https://doker.imdodo.com/bot-list</div>
             <div>如果需要提交审核可以写跑团机器人开发</div>
@@ -1124,24 +1048,21 @@
         </n-form-item>
 
         <n-form-item v-if="form.accountType === 8" label="昵称" :label-width="formLabelWidth">
-          <n-input
-            v-model:value="form.nickname"
-            autocomplete="off"
-            placeholder="机器人的昵称"></n-input>
+          <n-input v-model:value="form.nickname" placeholder="机器人的昵称"></n-input>
         </n-form-item>
         <n-form-item
           v-if="form.accountType === 8"
           label="ClientID"
           :label-width="formLabelWidth"
           required>
-          <n-input v-model:value="form.clientID" type="string" autocomplete="off"></n-input>
+          <n-input v-model:value="form.clientID" type="string"></n-input>
         </n-form-item>
         <n-form-item
           v-if="form.accountType === 8"
           label="RobotCode"
           :label-width="formLabelWidth"
           required>
-          <n-input v-model:value="form.robotCode" autocomplete="off"></n-input>
+          <n-input v-model:value="form.robotCode"></n-input>
         </n-form-item>
 
         <n-form-item
@@ -1149,7 +1070,7 @@
           label="Token"
           :label-width="formLabelWidth"
           required>
-          <n-input v-model:value="form.token" autocomplete="off"></n-input>
+          <n-input v-model:value="form.token"></n-input>
           <small>
             <div>提示：前往钉钉开发者平台 https://open-dev.dingtalk.com/fe/app</div>
             <div>点击创建应用</div>
@@ -1167,14 +1088,14 @@
           label="AppToken"
           :label-width="formLabelWidth"
           required>
-          <n-input v-model:value="form.appToken" autocomplete="off"></n-input>
+          <n-input v-model:value="form.appToken"></n-input>
         </n-form-item>
         <n-form-item
           v-if="form.accountType === 9"
           label="BotToken"
           :label-width="formLabelWidth"
           required>
-          <n-input v-model:value="form.botToken" autocomplete="off"></n-input>
+          <n-input v-model:value="form.botToken"></n-input>
           <small>
             <div>提示：前往 Slack 开发者平台 https://api.slack.com/apps</div>
             <div>点击 Create an app 选择 From scratch</div>
@@ -1196,17 +1117,14 @@
       </n-form>
 
       <n-form-item v-if="form.accountType === 17" label="Token" :label-width="formLabelWidth">
-        <n-input v-model:value="form.token" type="string" autocomplete="off"></n-input>
+        <n-input v-model:value="form.token" />
       </n-form-item>
       <n-form-item
         v-if="form.accountType === 17"
         label="Websocket Gateway"
         :label-width="formLabelWidth"
         required>
-        <n-input
-          v-model:value="form.wsGateway"
-          autocomplete="off"
-          placeholder="ws://127.0.0.1:3000/event"></n-input>
+        <n-input v-model:value="form.wsGateway" placeholder="ws://127.0.0.1:3000/event"></n-input>
       </n-form-item>
       <n-form-item
         v-if="form.accountType === 17"
@@ -1215,7 +1133,6 @@
         required>
         <n-input
           v-model:value="form.restGateway"
-          autocomplete="off"
           placeholder="http://127.0.0.1:3000 (注意，不要加上/api的后缀)"></n-input>
       </n-form-item>
     </template>
@@ -1444,6 +1361,7 @@
 
 <script lang="tsx" setup>
 import { reactive } from 'vue';
+import { useDialog, useMessage } from 'naive-ui';
 import { useStore, goCqHttpStateCode } from '~/store';
 import type { DiceConnection } from '~/store';
 import { sleep } from '~/utils';
@@ -1504,6 +1422,8 @@ const fullActivities = [
 const activities = ref([] as typeof fullActivities);
 
 const store = useStore();
+const message = useMessage();
+const dialog = useDialog();
 
 const accountTypes = computed(() => {
   const result = [
@@ -1590,9 +1510,7 @@ const captchaUrlSet = (i: DiceConnection, url: string) => {
         curCaptchaIdSet.value = i.id;
 
         submitCaptchaCode(i, text);
-        ElMessage({
-          type: 'success',
-          message: '已自动读取 ticket:' + text,
+        message.success('已自动读取 ticket:' + text, {
           duration: 8000,
         });
         setTimeout(() => {
@@ -1647,36 +1565,52 @@ const setRecentLogin = () => {
 const openSocks = async () => {
   const ret = await postToolOnebot();
   if (ret.ok) {
-    const msg = h('p', null, [
-      h('div', null, '将在服务器上开启临时 socks5 服务，端口 13325'),
-      h('div', null, '默认持续时长为 20 分钟'),
-      h('div', null, [
-        h('span', null, `可能的公网 IP: `),
-        h('span', { style: 'color: teal' }, `${ret.ip}`),
-      ]),
-      h('div', null, '注：ip 不一定对仅供参考'),
-      h('div', { style: 'min-height: 1rem' }, ''),
-      h('div', null, '请于服务器管理面板放行 13325 端口，协议 TCP'),
-      h('div', null, '如果为 Windows Server 系统，请再额外关闭系统防火墙或设置放行规则。'),
-    ]);
-    ElMessageBox.alert(msg, '开启辅助工具');
+    dialog.success({
+      title: '开启辅助工具',
+      positiveText: '确定',
+      content: () => (
+        <>
+          <n-text tag="p">将在服务器上开启临时 socks5 服务，端口 13325</n-text>
+          <n-text tag="p">默认持续时长为 20 分钟</n-text>
+          <n-text tag="p">
+            可能的公网 IP：
+            <n-text type="success">{ret.ip}</n-text>
+          </n-text>
+          <n-text tag="p" type="warning">
+            注：ip 不一定对仅供参考
+          </n-text>
+          <n-text tag="p">请于服务器管理面板放行 13325 端口，协议 TCP</n-text>
+          <n-text tag="p">
+            如果为 Windows Server 系统，请再额外关闭系统防火墙或设置放行规则。
+          </n-text>
+        </>
+      ),
+    });
   } else {
-    const msg = h('p', null, [
-      h('div', null, '启动服务失败，或已经启动'),
-      h('div', null, [
-        h('span', null, `报错信息：`),
-        h('span', { style: 'color: #9b0d0d' }, `${ret.errText}`),
-      ]),
-      h('div', null, [
-        h('span', null, `可能的公网 IP: `),
-        h('span', { style: 'color: teal' }, `${ret.ip}`),
-      ]),
-      h('div', null, '注：ip 不一定对仅供参考'),
-      h('div', { style: 'min-height: 1rem' }, ''),
-      h('div', null, '请于服务器管理面板放行 13325 端口，协议 TCP'),
-      h('div', null, '如果为 Windows Server 系统，请再额外关闭系统防火墙或设置放行规则。'),
-    ]);
-    ElMessageBox.alert(msg, '开启辅助工具');
+    dialog.error({
+      title: '开启辅助工具',
+      positiveText: '确定',
+      content: () => (
+        <>
+          <n-text tag="p">启动服务失败，或已经启动</n-text>
+          <n-text tag="p">
+            报错信息：
+            <n-text type="error">{ret.errText}</n-text>
+          </n-text>
+          <n-text tag="p">
+            可能的公网 IP：
+            <n-text type="success">{ret.ip}</n-text>
+          </n-text>
+          <n-text tag="p" type="warning">
+            注：ip 不一定对仅供参考
+          </n-text>
+          <n-text tag="p">请于服务器管理面板放行 13325 端口，协议 TCP</n-text>
+          <n-text tag="p">
+            如果为 Windows Server 系统，请再额外关闭系统防火墙或设置放行规则。
+          </n-text>
+        </>
+      ),
+    });
   }
 };
 
@@ -1696,8 +1630,7 @@ const goStepTwo = async () => {
       }
     })
     .catch(e => {
-      console.log(e);
-      ElMessageBox.alert('似乎已经添加了这个账号！', '添加失败');
+      dialog.error('似乎已经添加了这个账号！', { title: '添加失败' });
       formClose();
     });
   if (form.accountType > 0) {
@@ -1727,7 +1660,7 @@ const setEnable = async (i: DiceConnection, val: boolean) => {
   const ret = await postConnectSetEnable(i.id, val);
   i.enable = ret.enable;
   curCaptchaIdSet.value = '';
-  ElMessage.success('状态修改完成');
+  message.success('状态修改完成');
   if (val) {
     setRecentLogin();
     // 若是启用骰子，走登录流程
@@ -1757,24 +1690,28 @@ const setEnable = async (i: DiceConnection, val: boolean) => {
 
 const askGocqhttpReLogin = async (i: DiceConnection) => {
   duringRelogin.value = false;
-  ElMessageBox.confirm('重新登录吗？有可能要再次扫描二维码', '警告', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
-    type: 'warning',
-  }).then(async () => {
-    gocqhttpReLogin(i);
+  dialog.warning({
+    title: '警告',
+    content: '重新登录吗？有可能要再次扫描二维码',
+    positiveText: '确定',
+    negativeText: '取消',
+    onPositiveClick: async () => {
+      gocqhttpReLogin(i);
+    },
   });
 };
 
 const doGocqExport = async (i: DiceConnection) => {
   duringRelogin.value = false;
-  ElMessageBox.confirm('即将下载 gocq 配置，是否继续？', '提示', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
-    type: 'warning',
-  }).then(async () => {
-    // http://localhost:3211/sd-api/im_connections/gocq_config_download.zip?id=10f576a4-5237-43f6-9086-269a9f9aace5&token=J4JAofWluYsc0YTgUtDuw3eBnVbZyW%232gTG0agA%40aAVRRIFmrTT0w4tEMbVxGdXn%3A0000000063a8664f
-    location.href = `${urlBase}/sd-api/im_connections/gocq_config_download.zip?token=${encodeURIComponent(store.token)}&id=${encodeURIComponent(i.id)}`;
+  dialog.warning({
+    title: '提示',
+    content: '即将下载 gocq 配置，是否继续？',
+    positiveText: '确定',
+    negativeText: '取消',
+    onPositiveClick: async () => {
+      // http://localhost:3211/sd-api/im_connections/gocq_config_download.zip?id=10f576a4-5237-43f6-9086-269a9f9aace5&token=J4JAofWluYsc0YTgUtDuw3eBnVbZyW%232gTG0agA%40aAVRRIFmrTT0w4tEMbVxGdXn%3A0000000063a8664f
+      location.href = `${urlBase}/sd-api/im_connections/gocq_config_download.zip?token=${encodeURIComponent(store.token)}&id=${encodeURIComponent(i.id)}`;
+    },
   });
 };
 
@@ -1920,11 +1857,11 @@ const getSignInfo = async () => {
 };
 
 const handleSignServerAdd = () => {
-  form.signServerConfig?.signServers?.push({
+  return {
     url: '',
     key: '',
     authorization: '',
-  });
+  };
 };
 
 const handleSignServerDelete = (url: string) => {
@@ -2082,21 +2019,16 @@ onBeforeUnmount(() => {
 });
 
 const doRemove = async (i: DiceConnection) => {
-  ElMessageBox.confirm(
-    '删除此项帐号，确定吗？（注：删除账号不会影响人物卡和 logs 等数据）',
-    '警告',
-    {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning',
+  dialog.warning({
+    title: '删除账号',
+    content: '删除此项帐号，确定吗？（注：删除账号不会影响人物卡和 logs 等数据）',
+    positiveText: '确定',
+    negativeText: '取消',
+    onPositiveClick: async () => {
+      await postConnectionDel(i.id);
+      await store.getImConnections();
+      message.success('删除成功！');
     },
-  ).then(async () => {
-    await postConnectionDel(i.id);
-    await store.getImConnections();
-    ElMessage({
-      type: 'success',
-      message: '删除成功！',
-    });
   });
 };
 </script>

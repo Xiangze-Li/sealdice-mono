@@ -65,7 +65,7 @@
           </n-form-item>
           <n-form-item label="帮助文档" prop="files">
             <n-upload
-              @on-change="fileChange"
+              @change="fileChange"
               :file-list="uploadForm.files"
               :show-file-list="false"
               multiple
@@ -183,7 +183,7 @@
 
 <script lang="tsx" setup>
 import type { FormRules, DataTableColumns, TreeOption, NTree } from 'naive-ui';
-import { useMessage, useDialog } from 'naive-ui';
+import { useMessage, useDialog, type UploadFileInfo, type FormInst } from 'naive-ui';
 import { trim } from 'es-toolkit/compat';
 import type { HelpDoc, HelpTextItem, HelpTextItemQuery } from '#';
 import {
@@ -216,7 +216,7 @@ interface UploadForm {
 const docTree = ref<TreeOption[]>([]);
 const docGroups = ref<Group[]>([]);
 const uploadDialogVisible = ref<boolean>(false);
-const uploadFormRef = ref<FormInstance>();
+const uploadFormRef = ref<FormInst>();
 const uploadForm = reactive<UploadForm>({
   group: '',
   files: [] as any[],
@@ -229,11 +229,11 @@ const uploadRules = reactive<FormRules>({
   files: [{ required: true, message: '请选择文件', trigger: 'blur-sm' }],
 });
 
-const fileChange = (_f: any, newFiles: any) => {
-  uploadForm.files = newFiles;
+const fileChange = (options: { fileList: UploadFileInfo[] }) => {
+  uploadForm.files = options.fileList;
 };
 
-const submitUpload = async (formData: FormInstance | undefined) => {
+const submitUpload = async (formData: FormInst | undefined) => {
   if (!formData) return;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   await formData.validate(async (valid, _) => {
@@ -250,7 +250,6 @@ const submitUpload = async (formData: FormInstance | undefined) => {
       } else {
         message.error(res.err ?? '上传失败');
       }
-      formData.resetFields();
       needReload.value = true;
       await refreshFileTree();
       uploadDialogVisible.value = false;
