@@ -16,16 +16,6 @@ updates:
       interval: "weekly"
 
   - package-ecosystem: "npm"
-    directory: "/manual"
-    schedule:
-      interval: "weekly"
-
-  - package-ecosystem: "npm"
-    directory: "/story-painter"
-    schedule:
-      interval: "weekly"
-
-  - package-ecosystem: "npm"
-    directory: "/verify"
+    directory: "/"
     schedule:
       interval: "weekly"
