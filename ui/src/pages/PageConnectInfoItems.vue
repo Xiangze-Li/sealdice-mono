@@ -1455,7 +1455,6 @@ import {
   getLagrangeSignInfo,
   postConnectionDel,
   postConnectionQrcode,
-  postConnectSetData,
   postConnectSetEnable,
   postGoCqCaptchaSet,
   postGoCqHttpRelogin,
@@ -1507,7 +1506,7 @@ const activities = ref([] as typeof fullActivities);
 const store = useStore();
 
 const accountTypes = computed(() => {
-  let result = [
+  const result = [
     {
       label: 'QQ(内置客户端)',
       value: 15,
@@ -1723,6 +1722,7 @@ const formClose = async () => {
   form.isEnd = false;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const setEnable = async (i: DiceConnection, val: boolean) => {
   const ret = await postConnectSetEnable(i.id, val);
   i.enable = ret.enable;

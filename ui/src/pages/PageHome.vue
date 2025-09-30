@@ -141,7 +141,7 @@ const getMsgColor = (row: LogRow): string | undefined => {
 };
 
 const columns: ComputedRef<DataTableColumns<LogRow>> = computed(() => {
-  let data = [];
+  const data = [];
   data.push({
     title: '时间',
     key: 'ts',
@@ -204,6 +204,7 @@ const doUpgrade = async () => {
   }
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const scrollDown = () => {
   const panel = document.querySelector<HTMLElement>('.logs')?.parentElement;
   console.log('scrollDown: ', panel);

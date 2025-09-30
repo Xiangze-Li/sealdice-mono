@@ -1,7 +1,7 @@
 import { delay, transform, isEqual, isObject } from 'es-toolkit/compat';
 
 export function sleep(duration: number) {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // oxlint-disable-next-line no-unused-vars
   return new Promise<void>((resolve, reject) => {
     delay(resolve, duration);
   });

@@ -213,10 +213,6 @@ interface UploadForm {
   files: any[];
 }
 
-const treeNodeProps = {
-  label: 'name',
-  disabled: 'deleted',
-};
 const docTree = ref<TreeOption[]>([]);
 const docGroups = ref<Group[]>([]);
 const uploadDialogVisible = ref<boolean>(false);
@@ -327,7 +323,7 @@ const getHelpDocTag = (
 };
 
 const convertHelpDocInfo = (doc: HelpDoc): TreeOption => {
-  let option = {
+  const option = {
     ...doc,
     children: doc.children?.map(e => {
       return convertHelpDocInfo(e);

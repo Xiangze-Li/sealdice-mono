@@ -436,7 +436,7 @@ export const useStore = defineStore('main', {
         await getHello();
         this.token = token as string;
         this.canAccess = true;
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        // oxlint-disable-next-line no-unused-vars
       } catch (e) {
         this.canAccess = false;
         // 试图做一次登录，以获取 token

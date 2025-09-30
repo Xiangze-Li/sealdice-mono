@@ -18,12 +18,23 @@ export default defineConfigWithVueTs(
   skipFormatting,
 
   {
-    "vue/block-lang": ["error",
-      {
-        "script": {
-          "lang": ['ts', 'tsx']
+    name: 'overrides',
+    rules: {
+      "vue/block-lang": ["error",
+        {
+          "script": {
+            "lang": ['ts', 'tsx']
+          }
         }
-      }
-    ]
-  }
+      ],
+      "@typescript-eslint/no-explicit-any": "off"
+    },
+    languageOptions: {
+      parserOptions: {
+        ecmaFeatures: {
+          "jsx": true
+        }
+      },
+    },
+  },
 );

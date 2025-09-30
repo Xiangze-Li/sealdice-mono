@@ -15,7 +15,7 @@ router.beforeEach((to, from, next) => {
   loading.value = true;
   next();
 });
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// oxlint-disable-next-line no-unused-vars
 router.afterEach((to, from) => {
   setTimeout(() => {
     loading.value = false;
@@ -43,7 +43,7 @@ store.trySignIn().then(() => {
 try {
   (window as any).store = store;
   (globalThis as any).store = store;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // oxlint-disable-next-line no-unused-vars
 } catch (e) {}
 
 // app.use(ElementPlus);

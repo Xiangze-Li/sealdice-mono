@@ -57,7 +57,7 @@ const refreshNetworkHealth = async () => {
   networkHealth.value.timestamp = 0;
   const ret = await getUtilsCheckNetWorkHealth();
   if (ret.result) {
-    for (let target of ret.targets) {
+    for (const target of ret.targets) {
       if (target.ok) {
         networkHealths.value.set(target.target, target.duration);
       }

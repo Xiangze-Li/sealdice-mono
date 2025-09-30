@@ -11,7 +11,7 @@
     "build-only": "vite build",
     "check": "run-p lint",
     "type-check": "vue-tsc --build",
-    "lint": "pnpm run lint:oxlint",
+    "lint": "pnpm run lint:oxlint lint:eslint",
     "lint:oxlint": "oxlint . --fix -D correctness --ignore-path .gitignore",
     "lint:eslint": "eslint . --fix",
     "format": "prettier --write src/"

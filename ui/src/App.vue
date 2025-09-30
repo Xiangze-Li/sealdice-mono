@@ -43,4 +43,5 @@ onMounted(async () => {
       </n-message-provider>
     </n-dialog-provider>
   </n-config-provider>
+  <VueQueryDevtools />
 </template>

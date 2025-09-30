@@ -123,6 +123,7 @@ const beforeUpload = async (data: { file: UploadFileInfo }) => {
   }
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const deleteFile = async (key: string) => {
   await ElMessageBox.confirm('是否删除此词库？', '删除', {
     confirmButtonText: '确定',

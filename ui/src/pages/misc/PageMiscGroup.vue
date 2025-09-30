@@ -148,6 +148,7 @@ import { getGroupList, postQuitGroup, setGroup } from '~/api/v1/group';
 import { useDialog, useMessage } from 'naive-ui';
 
 const message = useMessage();
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const dialog = useDialog();
 
 dayjs.extend(relativeTime);

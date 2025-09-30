@@ -48,8 +48,8 @@
                         <n-icon class="cursor-help"><i-carbon-help-filled /></n-icon>
                       </template>
                       <div style="width: 10rem">
-                        公骰UID是上报公骰所使用的密钥， 通常情况下留空让系统自动生成，
-                        请勿随意将公骰的UID展示给他人
+                        公骰 UID 是上报公骰所使用的密钥，通常情况下留空让系统自动生成，
+                        请勿随意将公骰的 UID 展示给他人
                       </div>
                     </n-tooltip>
                   </div>
@@ -173,7 +173,7 @@ const tableData = ref<any>([]);
 let selected: any[] = [];
 
 const rowKey = (row: any) => row.id as string | number;
-let checkedRowKeys = ref<Array<string | number>>([]);
+const checkedRowKeys = ref<Array<string | number>>([]);
 
 const columns: DataTableColumns<any> = [
   { type: 'selection' },
@@ -228,7 +228,7 @@ const refreshInfo = async () => {
             case 'lagrange':
               return '内置客户端';
             case 'lagrange-gocq':
-              return '内置gocq';
+              return '内置 gocq';
             case 'gocq':
               return '分离部署';
           }

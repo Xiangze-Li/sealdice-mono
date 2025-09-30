@@ -16,7 +16,7 @@ http.interceptors.request.use(config => {
       config.headers.Authorization = token;
       config.headers['token'] = token;
     }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // oxlint-disable-next-line no-unused-vars
   } catch (e) {
     // console.log(e);
   }

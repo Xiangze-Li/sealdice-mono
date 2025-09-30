@@ -845,7 +845,7 @@ import {
   uploadJs,
 } from '~/api/v1/js';
 import type { UploadRawFile } from 'element-plus';
-import { type UploadFileInfo, useDialog, useMessage } from 'naive-ui';
+import { useDialog, useMessage } from 'naive-ui';
 
 const message = useMessage();
 const dialog = useDialog();

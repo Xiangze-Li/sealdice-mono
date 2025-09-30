@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { UploadUserFile } from 'element-plus';
 import { urlBase } from '~/backend';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
