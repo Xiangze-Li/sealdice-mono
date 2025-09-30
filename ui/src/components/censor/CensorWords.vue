@@ -17,74 +17,44 @@
 
   <main class="mt-2">
     <div class="w-full">
-      <el-auto-resizer>
-        <template #default="{ width }">
-          <el-table-v2
-            class="w-full"
-            :width="width"
-            :height="430"
-            :columns="columns"
-            :data="filteredWords">
-          </el-table-v2>
-        </template>
-      </el-auto-resizer>
+      <n-data-table
+        class="w-full"
+        :columns="columns"
+        :data="filteredWords"
+        virtual-scroll>
+      </n-data-table>
     </div>
   </main>
 </template>
 <script setup lang="tsx">
 import { useCensorStore } from '~/components/censor/censor';
-import type { Column } from 'element-plus';
+import SensitiveTag from '~/components/censor/sensitive-tag.tsx';
 import { getCensorWords } from '~/api/v1/censor';
+import type { DataTableColumns } from 'naive-ui';
 
-const columns: Column<any>[] = [
+const columns: DataTableColumns<SensitiveWord> = [
   {
     key: 'level',
     title: '级别',
-    dataKey: 'level',
-    width: 60,
-    minWidth: 60,
-    align: 'center',
-    cellRenderer: ({ cellData: level }: any) => {
+    render: ({ level }) => {
       switch (level) {
         case 1:
-          return (
-            <el-tag type="info" size="small" disable-transitions>
-              提醒
-            </el-tag>
-          );
+          return <SensitiveTag type="default" />;
         case 2:
-          return (
-            <el-tag size="small" disable-transitions>
-              注意
-            </el-tag>
-          );
+          return <SensitiveTag type="info" />;
         case 3:
-          return (
-            <el-tag type="warning" size="small" disable-transitions>
-              警告
-            </el-tag>
-          );
+          return <SensitiveTag type="warning" />;
         case 4:
-          return (
-            <el-tag type="danger" size="small" disable-transitions>
-              危险
-            </el-tag>
-          );
+          return <SensitiveTag type="error" />;
         default:
-          return (
-            <el-tag type="info" size="small" disable-transitions>
-              未知
-            </el-tag>
-          );
+          return <SensitiveTag type="default" message="未知" />;
       }
     },
   },
   {
     key: 'related',
     title: '匹配词汇',
-    dataKey: 'related',
-    width: 800,
-    cellRenderer: ({ cellData: related, rowData }: any) => {
+    render: ({related, main}) => {
       if (related) {
         return (
           <el-space size="small" wrap>
@@ -96,7 +66,7 @@ const columns: Column<any>[] = [
       } else {
         return (
           <el-space>
-            <el-text>{rowData.main}</el-text>
+            <el-text>{ main }</el-text>
           </el-space>
         );
       }

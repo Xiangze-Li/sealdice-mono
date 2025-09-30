@@ -138,19 +138,18 @@
     </n-drawer-content>
   </n-drawer>
 
-  <el-dialog
-    v-model="showDialog"
-    :close-on-click-modal="false"
-    :close-on-press-escape="false"
-    :show-close="false"
-    class="the-dialog"
-    title="">
-    <h3>输入密码解锁</h3>
-    <el-input v-model="password" type="password"></el-input>
-    <el-button style="padding: 0px 50px; margin-top: 1rem" type="primary" @click="doUnlock"
-      >确认
-    </el-button>
-  </el-dialog>
+  <n-modal
+    v-model:show="showDialog"
+    preset="dialog"
+    :closable="false"
+    :mask-closable="false"
+    :close-on-esc="false"
+    title="输入密码解锁"
+    positive-text="确认"
+    @positive-click="doUnlock"
+    @keyup.enter="doUnlock">
+    <n-input v-model:value="password" type="password" />
+  </n-modal>
 
   <n-modal
     v-model:show="dialogLostConnectionVisible"
@@ -176,9 +175,9 @@
       <strong>「综合设置」>「基本设置」</strong> 界面，设置
       <strong>UI 界面密码</strong>。或切换为只有本机可访问。<br />
     </n-text>
-    <n-gradient-text type="warning" class="mt-4"
-      >如果您不了解上面在说什么，请务必设置一个密码！</n-gradient-text
-    >
+    <n-gradient-text type="warning" class="mt-4">
+      如果您不了解上面在说什么，请务必设置一个密码！
+    </n-gradient-text>
 
     <template #action>
       <n-button type="primary" :disabled="!canSkip" @click="dialogCheckPassword = false">
@@ -218,7 +217,7 @@
 
 <script setup lang="tsx">
 import { useStore } from '~/store';
-import { useMessage } from 'naive-ui';
+import { useMessage, useNotification } from 'naive-ui';
 import { passwordHash } from '~/utils';
 import dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn';
@@ -230,6 +229,7 @@ import { breakpointsTailwind } from '@vueuse/core';
 const isDark = useDark({ disableTransition: false });
 const toggleDark = useToggle(isDark);
 const message = useMessage();
+const notification = useNotification();
 
 const breakpoints = useBreakpoints(breakpointsTailwind);
 const isDesktop = breakpoints.greater('md');
@@ -280,12 +280,22 @@ const doUnlock = async () => {
   const hash = await passwordHash(store.salt, password.value);
   await store.signIn(hash);
   if (store.canAccess) {
-    ElMessageBox.alert('欢迎回来，请开始使用。', '登录成功');
     password.value = '';
-    checkPassword();
+    notification['success']({
+      title: '登录成功！',
+      content: '欢迎回来，请开始使用',
+      duration: 3000,
+      closable: false,
+    });
+    await checkPassword();
     window.location.reload();
   } else {
-    ElMessageBox.alert('错误的密码', '登录失败');
+    notification['error']({
+      title: '登录失败',
+      content: '密码错误',
+      duration: 3000,
+      closable: false,
+    });
     password.value = '';
   }
 };

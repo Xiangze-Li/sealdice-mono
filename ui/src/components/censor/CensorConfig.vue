@@ -90,7 +90,7 @@
   <n-form label-placement="left" label-width="auto">
     <n-form-item>
       <template #label>
-        <n-tag type="default" :bordered="false">提醒</n-tag>
+        <sensitive-tag type="default" />
       </template>
       <n-flex align="center">
         <n-flex align="center" wrap>
@@ -125,7 +125,7 @@
     </n-form-item>
     <n-form-item>
       <template #label>
-        <n-tag type="info" :bordered="false">注意</n-tag>
+        <sensitive-tag type="info" />
       </template>
       <n-flex align="center">
         <n-flex align="center" wrap>
@@ -160,7 +160,7 @@
     </n-form-item>
     <n-form-item>
       <template #label>
-        <n-tag type="warning" :bordered="false">警告</n-tag>
+        <sensitive-tag type="warning" />
       </template>
       <n-flex align="center">
         <n-flex align="center" wrap>
@@ -195,7 +195,7 @@
     </n-form-item>
     <n-form-item>
       <template #label>
-        <n-tag type="error" :bordered="false">危险</n-tag>
+        <sensitive-tag type="error" />
       </template>
       <n-flex align="center">
         <n-flex align="center" wrap>
@@ -235,6 +235,7 @@
 import { isArray, isEqual, isObject, transform } from 'es-toolkit/compat';
 import { useMessage } from 'naive-ui';
 import { getCensorConfig, postCensorConfig } from '~/api/v1/censor';
+import SensitiveTag from '~/components/censor/sensitive-tag.tsx';
 import { useCensorStore } from '~/components/censor/censor';
 
 const message = useMessage();

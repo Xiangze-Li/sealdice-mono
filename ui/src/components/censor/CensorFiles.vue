@@ -21,7 +21,7 @@
         text
         tag="a"
         target="_blank"
-        :href="`${urlBase}/sd-api/censor/files/template/toml`">
+        :href="`${urlBase}/sd-api/v1/censor/files/template/toml`">
         <template #icon>
           <n-icon><i-carbon-download /></n-icon>
         </template>
@@ -33,7 +33,7 @@
         text
         tag="a"
         target="_blank"
-        :href="`${urlBase}/sd-api/censor/files/template/txt`">
+        :href="`${urlBase}/sd-api/v1/censor/files/template/txt`">
         <template #icon>
           <n-icon><i-carbon-save /></n-icon>
         </template>
@@ -42,47 +42,16 @@
     </n-flex>
   </header>
   <main style="margin-top: 1rem">
-    <el-table table-layout="auto" :data="files">
-      <el-table-column fixed label="文件名" prop="name"></el-table-column>
-      <el-table-column prop="count[1]">
-        <template #header>
-          <el-tag type="info" disable-transitions>提醒</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column prop="count[2]">
-        <template #header>
-          <el-tag disable-transitions>注意</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column prop="count[3]">
-        <template #header>
-          <el-tag type="warning" disable-transitions>警告</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column prop="count[4]">
-        <template #header>
-          <el-tag type="danger" disable-transitions>危险</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column fixed="right">
-        <template #default="scope">
-          <el-button size="small" type="danger" plain @click="deleteFile(scope.row.key)">
-            <template #icon>
-              <i-carbon-row-delete />
-            </template>
-            删除
-          </el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+    <n-data-table :columns="columns" :data="files" />
   </main>
 </template>
 
-<script setup lang="ts">
+<script setup lang="tsx">
 import { urlBase } from '~/backend';
 import { useCensorStore } from '~/components/censor/censor';
+import SensitiveTag from '~/components/censor/sensitive-tag.tsx';
 import { deleteCensorFiles, getCensorFiles, uploadCensorFile } from '~/api/v1/censor';
-import { useMessage, type UploadFileInfo } from 'naive-ui';
+import { useMessage, type UploadFileInfo, type DataTableColumns } from 'naive-ui';
 
 const message = useMessage();
 
@@ -97,6 +66,29 @@ interface SensitiveWordFile {
   path: string;
   counter: number[];
 }
+
+const columns: DataTableColumns<SensitiveWordFile> = [
+  {
+    title: '文件名',
+    key: 'name',
+  },
+  {
+    title: () => <SensitiveTag type="default" />,
+    key: 'count[1]',
+  },
+  {
+    title: () => <SensitiveTag type="info" />,
+    key: 'count[2]',
+  },
+  {
+    title: () => <SensitiveTag type="warning" />,
+    key: 'count[3]',
+  },
+  {
+    title: () => <SensitiveTag type="error" />,
+    key: 'count[4]',
+  },
+];
 
 const files = ref<SensitiveWordFile[]>();
 
