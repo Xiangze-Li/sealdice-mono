@@ -64,7 +64,7 @@ const getLogPage = getStoryLogPage;
 // }
 
 // async function getItems(v: Log) {
-//     // ofetch get+params 至少在开发模式有莫名奇妙的 bug ，会丢失 baseURL
+//     // ofetch get+params 至少在开发模式有莫名奇妙的 bug，会丢失 baseURL
 //     // 下面的接口就先不更换了
 //     return await backend.get(url('items'), { params: v, headers: { token } }) as unknown as Item[]
 // }
@@ -286,7 +286,7 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <n-tabs v-model:value="tab" justify-content="space-evenly">
+  <n-tabs v-model:value="tab" pane-class="mb-8" justify-content="space-evenly">
     <n-tab-pane tab="跑团日志" name="list">
       <template v-if="mode == 'logs'">
         <header>
@@ -386,9 +386,8 @@ onBeforeMount(async () => {
             </foldable-card>
           </template>
         </main>
-        <div style="display: flex; justify-content: center">
+        <div class="mt-4 flex justify-center">
           <n-pagination
-            class="pagination"
             v-model:page="queryLogPage.pageNum"
             v-model:page-size="queryLogPage.pageSize"
             show-size-picker
@@ -437,9 +436,8 @@ onBeforeMount(async () => {
             </p>
           </template>
         </div>
-        <div style="display: flex; justify-content: center">
+        <div class="mt-4 flex justify-center">
           <n-pagination
-            class="pagination"
             v-model:page="logItemPage.pageNum"
             v-model:page-size="logItemPage.pageSize"
             show-size-picker
@@ -456,10 +454,3 @@ onBeforeMount(async () => {
     </n-tab-pane>
   </n-tabs>
 </template>
-
-<style scoped lang="css">
-.pagination {
-  margin-top: 10px;
-  background-color: #f3f5f7;
-}
-</style>
