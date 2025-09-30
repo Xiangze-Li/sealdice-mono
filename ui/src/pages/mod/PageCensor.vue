@@ -46,7 +46,7 @@ onBeforeMount(() => {
   refreshCensorStatus();
 });
 
-import { useCensorStore } from '~/components/censor/censor.ts';
+import { useCensorStore } from '~/components/mod/censor/censor';
 
 const censorEnable = ref<boolean>(false);
 

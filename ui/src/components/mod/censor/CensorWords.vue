@@ -21,8 +21,8 @@
   </main>
 </template>
 <script setup lang="tsx">
-import { useCensorStore } from '~/components/censor/censor';
-import SensitiveTag from '~/components/censor/sensitive-tag.tsx';
+import { useCensorStore } from '~/components/mod/censor/censor';
+import SensitiveTag from '~/components/mod/censor/sensitive-tag';
 import { getCensorWords } from '~/api/v1/censor';
 import type { DataTableColumns } from 'naive-ui';
 

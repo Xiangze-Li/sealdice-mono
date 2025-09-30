@@ -235,8 +235,8 @@
 import { isArray, isEqual, isObject, transform } from 'es-toolkit/compat';
 import { useMessage } from 'naive-ui';
 import { getCensorConfig, postCensorConfig } from '~/api/v1/censor';
-import SensitiveTag from '~/components/censor/sensitive-tag.tsx';
-import { useCensorStore } from '~/components/censor/censor';
+import SensitiveTag from '~/components/mod/censor/sensitive-tag';
+import { useCensorStore } from '~/components/mod/censor/censor';
 
 const message = useMessage();
 

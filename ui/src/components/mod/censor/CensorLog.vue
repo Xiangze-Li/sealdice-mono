@@ -22,8 +22,8 @@
 
 <script lang="tsx" setup>
 import dayjs from 'dayjs';
-import { useCensorStore } from '~/components/censor/censor';
-import SensitiveTag from '~/components/censor/sensitive-tag.tsx';
+import { useCensorStore } from '~/components/mod/censor/censor';
+import SensitiveTag from '~/components/mod/censor/sensitive-tag';
 import { getCensorLogs } from '~/api/v1/censor';
 import { useMessage, type DataTableColumns } from 'naive-ui';
 
