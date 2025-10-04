@@ -35,7 +35,7 @@ const getAvatarSrc = () => {
   if (props.src) {
     return props.src;
   }
-  return `${urlBase}/sd-api/v1/utils/ga/${getUser()}`;
+  return `${urlBase}/sd-api/utils/ga/${getUser()}`;
 };
 
 const getHref = () => {

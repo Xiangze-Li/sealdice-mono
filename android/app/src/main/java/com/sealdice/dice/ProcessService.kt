@@ -72,7 +72,7 @@ class ProcessService : LifecycleService(){
             val json = "{\"key\": \"${fstop_key}\"}"
             val body: RequestBody = json.toRequestBody(MEDIA_TYPE)
             val request = Request.Builder()
-                .url("$url/sd-api/force_stop")
+                .url("$url/sd-api/dice/force_stop")
                 .method("POST", body)
                 .build()
             try {

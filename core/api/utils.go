@@ -16,6 +16,7 @@ import (
 	"github.com/alexmullins/zip"
 	"github.com/labstack/echo/v4"
 	"github.com/monaco-io/request"
+	"github.com/robfig/cron/v3"
 	"github.com/samber/lo"
 
 	"sealdice-core/dice"
@@ -141,6 +142,8 @@ func compressFile(fn string, zipFn string, zipWriter *zip.Writer) error {
 	_, _ = fileWriter.Write(data)
 	return nil
 }
+
+const CodeAlreadyExists = 602
 
 func checkUidExists(c echo.Context, uid string) bool {
 	for _, i := range myDice.ImSession.EndPoints {
@@ -284,4 +287,20 @@ func checkNetworkHealth(c echo.Context) error {
 		"targets":   targets,
 		"timestamp": time.Now().Unix(),
 	})
+}
+
+func checkCronExpr(c echo.Context) error {
+	req := make(map[string]string)
+	err := c.Bind(&req)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, "Failed to parse data")
+	}
+	if _, exist := req["expr"]; !exist {
+		return echo.NewHTTPError(http.StatusBadRequest, "No expression")
+	}
+	_, err = cron.ParseStandard(req["expr"])
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, "Invalid expression")
+	}
+	return c.JSON(http.StatusOK, nil)
 }

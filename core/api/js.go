@@ -1,6 +1,7 @@
 package api
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"mime/multipart"
@@ -11,6 +12,7 @@ import (
 
 	"github.com/dop251/goja"
 	"github.com/labstack/echo/v4"
+	"github.com/samber/lo"
 
 	"sealdice-core/dice"
 )
@@ -361,4 +363,95 @@ func jsUpdate(c echo.Context) error {
 		}
 	}
 	return Success(&c, Response{})
+}
+
+type apiPluginConfig struct {
+	PluginName string             `json:"pluginName"`
+	Configs    []*dice.ConfigItem `jsbind:"configs"  json:"configs"`
+}
+
+type getConfigResp map[string]*apiPluginConfig
+
+type setConfigReq map[string]*apiPluginConfig
+
+func handleGetConfigs(c echo.Context) error {
+	if !doAuth(c) {
+		return c.JSON(http.StatusForbidden, nil)
+	}
+	resp := getConfigResp{}
+	for k, v := range myDice.ConfigManager.Plugins {
+		configs := make([]*dice.ConfigItem, 0, len(v.OrderedConfigKeys))
+		for _, key := range v.OrderedConfigKeys {
+			configs = append(configs, v.Configs[key])
+		}
+		resp[k] = &apiPluginConfig{
+			PluginName: v.PluginName,
+			Configs:    configs,
+		}
+	}
+	data, err := json.Marshal(resp)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, "Failed to marshal data")
+	}
+
+	return c.JSONBlob(http.StatusOK, data)
+}
+
+func handleSetConfigs(c echo.Context) error {
+	if !doAuth(c) {
+		return c.JSON(http.StatusForbidden, nil)
+	}
+	var data setConfigReq
+	err := c.Bind(&data)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, "Failed to parse data")
+	}
+	var errors []error
+	for k, v := range data {
+		for _, i := range v.Configs {
+			err := myDice.ConfigManager.SetConfig(k, i.Key, i.Value)
+			if err != nil {
+				errors = append(errors, err)
+			}
+		}
+	}
+	if len(errors) > 0 {
+		errMsg := strings.Join(lo.Map(errors, func(e error, _ int) string {
+			return e.Error()
+		}), "\n")
+		return c.JSON(http.StatusInternalServerError, errMsg)
+	}
+	return c.JSON(http.StatusOK, nil)
+}
+
+func handleDeleteUnusedConfigs(c echo.Context) error {
+	if !doAuth(c) {
+		return c.JSON(http.StatusForbidden, nil)
+	}
+	type handleDeleteUnusedConfigsReq struct {
+		PluginName string   `json:"pluginName"`
+		Keys       []string `json:"keys"`
+	}
+	var data handleDeleteUnusedConfigsReq
+	err := c.Bind(&data)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, "Failed to parse data")
+	}
+	for _, key := range data.Keys {
+		myDice.ConfigManager.UnregisterConfig(data.PluginName, key)
+	}
+	return c.JSON(http.StatusOK, nil)
+}
+
+func handleResetConfig(c echo.Context) error {
+	if !doAuth(c) {
+		return c.JSON(http.StatusForbidden, nil)
+	}
+	var data map[string]string
+	err := c.Bind(&data)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, "Failed to parse data")
+	}
+	myDice.ConfigManager.ResetConfigToDefault(data["pluginName"], data["key"])
+	return c.JSON(http.StatusOK, nil)
 }

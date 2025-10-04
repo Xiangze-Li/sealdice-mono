@@ -9,7 +9,7 @@ import (
 	"sealdice-core/dice"
 )
 
-func customText(c echo.Context) error {
+func customTextInfo(c echo.Context) error {
 	if !doAuth(c) {
 		return c.JSON(http.StatusForbidden, nil)
 	}

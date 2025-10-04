@@ -21,7 +21,7 @@
         text
         tag="a"
         target="_blank"
-        :href="`${urlBase}/sd-api/v1/censor/files/template/toml`">
+        :href="`${urlBase}/sd-api/censor/files/template/toml`">
         <template #icon>
           <n-icon><i-carbon-download /></n-icon>
         </template>
@@ -33,7 +33,7 @@
         text
         tag="a"
         target="_blank"
-        :href="`${urlBase}/sd-api/v1/censor/files/template/txt`">
+        :href="`${urlBase}/sd-api/censor/files/template/txt`">
         <template #icon>
           <n-icon><i-carbon-save /></n-icon>
         </template>

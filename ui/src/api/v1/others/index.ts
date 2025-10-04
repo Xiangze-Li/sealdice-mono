@@ -3,11 +3,11 @@ import request from '../index.ts';
 export function getPreInfo() {
   return request<{
     testMode: boolean;
-  }>('get', 'preInfo', null, 'form', { timeout: 5000 });
+  }>('get', 'info/preInfo', null, 'form', { timeout: 5000 });
 }
 
 export function getBaseInfo() {
-  return request<DiceBaseInfo>('get', 'baseInfo', null, 'form', {
+  return request<DiceBaseInfo>('get', 'info/baseInfo', null, 'form', {
     timeout: 5000,
   });
 }
@@ -17,11 +17,11 @@ export function getLogFetchAndClear() {
 }
 
 export function getHello() {
-  return request('get', 'hello');
+  return request('get', 'info/hello');
 }
 
 export function checkSecurity() {
-  return request<{ isOk: boolean }>('get', 'checkSecurity');
+  return request<{ isOk: boolean }>('get', 'signin/checkSecurity');
 }
 
 export function postToolOnebot() {
@@ -29,7 +29,7 @@ export function postToolOnebot() {
     ok: boolean;
     ip: string;
     errText: string;
-  }>('post', '/tool/onebot');
+  }>('post', '/utils/onebot');
 }
 
 export interface DiceBaseInfo {

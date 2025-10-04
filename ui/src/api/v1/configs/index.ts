@@ -8,7 +8,7 @@ export function saveCustomText(category: string, data: { [k: string]: string[][]
 }
 
 export function getCustomText() {
-  return request<CustomTexts>('get', 'customText');
+  return request<CustomTexts>('get', 'customText/info');
 }
 
 export function saveCustomReply(data: CustomReply) {
@@ -16,7 +16,7 @@ export function saveCustomReply(data: CustomReply) {
 }
 
 export function getCustomReply(filename: string) {
-  return request<CustomReply>('get', 'custom_reply', { filename });
+  return request<CustomReply>('get', 'custom_reply/info', { filename });
 }
 
 export function postCustomReplyNew(filename: string) {
