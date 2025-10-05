@@ -1,6 +1,8 @@
 package api
 
 import (
+	"github.com/danielgtaylor/huma/v2"
+	"github.com/danielgtaylor/huma/v2/adapters/humaecho"
 	"github.com/labstack/echo/v4"
 
 	"sealdice-core/dice"
@@ -14,6 +16,9 @@ var (
 func Bind(e *echo.Echo, _myDice *dice.DiceManager) {
 	dm = _myDice
 	myDice = _myDice.Dice[0]
+
+	// 挂载 humaecho 到 echo 实例
+	_ = humaecho.New(e, huma.DefaultConfig("Sealdiciapi", "1.0.0"))
 
 	bindApiV1(e)
 }
