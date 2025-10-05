@@ -6,13 +6,11 @@ import { useStore } from "~/store";
 // TODO: 移植到logMan/exporters
 export function exportFileQQ(results: LogItem[], options: any = undefined) {
   const store = useStore();
-  const map = store.pcMap;
 
   let text = ''
   for (let i of results) {
     if (i.isRaw) continue;
-    const id = packNameId(i);
-    if (map.get(id)?.role === '隐藏') continue;
+    if (store.isHiddenLogItem(i)) continue;
 
     let timeText = i.time.toString()
     if (typeof i.time === 'number') {
@@ -34,13 +32,11 @@ export function exportFileQQ(results: LogItem[], options: any = undefined) {
 
 export function exportFileIRC(results: LogItem[], options: any = undefined) {
   const store = useStore();
-  const map = store.pcMap;
 
   let text = ''
   for (let i of results) {
     if (i.isRaw) continue;
-    const id = packNameId(i);
-    if (map.get(id)?.role === '隐藏') continue;
+    if (store.isHiddenLogItem(i)) continue;
 
     let timeText = i.time.toString()
     if (typeof i.time === 'number') {
