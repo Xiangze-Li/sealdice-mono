@@ -14,7 +14,7 @@ import (
 	"github.com/lxn/win"
 	"golang.org/x/sys/windows/registry"
 
-	"sealdice-core/logger"
+	"github.com/sealdice-ce/sealdice-ce/core/logger"
 )
 
 const (

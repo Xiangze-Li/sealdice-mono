@@ -17,7 +17,7 @@ import (
 	"sync"
 	"time"
 
-	"sealdice-core/message"
+	"github.com/sealdice-ce/sealdice-ce/core/message"
 
 	"github.com/gorilla/websocket"
 	"github.com/samber/lo"

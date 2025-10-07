@@ -5,7 +5,7 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 
-	"sealdice-core/utils/cache"
+	"github.com/sealdice-ce/sealdice-ce/core/utils/cache"
 )
 
 func MySQLDBInit(dsn string) (*gorm.DB, error) {

@@ -14,12 +14,12 @@ import (
 	"github.com/samber/lo"
 	"go.uber.org/zap"
 
-	"sealdice-core/dice/events"
-	"sealdice-core/dice/service"
-	"sealdice-core/logger"
-	"sealdice-core/message"
-	"sealdice-core/model"
-	"sealdice-core/utils/dboperator/engine"
+	"github.com/sealdice-ce/sealdice-ce/core/dice/events"
+	"github.com/sealdice-ce/sealdice-ce/core/dice/service"
+	"github.com/sealdice-ce/sealdice-ce/core/logger"
+	"github.com/sealdice-ce/sealdice-ce/core/message"
+	"github.com/sealdice-ce/sealdice-ce/core/model"
+	"github.com/sealdice-ce/sealdice-ce/core/utils/dboperator/engine"
 
 	"github.com/golang-module/carbon"
 	ds "github.com/sealdice/dicescript"

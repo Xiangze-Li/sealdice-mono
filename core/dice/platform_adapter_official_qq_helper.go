@@ -11,7 +11,7 @@ import (
 	"github.com/google/uuid"
 	"go.uber.org/zap"
 
-	logger "sealdice-core/logger"
+	logger "github.com/sealdice-ce/sealdice-ce/core/logger"
 )
 
 func NewOfficialQQConnItem(appID uint64, token string, appSecret string, onlyQQGuild bool) *EndPointInfo {

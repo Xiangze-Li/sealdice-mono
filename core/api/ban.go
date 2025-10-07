@@ -12,7 +12,7 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"sealdice-core/dice"
+	"github.com/sealdice-ce/sealdice-ce/core/dice"
 )
 
 func banConfigGet(c echo.Context) error {

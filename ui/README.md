@@ -1,13 +1,13 @@
-# SealDice UI
+# SealDice-CE UI
 
 ![Software MIT License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)
-![UI](https://img.shields.io/badge/SealDice-UI-blue)
+![UI](https://img.shields.io/badge/SealDice--CE-UI-blue)
 
-[SealDice 海豹核心](https://github.com/sealdice/sealdice-core) 的前端实现。
+[SealDice-CE](https://github.com/sealdice-ce/sealdice-ce) 的前端实现。
 
 ## 说明
 
-本仓库为海豹核心的前端实现，使用 Vue3 + ElementPlus + tailwindcss 开发。
+本仓库为海豹核心的前端实现，使用 Vue3 + Naive UI + tailwindcss 开发。
 
 ## 部署
 

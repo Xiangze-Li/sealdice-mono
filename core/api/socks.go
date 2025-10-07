@@ -12,7 +12,7 @@ import (
 
 	"github.com/armon/go-socks5"
 
-	"sealdice-core/dice"
+	"github.com/sealdice-ce/sealdice-ce/core/dice"
 )
 
 var privateIPBlocks []*net.IPNet

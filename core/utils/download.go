@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"os"
 
-	"sealdice-core/logger"
+	"github.com/sealdice-ce/sealdice-ce/core/logger"
 )
 
 func DownloadFile(filepath string, url string) error {

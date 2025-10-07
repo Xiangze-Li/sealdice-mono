@@ -13,9 +13,9 @@ import (
 	"syscall"
 	"time"
 
-	"sealdice-core/dice"
-	"sealdice-core/logger"
-	"sealdice-core/utils"
+	"github.com/sealdice-ce/sealdice-ce/core/dice"
+	"github.com/sealdice-ce/sealdice-ce/core/logger"
+	"github.com/sealdice-ce/sealdice-ce/core/utils"
 )
 
 const updaterVersion = "0.1.1"

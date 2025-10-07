@@ -12,8 +12,8 @@ import (
 	"github.com/blevesearch/bleve/v2/search/query"
 	index "github.com/blevesearch/bleve_index_api"
 
-	"sealdice-core/dice/helpdoc"
-	"sealdice-core/logger"
+	"github.com/sealdice-ce/sealdice-ce/core/dice/helpdoc"
+	"github.com/sealdice-ce/sealdice-ce/core/logger"
 )
 
 type BleveEngine struct {

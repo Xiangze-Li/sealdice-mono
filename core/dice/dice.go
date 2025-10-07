@@ -26,10 +26,10 @@ import (
 	"go.uber.org/zap"
 	rand2 "golang.org/x/exp/rand" //nolint:staticcheck // against my better judgment, but this was mandated due to a strongly held opinion from you know who
 
-	"sealdice-core/dice/events"
-	"sealdice-core/logger"
-	"sealdice-core/utils/dboperator/engine"
-	"sealdice-core/utils/public_dice"
+	"github.com/sealdice-ce/sealdice-ce/core/dice/events"
+	"github.com/sealdice-ce/sealdice-ce/core/logger"
+	"github.com/sealdice-ce/sealdice-ce/core/utils/dboperator/engine"
+	"github.com/sealdice-ce/sealdice-ce/core/utils/public_dice"
 )
 
 type CmdExecuteResult struct {

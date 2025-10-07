@@ -3,10 +3,10 @@ package v120
 import (
 	"os"
 
-	"sealdice-core/utils"
-	"sealdice-core/utils/constant"
-	"sealdice-core/utils/dboperator/engine"
-	upgrade "sealdice-core/utils/upgrader"
+	"github.com/sealdice-ce/sealdice-ce/core/utils"
+	"github.com/sealdice-ce/sealdice-ce/core/utils/constant"
+	"github.com/sealdice-ce/sealdice-ce/core/utils/dboperator/engine"
+	upgrade "github.com/sealdice-ce/sealdice-ce/core/utils/upgrader"
 )
 
 var V120Migration = upgrade.Upgrade{

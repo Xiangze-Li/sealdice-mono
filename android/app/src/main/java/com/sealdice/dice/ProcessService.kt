@@ -232,7 +232,7 @@ class ProcessService : LifecycleService(){
             processBuilder.environment()["FSTOP_KEY"] = fstop_key.toString()
             process = processBuilder.start()
             val args = sharedPreferences.getString("launch_args", "")
-            val cmd = "cd sealdice&&./sealdice-core $args"
+            val cmd = "cd sealdice && ./sealdice-ce $args"
             GlobalScope.launch(context = Dispatchers.IO) {
                 val os = process.outputStream
                 os.write(cmd.toByteArray())

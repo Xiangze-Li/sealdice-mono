@@ -19,10 +19,10 @@ import (
 	"github.com/tidwall/gjson"
 	"go.uber.org/zap"
 
-	"sealdice-core/dice/service"
-	"sealdice-core/dice/storylog"
-	"sealdice-core/model"
-	"sealdice-core/utils"
+	"github.com/sealdice-ce/sealdice-ce/core/dice/service"
+	"github.com/sealdice-ce/sealdice-ce/core/dice/storylog"
+	"github.com/sealdice-ce/sealdice-ce/core/model"
+	"github.com/sealdice-ce/sealdice-ce/core/utils"
 )
 
 var ErrGroupCardOverlong = errors.New("群名片长度超过限制")

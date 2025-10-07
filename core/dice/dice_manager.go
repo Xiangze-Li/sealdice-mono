@@ -9,9 +9,9 @@ import (
 	"github.com/robfig/cron/v3"
 	"gopkg.in/yaml.v3"
 
-	"sealdice-core/dice/helpdoc"
-	"sealdice-core/logger"
-	"sealdice-core/utils/dboperator/engine"
+	"github.com/sealdice-ce/sealdice-ce/core/dice/helpdoc"
+	"github.com/sealdice-ce/sealdice-ce/core/logger"
+	"github.com/sealdice-ce/sealdice-ce/core/utils/dboperator/engine"
 )
 
 type VersionInfo struct {

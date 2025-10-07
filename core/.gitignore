@@ -19,6 +19,7 @@ record.log
 .idea
 !/.idea/**/Project.xml
 sealdice-core
+sealdice-ce
 data/save.yaml
 configs/
 data/

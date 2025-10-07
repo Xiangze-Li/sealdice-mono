@@ -11,8 +11,8 @@ import (
 
 	"go.uber.org/zap"
 
-	"sealdice-core/model"
-	"sealdice-core/utils/dboperator/engine"
+	"github.com/sealdice-ce/sealdice-ce/core/model"
+	"github.com/sealdice-ce/sealdice-ce/core/utils/dboperator/engine"
 )
 
 type UploadEnv struct {

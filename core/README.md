@@ -1,9 +1,9 @@
-# SealDice Core
+# SealDice-CE core
 
 ![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)
-![Core](https://img.shields.io/badge/SealDice-Core-blue)
+![Core](https://img.shields.io/badge/SealDice--CE-Core-blue)
 
-[SealDice 海豹核心](https://github.com/sealdice/sealdice-core) 的后端实现。
+[SealDice-CE](https://github.com/sealdice-ce/sealdice-ce) 的后端实现。
 
 ## 开发环境搭建
 

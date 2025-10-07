@@ -1,8 +1,8 @@
 package v150
 
 import (
-	"sealdice-core/utils/dboperator/engine"
-	upgrade "sealdice-core/utils/upgrader"
+	"github.com/sealdice-ce/sealdice-ce/core/utils/dboperator/engine"
+	upgrade "github.com/sealdice-ce/sealdice-ce/core/utils/upgrader"
 )
 
 var V150UpgradeAttrsMigration = upgrade.Upgrade{

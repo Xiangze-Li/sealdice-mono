@@ -8,11 +8,11 @@ ENV TZ Asia/Shanghai
 VOLUME ["/backups", "/data"]
 ARG TARGETARCH
 COPY ./${TARGETARCH}/data /buildin-data
-COPY --chmod=0755 ./${TARGETARCH}/sealdice-core  .
+COPY --chmod=0755 ./${TARGETARCH}/sealdice-ce  .
 
 RUN echo "#!/bin/sh" > ./entrypoint.sh
 RUN echo "cp -r ./buildin-data/* ./data/" >> ./entrypoint.sh
-RUN echo "./sealdice-core --container-mode" >> ./entrypoint.sh
+RUN echo "./sealdice-ce --container-mode" >> ./entrypoint.sh
 RUN chmod +x ./entrypoint.sh
 
 # 启动

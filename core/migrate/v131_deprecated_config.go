@@ -7,7 +7,7 @@ import (
 
 	"gopkg.in/yaml.v3"
 
-	"sealdice-core/dice"
+	"github.com/sealdice-ce/sealdice-ce/core/dice"
 )
 
 type v131DeprecatedConfig struct {

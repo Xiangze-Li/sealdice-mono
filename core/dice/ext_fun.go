@@ -13,7 +13,7 @@ import (
 	"github.com/samber/lo"
 	ds "github.com/sealdice/dicescript"
 
-	"sealdice-core/dice/events"
+	"github.com/sealdice-ce/sealdice-ce/core/dice/events"
 )
 
 var guguText = `

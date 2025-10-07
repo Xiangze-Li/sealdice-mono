@@ -5,7 +5,7 @@ import (
 	"os"
 	"regexp"
 
-	"sealdice-core/utils/spinner"
+	"github.com/sealdice-ce/sealdice-ce/core/utils/spinner"
 )
 
 var sqls = []string{

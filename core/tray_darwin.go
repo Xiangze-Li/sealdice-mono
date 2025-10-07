@@ -17,9 +17,9 @@ import (
 	"github.com/gen2brain/beeep"
 	"github.com/labstack/echo/v4"
 
-	"sealdice-core/dice"
-	"sealdice-core/icon"
-	"sealdice-core/logger"
+	"github.com/sealdice-ce/sealdice-ce/core/dice"
+	"github.com/sealdice-ce/sealdice-ce/core/icon"
+	"github.com/sealdice-ce/sealdice-ce/core/logger"
 )
 
 var theDm *dice.DiceManager

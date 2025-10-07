@@ -1,7 +1,7 @@
 {
-  "name": "@sealdice/sealdice-ui",
+  "name": "@sealdice/sealdice-ce-ui",
   "private": true,
-  "version": "1.4.0",
+  "version": "0.1.0",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "dev": "vite",

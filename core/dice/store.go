@@ -12,8 +12,8 @@ import (
 	"strings"
 	"sync"
 
-	"sealdice-core/static"
-	"sealdice-core/utils/crypto"
+	"github.com/sealdice-ce/sealdice-ce/core/static"
+	"github.com/sealdice-ce/sealdice-ce/core/utils/crypto"
 )
 
 var (

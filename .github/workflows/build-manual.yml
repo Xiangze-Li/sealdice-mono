@@ -14,7 +14,7 @@ jobs:
   build-manual:
     name: Build Manual
     runs-on: ubuntu-latest
-    if: (github.repository_owner == 'sealdice' && github.ref_name == 'master') || github.repository_owner != 'sealdice'
+    if: (github.repository_owner == 'sealdice-ce' && github.ref_name == 'master') || github.repository_owner != 'sealdice-ce'
     steps:
       - uses: actions/checkout@v4
       - name: Setup pnpm
@@ -38,14 +38,14 @@ jobs:
           build_dir: manual/docs/.vitepress/dist
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Push changes
-        if: github.repository_owner == 'sealdice' && github.event_name != 'pull_request'
-        env:
-          KEY: ${{ secrets.KEY }}
-          URL: ${{ secrets.URL }}
-        run: |
-          mkdir -p ~/.ssh/
-          echo "$KEY" > ~/.ssh/id_rsa
-          sudo chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan gitlab.com >> ~/.ssh/known_hosts
-          git push "$URL" manual/gh-pages -f
+#      - name: Push changes
+#        if: github.repository_owner == 'sealdice-ce' && github.event_name != 'pull_request'
+#        env:
+#          KEY: ${{ secrets.KEY }}
+#          URL: ${{ secrets.URL }}
+#        run: |
+#          mkdir -p ~/.ssh/
+#          echo "$KEY" > ~/.ssh/id_rsa
+#          sudo chmod 600 ~/.ssh/id_rsa
+#          ssh-keyscan gitlab.com >> ~/.ssh/known_hosts
+#          git push "$URL" manual/gh-pages -f

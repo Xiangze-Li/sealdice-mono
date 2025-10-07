@@ -6,7 +6,7 @@ import (
 	"os"
 	"time"
 
-	"sealdice-core/logger"
+	"github.com/sealdice-ce/sealdice-ce/core/logger"
 )
 
 func InitPanicLog() {

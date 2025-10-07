@@ -30,7 +30,7 @@
 
   // 设置页面标题
   function setPageTitle() {
-    var title = 'SealDice 海豹核心';
+    var title = 'SealDice 海豹核心（社区版）';
     document.title = title;
   }
 

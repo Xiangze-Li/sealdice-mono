@@ -23,9 +23,9 @@ import (
 	"github.com/monaco-io/request"
 	"golang.org/x/sys/windows"
 
-	"sealdice-core/dice"
-	"sealdice-core/icon"
-	"sealdice-core/logger"
+	"github.com/sealdice-ce/sealdice-ce/core/dice"
+	"github.com/sealdice-ce/sealdice-ce/core/icon"
+	"github.com/sealdice-ce/sealdice-ce/core/logger"
 )
 
 func hideWindow() {

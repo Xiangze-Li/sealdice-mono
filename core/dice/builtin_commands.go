@@ -18,7 +18,7 @@ import (
 	"github.com/samber/lo"
 	ds "github.com/sealdice/dicescript"
 
-	"sealdice-core/dice/helpdoc"
+	"github.com/sealdice-ce/sealdice-ce/core/dice/helpdoc"
 )
 
 /** 这几条指令不能移除 */
@@ -409,9 +409,7 @@ func (d *Dice) registerCoreCommands() {
 		Solve: func(ctx *MsgContext, msg *Message, cmdArgs *CmdArgs) CmdExecuteResult {
 			arg := cmdArgs.GetArgN(1)
 			if arg == "" {
-				text := "海豹核心 " + VERSION.String() + "\n"
-				text += "官网: sealdice.com" + "\n"
-				text += "海豹群: 524364253" + "\n"
+				text := APPNAME + " " + VERSION.String() + "\n"
 				text += DiceFormatTmpl(ctx, "核心:骰子帮助文本_附加说明")
 				ReplyToSender(ctx, msg, text)
 				return CmdExecuteResult{Matched: true, Solved: true}
@@ -666,7 +664,7 @@ func (d *Dice) registerCoreCommands() {
 			if arch != "386" && arch != "amd64" {
 				ver = fmt.Sprintf("%s %s", ver, arch)
 			}
-			baseText := fmt.Sprintf("SealDice %s%s", ver, onlineVer)
+			baseText := fmt.Sprintf("%s %s%s", APPNAME, ver, onlineVer)
 			extText := DiceFormatTmpl(ctx, "核心:骰子状态附加文本")
 			if extText != "" {
 				extText = "\n" + extText

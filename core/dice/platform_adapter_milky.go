@@ -10,9 +10,9 @@ import (
 	milky "github.com/Szzrain/Milky-go-sdk"
 	"go.uber.org/zap"
 
-	"sealdice-core/dice/events"
-	logger "sealdice-core/logger"
-	"sealdice-core/message"
+	"github.com/sealdice-ce/sealdice-ce/core/dice/events"
+	logger "github.com/sealdice-ce/sealdice-ce/core/logger"
+	"github.com/sealdice-ce/sealdice-ce/core/message"
 )
 
 type PlatformAdapterMilky struct {

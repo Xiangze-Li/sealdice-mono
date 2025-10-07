@@ -7,8 +7,8 @@ import (
 	"golang.org/x/time/rate"
 	"gopkg.in/yaml.v3"
 
-	"sealdice-core/dice/censor"
-	"sealdice-core/utils"
+	"github.com/sealdice-ce/sealdice-ce/core/dice/censor"
+	"github.com/sealdice-ce/sealdice-ce/core/utils"
 )
 
 // ConfigVersion 当前设置版本

@@ -1,5 +1,5 @@
 {
-  "name": "@sealdice/sealdice-manual-next",
+  "name": "@sealdice/sealdice-ce-manual",
   "version": "1.0.0",
   "description": "海豹骰官方使用手册。",
   "main": "index.js",
@@ -14,7 +14,7 @@
     "lint:autocorrect:fix": "autocorrect --fix --strict"
   },
   "keywords": [],
-  "author": "SealDice Team",
+  "author": "SealDice CE Team",
   "license": "MIT",
   "devDependencies": {
     "@braintree/sanitize-url": "^7.1.1",

@@ -6,7 +6,7 @@ import (
 	"os"
 	"sync"
 
-	upgrade "sealdice-core/utils/upgrader"
+	upgrade "github.com/sealdice-ce/sealdice-ce/core/utils/upgrader"
 )
 
 type JSONStore struct {

@@ -6,7 +6,7 @@ import (
 	"math"
 	"testing"
 
-	"sealdice-core/dice"
+	"github.com/sealdice-ce/sealdice-ce/core/dice"
 )
 
 func TestDeck(t *testing.T) {

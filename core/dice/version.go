@@ -3,7 +3,7 @@ package dice
 import "github.com/Masterminds/semver/v3"
 
 var (
-	APPNAME = "SealDice"
+	APPNAME = "SealDice-CE"
 
 	// VERSION 版本号，按固定格式，action 在构建时可能会自动注入部分信息
 	// 正式：主版本号+yyyyMMdd，如 1.4.5+20240308
@@ -12,7 +12,7 @@ var (
 	VERSION = semver.MustParse(VERSION_MAIN + VERSION_PRERELEASE + VERSION_BUILD_METADATA)
 
 	// VERSION_MAIN 主版本号
-	VERSION_MAIN = "1.5.0"
+	VERSION_MAIN = "0.1.0"
 	// VERSION_PRERELEASE 先行版本号
 	VERSION_PRERELEASE = "-dev"
 	// VERSION_BUILD_METADATA 版本编译信息

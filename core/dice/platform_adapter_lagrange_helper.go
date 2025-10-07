@@ -21,8 +21,8 @@ import (
 	"go.uber.org/zap"
 	"gopkg.in/yaml.v3"
 
-	logger "sealdice-core/logger"
-	"sealdice-core/utils/procs"
+	logger "github.com/sealdice-ce/sealdice-ce/core/logger"
+	"github.com/sealdice-ce/sealdice-ce/core/utils/procs"
 )
 
 type LagrangeLoginInfo struct {

@@ -9,10 +9,10 @@ import (
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 
-	"sealdice-core/logger"
-	"sealdice-core/model"
-	"sealdice-core/utils/cache"
-	"sealdice-core/utils/constant"
+	"github.com/sealdice-ce/sealdice-ce/core/logger"
+	"github.com/sealdice-ce/sealdice-ce/core/model"
+	"github.com/sealdice-ce/sealdice-ce/core/utils/cache"
+	"github.com/sealdice-ce/sealdice-ce/core/utils/constant"
 )
 
 type MYSQLEngine struct {

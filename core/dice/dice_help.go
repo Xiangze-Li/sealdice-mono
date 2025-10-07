@@ -15,9 +15,9 @@ import (
 
 	"go.uber.org/zap"
 
-	"sealdice-core/dice/helpdoc"
-	"sealdice-core/dice/helpdoc/engine"
-	"sealdice-core/logger"
+	"github.com/sealdice-ce/sealdice-ce/core/dice/helpdoc"
+	"github.com/sealdice-ce/sealdice-ce/core/dice/helpdoc/engine"
+	"github.com/sealdice-ce/sealdice-ce/core/logger"
 
 	"gopkg.in/yaml.v3"
 

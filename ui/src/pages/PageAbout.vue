@@ -12,8 +12,8 @@
       </div>
       <div class="top-item mt-4">
         官方网站：
-        <n-button type="primary" text tag="a" target="_blank" href="https://www.sealdice.com">
-          https://www.sealdice.com
+        <n-button type="primary" text tag="a" target="_blank" href="https://github.com/sealdice-ce/sealdice-ce">
+          https://github.com/sealdice-ce/sealdice-ce
         </n-button>
       </div>
       <div class="top-item">

@@ -7,7 +7,7 @@ import (
 
 	"github.com/jmoiron/sqlx"
 
-	"sealdice-core/utils/spinner"
+	"github.com/sealdice-ce/sealdice-ce/core/utils/spinner"
 )
 
 var sqls = []string{

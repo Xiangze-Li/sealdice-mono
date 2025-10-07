@@ -10,8 +10,8 @@ import (
 	"github.com/Milly/go-base2048"
 	"github.com/vmihailenco/msgpack"
 
-	"sealdice-core/logger"
-	"sealdice-core/utils/crypto"
+	"github.com/sealdice-ce/sealdice-ce/core/logger"
+	"github.com/sealdice-ce/sealdice-ce/core/utils/crypto"
 )
 
 var (

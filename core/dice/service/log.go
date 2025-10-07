@@ -10,10 +10,10 @@ import (
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 
-	"sealdice-core/logger"
-	"sealdice-core/model"
-	"sealdice-core/utils/constant"
-	engine2 "sealdice-core/utils/dboperator/engine"
+	"github.com/sealdice-ce/sealdice-ce/core/logger"
+	"github.com/sealdice-ce/sealdice-ce/core/model"
+	"github.com/sealdice-ce/sealdice-ce/core/utils/constant"
+	engine2 "github.com/sealdice-ce/sealdice-ce/core/utils/dboperator/engine"
 )
 
 type LogOne struct {

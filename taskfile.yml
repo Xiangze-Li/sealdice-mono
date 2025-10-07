@@ -10,7 +10,7 @@ vars:
   STORY_PAINTER_DIR: story-painter
   VERIFY_DIR: verify
 
-  CORE_BINARY_NAME: sealdice-core
+  CORE_BINARY_NAME: sealdice-ce
   CORE_BINARY_PATH: "{{.CORE_DIR}}/{{.BACKEND_BINARY_NAME}}"
   UI_BUILD_DIR: dist
 
@@ -116,7 +116,7 @@ tasks:
     deps: [ install:go, build:ui ]
     dir: "{{.CORE_DIR}}"
     cmds:
-      - go run {{.CORE_BINARY_NAME}}
+      - go run .
 
   dev:ui:
     desc: "启动 ui 开发进程"

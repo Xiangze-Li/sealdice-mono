@@ -15,11 +15,11 @@ import (
 
 	"github.com/alexmullins/zip"
 
-	"sealdice-core/dice/service"
-	"sealdice-core/logger"
-	"sealdice-core/utils"
-	"sealdice-core/utils/constant"
-	"sealdice-core/utils/crypto"
+	"github.com/sealdice-ce/sealdice-ce/core/dice/service"
+	"github.com/sealdice-ce/sealdice-ce/core/logger"
+	"github.com/sealdice-ce/sealdice-ce/core/utils"
+	"github.com/sealdice-ce/sealdice-ce/core/utils/constant"
+	"github.com/sealdice-ce/sealdice-ce/core/utils/crypto"
 )
 
 const BackupDir = "./backups"

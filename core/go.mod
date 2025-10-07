@@ -1,4 +1,4 @@
-module sealdice-core
+module github.com/sealdice-ce/sealdice-ce/core
 
 go 1.25.0
 

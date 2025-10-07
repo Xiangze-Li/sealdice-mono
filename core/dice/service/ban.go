@@ -1,10 +1,10 @@
 package service
 
 import (
-	"sealdice-core/model"
-	"sealdice-core/utils/constant"
-	"sealdice-core/utils/dboperator/dbutil"
-	engine2 "sealdice-core/utils/dboperator/engine"
+	"github.com/sealdice-ce/sealdice-ce/core/model"
+	"github.com/sealdice-ce/sealdice-ce/core/utils/constant"
+	"github.com/sealdice-ce/sealdice-ce/core/utils/dboperator/dbutil"
+	engine2 "github.com/sealdice-ce/sealdice-ce/core/utils/dboperator/engine"
 )
 
 // BanItemDel 删除指定 ID 的禁用项

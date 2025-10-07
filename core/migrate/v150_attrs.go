@@ -13,11 +13,11 @@ import (
 	ds "github.com/sealdice/dicescript"
 	"go.uber.org/zap"
 
-	"sealdice-core/dice"
-	"sealdice-core/dice/service"
-	"sealdice-core/logger"
-	"sealdice-core/model"
-	"sealdice-core/utils"
+	"github.com/sealdice-ce/sealdice-ce/core/dice"
+	"github.com/sealdice-ce/sealdice-ce/core/dice/service"
+	"github.com/sealdice-ce/sealdice-ce/core/logger"
+	"github.com/sealdice-ce/sealdice-ce/core/model"
+	"github.com/sealdice-ce/sealdice-ce/core/utils"
 )
 
 func convertToNew(name string, ownerId string, data []byte, updatedAt int64) (*model.AttributesItemModel, error) {

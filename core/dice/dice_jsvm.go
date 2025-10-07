@@ -33,10 +33,10 @@ import (
 	"gopkg.in/elazarl/goproxy.v1"
 	"gopkg.in/yaml.v3"
 
-	"sealdice-core/static"
-	"sealdice-core/utils/crypto"
+	"github.com/sealdice-ce/sealdice-ce/core/static"
+	"github.com/sealdice-ce/sealdice-ce/core/utils/crypto"
 
-	sealws "sealdice-core/utils/plugin/websocket"
+	sealws "github.com/sealdice-ce/sealdice-ce/core/utils/plugin/websocket"
 )
 
 var (

@@ -15,19 +15,11 @@ title: 快速开始
 
 ## 获取海豹
 
-可以从以下两个渠道获取海豹核心安装包：
+可以从以下渠道获取安装包：
 
-- 官网：从 [官网下载页](https://dice.weizaima.com/download) 获取最新的正式版海豹核心安装包。
+- GitHub：从 [GitHub Release](https://github.com/sealdice-ce/sealdice-ce/releases) 获取海豹核心安装包。
 
-- GitHub：从 [GitHub Release](https://github.com/sealdice/sealdice-build/releases) 获取海豹核心安装包。
-
-  这一渠道提供两个版本：以 `版本号+发布日期` 命名的正式版，与官网一致；以 `Latest Dev Build+日期` 命名的最新构建，可能有各种 Bug，不推荐一般用户使用。
-
-::: tip 提示：我该选择从哪里获取？
-
-我们非常建议你使用从**官网**获取的正式版海豹。对于绝大多数用户来说，官网的下载最顺畅和便捷，所提供的正式版也适合绝大多数用户使用。
-
-:::
+  这一渠道提供两个版本：以 `版本号+发布日期` 命名的正式版；以 `Latest Dev Build+日期` 命名的最新构建，可能有各种 Bug，不推荐一般用户使用。
 
 海豹提供了多个平台的安装包，请确认你的操作系统并选择对应版本的安装包。提供的平台如下：
 

@@ -21,9 +21,9 @@ import (
 	"go.uber.org/zap"
 	"gopkg.in/yaml.v3"
 
-	"sealdice-core/dice/events"
-	"sealdice-core/message"
-	"sealdice-core/utils/procs"
+	"github.com/sealdice-ce/sealdice-ce/core/dice/events"
+	"github.com/sealdice-ce/sealdice-ce/core/message"
+	"github.com/sealdice-ce/sealdice-ce/core/utils/procs"
 
 	"github.com/gorilla/websocket"
 	"github.com/sacOO7/gowebsocket"

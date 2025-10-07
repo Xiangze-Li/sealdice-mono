@@ -12,7 +12,7 @@ import (
 	"github.com/samber/lo"
 	ds "github.com/sealdice/dicescript"
 
-	"sealdice-core/logger"
+	"github.com/sealdice-ce/sealdice-ce/core/logger"
 )
 
 // 如果参数中存在指定的属性，将其选出作为展示项

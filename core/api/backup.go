@@ -13,8 +13,8 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"sealdice-core/dice"
-	"sealdice-core/utils/crypto"
+	"github.com/sealdice-ce/sealdice-ce/core/dice"
+	"github.com/sealdice-ce/sealdice-ce/core/utils/crypto"
 )
 
 type backupFileItem struct {

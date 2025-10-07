@@ -19,9 +19,9 @@ import (
 	"github.com/parquet-go/parquet-go/compress/zstd"
 	"github.com/pilagod/gorm-cursor-paginator/v2/paginator"
 
-	"sealdice-core/dice/service"
-	"sealdice-core/model"
-	"sealdice-core/utils"
+	"github.com/sealdice-ce/sealdice-ce/core/dice/service"
+	"github.com/sealdice-ce/sealdice-ce/core/model"
+	"github.com/sealdice-ce/sealdice-ce/core/utils"
 )
 
 func GetLogTxtAndParquetFile(env UploadEnv) (*os.File, *bytes.Buffer, error) {

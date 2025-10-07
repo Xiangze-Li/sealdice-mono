@@ -6,7 +6,7 @@ import (
 	"sort"
 	"time"
 
-	"sealdice-core/utils/dboperator/engine"
+	"github.com/sealdice-ce/sealdice-ce/core/utils/dboperator/engine"
 )
 
 type Manager struct {

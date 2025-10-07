@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	sealcrypto "sealdice-core/utils/crypto"
+	sealcrypto "github.com/sealdice-ce/sealdice-ce/core/utils/crypto"
 )
 
 func main() {

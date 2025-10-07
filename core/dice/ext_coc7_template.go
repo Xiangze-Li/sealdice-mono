@@ -3,7 +3,7 @@ package dice
 import (
 	"encoding/json"
 
-	"sealdice-core/logger"
+	"github.com/sealdice-ce/sealdice-ce/core/logger"
 )
 
 var coc7TemplateData = `

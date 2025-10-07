@@ -24,15 +24,15 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 	"go.uber.org/zap/zapcore"
 
-	"sealdice-core/api"
-	"sealdice-core/dice"
-	"sealdice-core/dice/service"
-	"sealdice-core/logger"
-	v2 "sealdice-core/migrate/v2"
-	"sealdice-core/static"
-	"sealdice-core/utils/crypto"
-	"sealdice-core/utils/dboperator"
-	"sealdice-core/utils/oschecker"
+	"github.com/sealdice-ce/sealdice-ce/core/api"
+	"github.com/sealdice-ce/sealdice-ce/core/dice"
+	"github.com/sealdice-ce/sealdice-ce/core/dice/service"
+	"github.com/sealdice-ce/sealdice-ce/core/logger"
+	v2 "github.com/sealdice-ce/sealdice-ce/core/migrate/v2"
+	"github.com/sealdice-ce/sealdice-ce/core/static"
+	"github.com/sealdice-ce/sealdice-ce/core/utils/crypto"
+	"github.com/sealdice-ce/sealdice-ce/core/utils/dboperator"
+	"github.com/sealdice-ce/sealdice-ce/core/utils/oschecker"
 )
 
 /*

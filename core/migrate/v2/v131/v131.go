@@ -1,8 +1,8 @@
 package v131
 
 import (
-	"sealdice-core/utils/dboperator/engine"
-	upgrade "sealdice-core/utils/upgrader"
+	"github.com/sealdice-ce/sealdice-ce/core/utils/dboperator/engine"
+	upgrade "github.com/sealdice-ce/sealdice-ce/core/utils/upgrader"
 )
 
 var V131ConfigUpdateMigration = upgrade.Upgrade{

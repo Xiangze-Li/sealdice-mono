@@ -1,9 +1,9 @@
-# SealDice Android
+# SealDice-CE Android
 
 ![Software MIT License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)
-![Android](https://img.shields.io/badge/SealDice-Android-blue)
+![Android](https://img.shields.io/badge/SealDice-CE-Android-blue)
 
-[SealDice 海豹核心](https://github.com/sealdice/sealdice-core) 用于手机运行的版本。
+[SealDice-CE](https://github.com/sealdice-ce/sealdice-ce) 用于手机运行的版本。
 
 ## 搭建须知
 
@@ -25,4 +25,4 @@ public class Auth {
 
 然后，你需要将 Android NDK 内提供的 C 编译器路径填入 CGO 的 `CC` 参数并将 `goos` 参数写为 `android`。
 
-随后你需要将编译好的海豹核心后端 `sealdice-core` 放入 `assets/sealdice` 目录内。
+随后你需要将编译好的海豹核心后端 `sealdice-ce` 放入 `assets/sealdice` 目录内。

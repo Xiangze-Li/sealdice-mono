@@ -16,9 +16,9 @@ import (
 
 	"github.com/sacOO7/gowebsocket"
 
-	"sealdice-core/dice/service"
-	"sealdice-core/message"
-	"sealdice-core/utils/procs"
+	"github.com/sealdice-ce/sealdice-ce/core/dice/service"
+	"github.com/sealdice-ce/sealdice-ce/core/message"
+	"github.com/sealdice-ce/sealdice-ce/core/utils/procs"
 )
 
 /* 定义结构体 */

@@ -21,9 +21,9 @@ import (
 	"github.com/google/uuid"
 	"go.uber.org/zap"
 
-	"sealdice-core/logger"
-	"sealdice-core/utils"
-	"sealdice-core/utils/procs"
+	"github.com/sealdice-ce/sealdice-ce/core/logger"
+	"github.com/sealdice-ce/sealdice-ce/core/utils"
+	"github.com/sealdice-ce/sealdice-ce/core/utils/procs"
 )
 
 type deviceFile struct {

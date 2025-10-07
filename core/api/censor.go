@@ -16,9 +16,9 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/pelletier/go-toml/v2"
 
-	"sealdice-core/dice"
-	"sealdice-core/dice/censor"
-	"sealdice-core/dice/service"
+	"github.com/sealdice-ce/sealdice-ce/core/dice"
+	"github.com/sealdice-ce/sealdice-ce/core/dice/censor"
+	"github.com/sealdice-ce/sealdice-ce/core/dice/service"
 )
 
 func check(c echo.Context) (bool, error) {

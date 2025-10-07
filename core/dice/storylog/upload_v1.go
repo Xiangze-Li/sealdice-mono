@@ -12,8 +12,8 @@ import (
 	"path/filepath"
 	"time"
 
-	"sealdice-core/dice/service"
-	"sealdice-core/utils"
+	"github.com/sealdice-ce/sealdice-ce/core/dice/service"
+	"github.com/sealdice-ce/sealdice-ce/core/utils"
 )
 
 func uploadV1(env UploadEnv) (string, error) {

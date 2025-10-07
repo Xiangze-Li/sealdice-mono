@@ -13,7 +13,7 @@ import (
 	"go.etcd.io/bbolt"
 	"go.uber.org/zap"
 
-	"sealdice-core/logger"
+	"github.com/sealdice-ce/sealdice-ce/core/logger"
 )
 
 type LogOneItem struct {

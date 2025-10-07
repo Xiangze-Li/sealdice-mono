@@ -9,9 +9,9 @@ import (
 	"sort"
 	"strings"
 
-	"sealdice-core/dice/censor"
-	"sealdice-core/dice/service"
-	"sealdice-core/utils/dboperator/engine"
+	"github.com/sealdice-ce/sealdice-ce/core/dice/censor"
+	"github.com/sealdice-ce/sealdice-ce/core/dice/service"
+	"github.com/sealdice-ce/sealdice-ce/core/utils/dboperator/engine"
 )
 
 type CensorMode int

@@ -3,9 +3,9 @@ package v150
 import (
 	"fmt"
 
-	"sealdice-core/model"
-	"sealdice-core/utils/constant"
-	operator "sealdice-core/utils/dboperator/engine"
+	"github.com/sealdice-ce/sealdice-ce/core/model"
+	"github.com/sealdice-ce/sealdice-ce/core/utils/constant"
+	operator "github.com/sealdice-ce/sealdice-ce/core/utils/dboperator/engine"
 )
 
 // V150FixGroupInfoMigrate 针对GroupInfo特调，修正GroupInfo里面有问题的数据

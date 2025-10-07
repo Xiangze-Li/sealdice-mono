@@ -3,7 +3,7 @@ package dice
 import (
 	"fmt"
 
-	"sealdice-core/dice/events"
+	"github.com/sealdice-ce/sealdice-ce/core/dice/events"
 )
 
 func RegisterBuiltinExtCore(dice *Dice) {

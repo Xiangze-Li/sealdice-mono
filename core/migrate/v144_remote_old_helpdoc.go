@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"sealdice-core/utils/crypto"
+	"github.com/sealdice-ce/sealdice-ce/core/utils/crypto"
 )
 
 func V144RemoveOldHelpdoc() error {

@@ -35,7 +35,7 @@ enable = [
 ]
 
 [formatters.settings.goimports]
-local-prefixes = ['sealdice-core']
+local-prefixes = ['github.com/sealdice-ce/sealdice-ce/core']
 
 [formatters.exclusions]
 generated = 'lax'

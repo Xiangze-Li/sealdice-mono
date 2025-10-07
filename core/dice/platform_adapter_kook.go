@@ -18,8 +18,8 @@ import (
 	"github.com/yuin/goldmark"
 	"go.uber.org/zap"
 
-	"sealdice-core/logger"
-	"sealdice-core/message"
+	"github.com/sealdice-ce/sealdice-ce/core/logger"
+	"github.com/sealdice-ce/sealdice-ce/core/message"
 )
 
 // ConsoleWriterShutUp Kook go的作者要求必须使用他们自己的logger用于构造Intent Session，并且该logger不可缺省，因此这里重新实现一个不干活的logger以保证控制台log的干净整洁

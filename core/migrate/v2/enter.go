@@ -3,14 +3,14 @@ package v2
 import (
 	_ "time"
 
-	v120 "sealdice-core/migrate/v2/v120"
-	v131 "sealdice-core/migrate/v2/v131"
-	v141 "sealdice-core/migrate/v2/v141"
-	v144 "sealdice-core/migrate/v2/v144"
-	v150 "sealdice-core/migrate/v2/v150"
-	operator "sealdice-core/utils/dboperator/engine"
-	upgrade "sealdice-core/utils/upgrader"
-	"sealdice-core/utils/upgrader/store"
+	v120 "github.com/sealdice-ce/sealdice-ce/core/migrate/v2/v120"
+	v131 "github.com/sealdice-ce/sealdice-ce/core/migrate/v2/v131"
+	v141 "github.com/sealdice-ce/sealdice-ce/core/migrate/v2/v141"
+	v144 "github.com/sealdice-ce/sealdice-ce/core/migrate/v2/v144"
+	v150 "github.com/sealdice-ce/sealdice-ce/core/migrate/v2/v150"
+	operator "github.com/sealdice-ce/sealdice-ce/core/utils/dboperator/engine"
+	upgrade "github.com/sealdice-ce/sealdice-ce/core/utils/upgrader"
+	"github.com/sealdice-ce/sealdice-ce/core/utils/upgrader/store"
 )
 
 func InitUpgrader(operator operator.DatabaseOperator) error {

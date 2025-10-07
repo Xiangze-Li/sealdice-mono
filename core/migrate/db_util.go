@@ -12,7 +12,7 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 
-	"sealdice-core/utils"
+	"github.com/sealdice-ce/sealdice-ce/core/utils"
 )
 
 func openDB(path string) (*sqlx.DB, error) {

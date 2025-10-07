@@ -1,9 +1,9 @@
 # Story Painter
 
 ![Software MIT License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)
-![StroyPainter](https://img.shields.io/badge/SealDice-StroyPainter-blue)
+![StroyPainter](https://img.shields.io/badge/SealDice--CE-StroyPainter-blue)
 
-[SealDice 海豹核心](https://github.com/sealdice/sealdice-core) 的跑团 Log 染色器前端源码。
+[SealDice-CE](https://github.com/sealdice-ce/sealdice-ce) 的跑团 Log 染色器前端源码。
 
 ## 更新日志
 

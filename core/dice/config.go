@@ -17,9 +17,9 @@ import (
 	"github.com/samber/lo"
 	"gopkg.in/yaml.v3"
 
-	"sealdice-core/dice/service"
-	"sealdice-core/logger"
-	"sealdice-core/model"
+	"github.com/sealdice-ce/sealdice-ce/core/dice/service"
+	"github.com/sealdice-ce/sealdice-ce/core/logger"
+	"github.com/sealdice-ce/sealdice-ce/core/model"
 )
 
 // type TextTemplateWithWeight = map[string]map[string]uint

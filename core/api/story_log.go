@@ -7,9 +7,9 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"sealdice-core/dice"
-	"sealdice-core/dice/service"
-	"sealdice-core/model"
+	"github.com/sealdice-ce/sealdice-ce/core/dice"
+	"github.com/sealdice-ce/sealdice-ce/core/dice/service"
+	"github.com/sealdice-ce/sealdice-ce/core/model"
 )
 
 func storyGetInfo(c echo.Context) error {

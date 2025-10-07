@@ -12,8 +12,8 @@
 
         <n-flex :size="0" :v-show="store.canAccess" align="flex-start" vertical>
           <n-flex align="center" size="small">
-            <n-text style="font-size: 1.2rem; cursor: pointer" @click="enableAdvancedConfig"
-              >SealDice
+            <n-text style="font-size: 1.2rem; cursor: pointer" @click="enableAdvancedConfig">
+              {{ store.diceServers[0].baseInfo.appName ?? 'SealDice-CE' }}
             </n-text>
             <n-tooltip
               v-if="store.diceServers.length > 0 && store.diceServers[0].baseInfo.containerMode"
@@ -120,7 +120,9 @@
       <template #header>
         <n-flex size="small">
           <n-flex :size="0" :v-show="store.canAccess" align="flex-start" vertical>
-            <span class="cursor-pointer text-base" @click="enableAdvancedConfig">SealDice</span>
+            <span class="cursor-pointer text-base" @click="enableAdvancedConfig">
+              {{ store.diceServers[0].baseInfo.appName }}?? 'SealDice-CE' }}
+            </span>
             <span v-if="store.diceServers.length > 0" class="text-xs">
               {{ store.diceServers[0].baseInfo.OS }} - {{ store.diceServers[0].baseInfo.arch }}
             </span>

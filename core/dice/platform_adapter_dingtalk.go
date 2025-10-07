@@ -8,7 +8,7 @@ import (
 	dingtalk "github.com/Szzrain/DingTalk-go"
 	"github.com/open-dingtalk/dingtalk-stream-sdk-go/chatbot"
 
-	"sealdice-core/message"
+	"github.com/sealdice-ce/sealdice-ce/core/message"
 )
 
 type PlatformAdapterDingTalk struct {

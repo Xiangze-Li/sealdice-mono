@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"strings"
 
-	"sealdice-core/dice/service"
+	"github.com/sealdice-ce/sealdice-ce/core/dice/service"
 )
 
 type SenderChannel struct {

@@ -10,7 +10,7 @@ import (
 
 	ds "github.com/sealdice/dicescript"
 
-	"sealdice-core/message"
+	"github.com/sealdice-ce/sealdice-ce/core/message"
 )
 
 type Kwarg struct {

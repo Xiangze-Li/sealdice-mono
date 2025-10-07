@@ -12,5 +12,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "SealDice"
+rootProject.name = "SealDice-CE"
 include(":app")

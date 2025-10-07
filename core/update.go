@@ -16,9 +16,9 @@ import (
 
 	"go.uber.org/zap"
 
-	"sealdice-core/dice"
-	"sealdice-core/logger"
-	"sealdice-core/utils"
+	"github.com/sealdice-ce/sealdice-ce/core/dice"
+	"github.com/sealdice-ce/sealdice-ce/core/logger"
+	"github.com/sealdice-ce/sealdice-ce/core/utils"
 )
 
 var binPrefix = "https://sealdice.coding.net/p/sealdice/d/sealdice-binaries/git/raw/master"

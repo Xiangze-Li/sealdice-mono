@@ -1,19 +1,19 @@
-# SealDice
+# SealDice Community Edition
 
 ![Software MIT License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)
-![SealDice](https://img.shields.io/badge/SealDice-blue)
+![SealDice-CE](https://img.shields.io/badge/SealDice--CE-blue)
 
 海豹 TRPG 骰点核心，开源跑团辅助工具，支持 QQ/Kook/Discord 等。
 
 轻量 · 易用 · 全能
 
-## SealDice Project
+## 说明
 
-本仓库为 SealDice 的主仓库，采用 monorepo 模式合并了以前的多个子仓库，便于管理代码。该仓库下每个文件夹为一个独立子仓库：
+本项目是基于原 [sealdice](https://github.com/sealdice/sealdice-core) 项目的分叉，采用 monorepo 模式合并了原项目的多个子仓库，便于管理代码。该仓库下每个文件夹为一个独立子仓库：
 
 - `core`：对应 [原 core 仓库](https://github.com/sealdice/sealdice-core)，Go 后端代码，为海豹核心的主要逻辑部分；
-- `ui`：对应 [原 UI 仓库](https://github.com/sealdice/sealdice-ui)，前端代码，基于 Vue3 + ElementPlus 开发；
-- `android`：对应 [原 Android 仓库](https://github.com/sealdice/sealdice-android)，Android 应用源码；
+- `ui`：对应 [原 ui 仓库](https://github.com/sealdice/sealdice-ui)，前端代码，基于 Vue3 + ElementPlus 开发；
+- `android`：对应 [原 android 仓库](https://github.com/sealdice/sealdice-android)，Android 应用源码；
 - `builtins`: 对应 [原 builtins 仓库](https://github.com/sealdice/sealdice-builtins)，存储了海豹的内置牌堆与查询资料；
 - `manual`：对应原 [手册仓库](https://github.com/sealdice/sealdice-manual-next)，官方手册源码，由 VitePress 驱动；
 - `story-painter`：对应原 [染色器仓库](https://github.com/sealdice/story-painter)，跑团 Log 染色器前端源码；
@@ -26,7 +26,7 @@
 
 ## 文档
 
-见 [使用手册](https://sealdice.github.io/sealdice-manual-next/)。
+见 [使用手册](https://sealdice-ce.github.io/sealdice-ce/)。
 
 ## 开发依赖
 
@@ -53,4 +53,4 @@ $ task doctor
 
 ## 贡献指南
 
-见 [手册 - 参与项目](https://sealdice.github.io/sealdice-manual-next/about/develop.html)。
+见 [手册 - 参与项目](https://sealdice-ce.github.io/sealdice-ce/about/develop.html)。

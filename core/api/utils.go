@@ -19,7 +19,7 @@ import (
 	"github.com/robfig/cron/v3"
 	"github.com/samber/lo"
 
-	"sealdice-core/dice"
+	"github.com/sealdice-ce/sealdice-ce/core/dice"
 )
 
 type Response map[string]interface{}

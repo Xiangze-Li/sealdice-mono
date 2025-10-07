@@ -13,8 +13,8 @@ import (
 	"github.com/gorilla/websocket"
 	"go.uber.org/zap"
 
-	"sealdice-core/logger"
-	"sealdice-core/message"
+	"github.com/sealdice-ce/sealdice-ce/core/logger"
+	"github.com/sealdice-ce/sealdice-ce/core/message"
 )
 
 // PlatformAdapterDiscord 只有token需要记录，别的是生成的
