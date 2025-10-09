@@ -318,52 +318,6 @@ func (ep *EndPointInfo) UnmarshalYAML(value *yaml.Node) error {
 				return err
 			}
 			ep.Adapter = val.Adapter
-		case "walle-q":
-			var val struct {
-				Adapter *PlatformAdapterWalleQ `yaml:"adapter"`
-			}
-
-			err = value.Decode(&val)
-			if err != nil {
-				return err
-			}
-			ep.Adapter = val.Adapter
-		case "red":
-			var val struct {
-				Adapter *PlatformAdapterRed `yaml:"adapter"`
-			}
-			err = value.Decode(&val)
-			if err != nil {
-				return err
-			}
-			ep.Adapter = val.Adapter
-		case "official":
-			var val struct {
-				Adapter *PlatformAdapterOfficialQQ `yaml:"adapter"`
-			}
-			err = value.Decode(&val)
-			if err != nil {
-				return err
-			}
-			ep.Adapter = val.Adapter
-		case "satori":
-			var val struct {
-				Adapter *PlatformAdapterSatori `yaml:"adapter"`
-			}
-			err = value.Decode(&val)
-			if err != nil {
-				return err
-			}
-			ep.Adapter = val.Adapter
-		// case "LagrangeGo":
-		//	var val struct {
-		//		Adapter *PlatformAdapterLagrangeGo `yaml:"adapter"`
-		//	}
-		//	err = value.Decode(&val)
-		//	if err != nil {
-		//		return err
-		//	}
-		//	ep.Adapter = val.Adapter
 		case "milky":
 			var val struct {
 				Adapter *PlatformAdapterMilky `yaml:"adapter"`
@@ -395,51 +349,6 @@ func (ep *EndPointInfo) UnmarshalYAML(value *yaml.Node) error {
 	case "TG":
 		var val struct {
 			Adapter *PlatformAdapterTelegram `yaml:"adapter"`
-		}
-		err = value.Decode(&val)
-		if err != nil {
-			return err
-		}
-		ep.Adapter = val.Adapter
-	case "MC":
-		var val struct {
-			Adapter *PlatformAdapterMinecraft `yaml:"adapter"`
-		}
-		err = value.Decode(&val)
-		if err != nil {
-			return err
-		}
-		ep.Adapter = val.Adapter
-	case "DODO":
-		var val struct {
-			Adapter *PlatformAdapterDodo `yaml:"adapter"`
-		}
-		err = value.Decode(&val)
-		if err != nil {
-			return err
-		}
-		ep.Adapter = val.Adapter
-	case "DINGTALK":
-		var val struct {
-			Adapter *PlatformAdapterDingTalk `yaml:"adapter"`
-		}
-		err = value.Decode(&val)
-		if err != nil {
-			return err
-		}
-		ep.Adapter = val.Adapter
-	case "SLACK":
-		var val struct {
-			Adapter *PlatformAdapterSlack `yaml:"adapter"`
-		}
-		err = value.Decode(&val)
-		if err != nil {
-			return err
-		}
-		ep.Adapter = val.Adapter
-	case "SEALCHAT":
-		var val struct {
-			Adapter *PlatformAdapterSealChat `yaml:"adapter"`
 		}
 		err = value.Decode(&val)
 		if err != nil {
@@ -1946,30 +1855,6 @@ func (ep *EndPointInfo) AdapterSetup() {
 			pa := ep.Adapter.(*PlatformAdapterGocq)
 			pa.Session = ep.Session
 			pa.EndPoint = ep
-		case "walle-q":
-			pa := ep.Adapter.(*PlatformAdapterWalleQ)
-			pa.Session = ep.Session
-			pa.EndPoint = ep
-		case "red":
-			pa := ep.Adapter.(*PlatformAdapterRed)
-			pa.Session = ep.Session
-			pa.EndPoint = ep
-		case "official":
-			pa := ep.Adapter.(*PlatformAdapterOfficialQQ)
-			pa.Session = ep.Session
-			pa.EndPoint = ep
-		case "satori":
-			pa := ep.Adapter.(*PlatformAdapterSatori)
-			pa.Session = ep.Session
-			pa.EndPoint = ep
-		case "milky":
-			pa := ep.Adapter.(*PlatformAdapterMilky)
-			pa.Session = ep.Session
-			pa.EndPoint = ep
-			// case "LagrangeGo":
-			//	pa := ep.Adapter.(*PlatformAdapterLagrangeGo)
-			//	pa.Session = ep.Session
-			//	pa.EndPoint = ep
 		}
 	case "DISCORD":
 		pa := ep.Adapter.(*PlatformAdapterDiscord)
@@ -1981,26 +1866,6 @@ func (ep *EndPointInfo) AdapterSetup() {
 		pa.EndPoint = ep
 	case "TG":
 		pa := ep.Adapter.(*PlatformAdapterTelegram)
-		pa.Session = ep.Session
-		pa.EndPoint = ep
-	case "MC":
-		pa := ep.Adapter.(*PlatformAdapterMinecraft)
-		pa.Session = ep.Session
-		pa.EndPoint = ep
-	case "DODO":
-		pa := ep.Adapter.(*PlatformAdapterDodo)
-		pa.Session = ep.Session
-		pa.EndPoint = ep
-	case "DINGTALK":
-		pa := ep.Adapter.(*PlatformAdapterDingTalk)
-		pa.Session = ep.Session
-		pa.EndPoint = ep
-	case "SLACK":
-		pa := ep.Adapter.(*PlatformAdapterSlack)
-		pa.Session = ep.Session
-		pa.EndPoint = ep
-	case "SEALCHAT":
-		pa := ep.Adapter.(*PlatformAdapterSealChat)
 		pa.Session = ep.Session
 		pa.EndPoint = ep
 	}

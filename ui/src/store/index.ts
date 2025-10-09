@@ -8,23 +8,13 @@ import {
 } from '~/api/v1/dice';
 import {
   getConnectionList,
-  postAddDingtalk,
   postAddDiscord,
-  postAddDodo,
-  postAddGocq,
   postAddGocqSeparate,
   postAddKook,
   postAddLagrange,
   postAddMilky,
-  postAddMinecraft,
-  postAddOfficialQQ,
   postAddOnebot11ReverseWs,
-  postAddRed,
-  postAddSatori,
-  postaddSealChat,
-  postAddSlack,
   postAddTelegram,
-  postAddWalleQ,
 } from '~/api/v1/im_connections';
 import { getBaseInfo, getHello, getLogFetchAndClear, getPreInfo } from '~/api/v1/others';
 import { getSalt, signin } from '~/api/v1/signin';
@@ -265,35 +255,17 @@ export const useStore = defineStore('main', {
     async addImConnection(form: addImConnectionForm) {
       const {
         accountType,
-        nickname,
         account,
-        password,
-        protocol,
-        appVersion,
         token,
-        botToken,
-        appToken,
         proxyURL,
         reverseProxyUrl,
         reverseProxyCDNUrl,
-        url,
-        host,
-        port,
-        appID,
-        appSecret,
-        clientID,
-        robotCode,
-        implementation,
         relWorkDir,
         connectUrl,
         accessToken,
-        useSignServer,
-        signServerConfig,
         signServerName,
         signServerVersion,
         reverseAddr,
-        onlyQQGuild,
-        platform,
         wsGateway,
         restGateway,
       } = form;
@@ -301,20 +273,6 @@ export const useStore = defineStore('main', {
       let info = null;
       switch (accountType) {
         //QQ
-        case 0:
-          if (implementation === 'gocq') {
-            info = await postAddGocq(
-              account,
-              password,
-              protocol,
-              appVersion,
-              useSignServer,
-              signServerConfig,
-            );
-          } else if (implementation === 'walle-q') {
-            info = await postAddWalleQ(account, password, protocol);
-          }
-          break;
         case 1:
           info = await postAddDiscord(token.trim(), proxyURL, reverseProxyUrl, reverseProxyCDNUrl);
           break;
@@ -323,12 +281,6 @@ export const useStore = defineStore('main', {
           break;
         case 3:
           info = await postAddTelegram(token.trim(), proxyURL);
-          break;
-        case 4:
-          info = await postAddMinecraft(url);
-          break;
-        case 5:
-          info = await postAddDodo(clientID.trim(), token.trim());
           break;
         case 6: {
           // onebot11 正向
@@ -339,26 +291,8 @@ export const useStore = defineStore('main', {
           info = await postAddGocqSeparate(relWorkDir, realUrl, accessToken, account);
           break;
         }
-        case 7:
-          info = await postAddRed(host, port, token);
-          break;
-        case 8:
-          info = await postAddDingtalk(clientID, token, nickname, robotCode);
-          break;
-        case 9:
-          info = await postAddSlack(botToken, appToken);
-          break;
-        case 10:
-          info = await postAddOfficialQQ(Number(appID), appSecret, token, onlyQQGuild);
-          break;
         case 11:
           info = await postAddOnebot11ReverseWs(account, reverseAddr?.trim());
-          break;
-        case 13:
-          info = await postaddSealChat(url.trim(), token.trim());
-          break;
-        case 14:
-          info = await postAddSatori(platform, host, port, token);
           break;
         case 15:
           {

@@ -64,40 +64,22 @@ func bindImConnectionApi(root *echo.Group) {
 	im := root.Group("/im_connections")
 	im.GET("/list", ImConnections)
 	im.GET("/get", ImConnectionsGet)
-	im.GET("/qq/get_versions", ImConnectionsGetQQVersions)
 	im.POST("/qrcode", ImConnectionsQrcodeGet)
-	im.POST("/sms_code_get", ImConnectionsSmsCodeGet)
-	im.POST("/sms_code_set", ImConnectionsSmsCodeSet)
 	im.POST("/gocq_captcha_set", ImConnectionsCaptchaSet)
 
-	// 这些都是与QQ/OneBot直接相关
-	im.POST("/add", ImConnectionsAddBuiltinGocq) // 逐步弃用此链接
 	im.POST("/addGocq", ImConnectionsAddBuiltinGocq)
 	im.POST("/addOnebot11ReverseWs", ImConnectionsAddReverseWs)
 	im.POST("/addGocqSeparate", ImConnectionsAddGocqSeparate)
-	im.POST("/addWalleQ", ImConnectionsAddWalleQ)
 	im.POST("/addLagrange", ImConnectionsAddBuiltinLagrange)
-	// im.POST("/addLagrangeGo", ImConnectionsAddLagrangeGO)
-	im.POST("/addRed", ImConnectionsAddRed)
-	im.POST("/addOfficialQQ", ImConnectionsAddOfficialQQ)
 
 	im.POST("/addDiscord", ImConnectionsAddDiscord)
 	im.POST("/addKook", ImConnectionsAddKook)
 	im.POST("/addTelegram", ImConnectionsAddTelegram)
-	im.POST("/addMinecraft", ImConnectionsAddMinecraft)
-	im.POST("/addDodo", ImConnectionsAddDodo)
-	im.POST("/addDingtalk", ImConnectionsAddDingTalk)
-	im.POST("/addSlack", ImConnectionsAddSlack)
-	im.POST("/addSealChat", ImConnectionsAddSealChat)
-	im.POST("/addSatori", ImConnectionsAddSatori)
 	im.POST("/addMilky", ImConnectionsAddMilky)
 
 	im.POST("/del", ImConnectionsDel)
-	im.POST("/set_enable", ImConnectionsSetEnable)
-	im.POST("/set_data", ImConnectionsSetData)
 	im.GET("/get_lgr_signinfo", ImConnectionsGetSignInfo)
 	im.POST("/gocqhttpRelogin", ImConnectionsGocqhttpRelogin)
-	im.POST("/walleQRelogin", ImConnectionsWalleQRelogin)
 	im.GET("/gocq_config_download.zip", ImConnectionsGocqConfigDownload)
 }
 

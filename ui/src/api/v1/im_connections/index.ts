@@ -7,54 +7,11 @@ export function getConnectionList() {
   return request<DiceConnection[]>('get', 'list');
 }
 
-export function getConnectQQVersion() {
-  return request<{ result: true; versions: string[] } | { result: false }>(
-    'get',
-    'qq/get_versions',
-  );
-}
-
-export function postGoCqHttpRelogin(id: string) {
-  return request<DiceConnection>('post', 'gocqhttpRelogin', { id }, 'json', {
-    timeout: 65000,
-  });
-}
-
 export function getLagrangeSignInfo() {
   return request<{ result: true; data: SignInfo[] } | { result: false; err: string }>(
     'get',
     'get_lgr_signinfo',
   );
-}
-
-export function postAddGocq(
-  account: string,
-  password: string,
-  protocol: number,
-  appVersion: string,
-  useSignServer: boolean,
-  signServerConfig: SignServerConfig,
-) {
-  return request<DiceConnection>(
-    'post',
-    'addGocq',
-    {
-      account,
-      password,
-      protocol,
-      appVersion,
-      useSignServer,
-      signServerConfig,
-    },
-    'json',
-    { timeout: 65000 },
-  );
-}
-
-export function postAddWalleQ(account: string, password: string, protocol: number) {
-  return request<DiceConnection>('post', 'addWalleQ', { account, password, protocol }, 'json', {
-    timeout: 65000,
-  });
 }
 
 export function postAddDiscord(
@@ -84,18 +41,6 @@ export function postAddTelegram(token: string, proxyURL: string) {
   });
 }
 
-export function postAddMinecraft(url: string) {
-  return request<DiceConnection>('post', 'addMinecraft', { url }, 'json', {
-    timeout: 65000,
-  });
-}
-
-export function postAddDodo(clientID: string, token: string) {
-  return request<DiceConnection>('post', 'addDodo', { clientID, token }, 'json', {
-    timeout: 65000,
-  });
-}
-
 export function postAddGocqSeparate(
   relWorkDir: string,
   connectUrl: string,
@@ -113,64 +58,8 @@ export function postAddGocqSeparate(
   );
 }
 
-export function postAddRed(host: string, port: string, token: string) {
-  return request<DiceConnection>('post', 'addRed', { host, port, token }, 'json', {
-    timeout: 65000,
-  });
-}
-
-export function postAddDingtalk(
-  clientID: string,
-  token: string,
-  nickname: string,
-  robotCode: string,
-) {
-  return request<DiceConnection>(
-    'post',
-    'addDingtalk',
-    { clientID, token, nickname, robotCode },
-    'json',
-    {
-      timeout: 65000,
-    },
-  );
-}
-
-export function postAddSlack(botToken: string, appToken: string) {
-  return request<DiceConnection>('post', 'addSlack', { botToken, appToken }, 'json', {
-    timeout: 65000,
-  });
-}
-
-export function postAddOfficialQQ(
-  appID: number,
-  appSecret: string,
-  token: string,
-  onlyQQGuild: boolean,
-) {
-  return request<DiceConnection>(
-    'post',
-    'addOfficialQQ',
-    { appID, appSecret, token, onlyQQGuild },
-    'json',
-    {
-      timeout: 65000,
-    },
-  );
-}
-
 export function postAddOnebot11ReverseWs(account: string, reverseAddr?: string) {
   return request<DiceConnection>('post', 'addOnebot11ReverseWs', { account, reverseAddr }, 'json', {
-    timeout: 65000,
-  });
-}
-
-export function postaddSealChat(url: string, token: string) {
-  return request<DiceConnection>('post', 'addSealChat', { url, token }, 'json', { timeout: 65000 });
-}
-
-export function postAddSatori(platform: string, host: string, port: string, token: string) {
-  return request<DiceConnection>('post', 'addSatori', { platform, host, port, token }, 'json', {
     timeout: 65000,
   });
 }
@@ -206,44 +95,6 @@ export function postConnectionQrcode(id: string) {
   return request<{ img: string }>('post', 'qrcode', { id });
 }
 
-export function postSmsCodeSet(id: string, code: string) {
-  return request('post', 'sms_code_set', { id, code });
-}
-
-export function postGoCqCaptchaSet(id: string, code: string) {
-  return request('post', 'gocq_captcha_set', { id, code });
-}
-
-export function postConnectSetEnable(id: string, enable: boolean) {
-  return request<DiceConnection>('post', 'set_enable', { id, enable });
-}
-
-export function postConnectSetData(
-  id: string,
-  {
-    protocol,
-    appVersion,
-    ignoreFriendRequest,
-    useSignServer,
-    signServerConfig,
-  }: {
-    protocol: number;
-    appVersion: string;
-    ignoreFriendRequest: boolean;
-    useSignServer?: boolean;
-    signServerConfig?: SignServerConfig;
-  },
-) {
-  return request<DiceConnection>('post', 'set_data', {
-    id,
-    protocol,
-    appVersion,
-    ignoreFriendRequest,
-    useSignServer,
-    signServerConfig,
-  });
-}
-
 export interface DiceConnection {
   id: string;
   state: number;
@@ -277,7 +128,6 @@ interface AdapterQQ {
   ignoreFriendRequest: boolean;
   goCqHttpSmsNumberTip: string;
   useSignServer: boolean;
-  signServerConfig: SignServerConfig;
   redVersion: string;
   host: string;
   port: number;
@@ -288,91 +138,16 @@ interface AdapterQQ {
   signServerVer: string;
   signServerName: string;
 }
+
 enum goCqHttpStateCode {
   Init = 0,
   InLogin = 1,
   InLoginQrCode = 2,
-  InLoginBar = 3,
-  InLoginVerifyCode = 6,
-  InLoginDeviceLock = 7,
   LoginSuccessed = 10,
   LoginFailed = 11,
   Closed = 20,
 }
-//   type addImConnectionForm = {
-//     accountType: number,
-//     step: number,
-//     isEnd: false,
-//     account: string,
-//     nickname: string,
-//     password: string,
-//     protocol: number,
-//     appVersion: string,
-//     implementation: string,
-//     id: string,
-//     token: string,
-//     botToken: string,
-//     appToken: string,
-//     proxyURL: string,
-//     reverseProxyUrl: string,
-//     reverseProxyCDNUrl: string,
-//     url: string,
-//     clientID: string,
-//     robotCode: string,
-//     ignoreFriendRequest: false,
-//     extraArgs: string,
-//     endpoint: DiceConnection,
 
-//     relWorkDir: string,
-//     accessToken: string,
-//     connectUrl: string,
-
-//     host: string,
-//     port: undefined,
-
-//     appID: undefined,
-//     appSecret: string,
-//     onlyQQGuild: true,
-
-//     useSignServer: false,
-//     signServerConfig: {
-//       signServers: [
-//         {
-//           url: string,
-//           key: string,
-//           authorization: string
-//         }
-//       ],
-//       ruleChangeSignServer: number,
-//       maxCheckCount: number,
-//       signServerTimeout: number,
-//       autoRegister: false,
-//       autoRefreshToken: false,
-//       refreshInterval: number
-//     },
-//     signServerType: number,
-//     signServerUrl: string,
-//     signServerKey: string,
-//     signServerVersion: string,
-
-//     reverseAddr: string,
-//     platform: string,
-//   }
-
-type SignServerConfig = {
-  signServers: ServerConfig[];
-  ruleChangeSignServer: number;
-  maxCheckCount: number;
-  signServerTimeout: number;
-  autoRegister: boolean;
-  autoRefreshToken: boolean;
-  refreshInterval: number;
-};
-type ServerConfig = {
-  url: string;
-  key: string;
-  authorization: string;
-};
 interface SignServer {
   name: string;
   url: string;

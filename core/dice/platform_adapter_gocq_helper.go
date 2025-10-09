@@ -9,10 +9,8 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
-	"regexp"
 	"runtime"
 	"runtime/debug"
-	"strconv"
 	"strings"
 	"time"
 
@@ -273,214 +271,6 @@ func GenerateDeviceJSONAndroid(dice *Dice, protocol int) (string, []byte, error)
 	return deviceJSON.Model, a, b
 }
 
-var defaultConfig = `
-# go-cqhttp 默认配置文件
-
-account: # 账号相关
-  uin: {QQ帐号} # QQ账号
-  password: {QQ密码} # 密码为空时使用扫码登录
-  encrypt: false  # 是否开启密码加密
-  status: 0      # 在线状态 请参考 https://docs.go-cqhttp.org/guide/config.html#在线状态
-  relogin: # 重连设置
-    delay: 3   # 首次重连延迟, 单位秒
-    interval: 3   # 重连间隔
-    max-times: 0  # 最大重连次数, 0为无限制
-
-  # 是否使用服务器下发的新地址进行重连
-  # 注意, 此设置可能导致在海外服务器上连接情况更差
-  use-sso-address: true
-  # 是否允许发送临时会话消息
-  allow-temp-session: false
-{旧版签名服务相关配置信息}
-{新版签名服务相关配置信息}
-
-heartbeat:
-  # 心跳频率, 单位秒
-  # -1 为关闭心跳
-  interval: 5
-
-message:
-  # 上报数据类型
-  # 可选: string,array
-  post-format: string
-  # 是否忽略无效的CQ码, 如果为假将原样发送
-  ignore-invalid-cqcode: false
-  # 是否强制分片发送消息
-  # 分片发送将会带来更快的速度
-  # 但是兼容性会有些问题
-  force-fragment: false
-  # 是否将url分片发送
-  fix-url: false
-  # 下载图片等请求网络代理
-  proxy-rewrite: ''
-  # 是否上报自身消息
-  report-self-message: false
-  # 移除服务端的Reply附带的At
-  remove-reply-at: false
-  # 为Reply附加更多信息
-  extra-reply-data: false
-  # 跳过 Mime 扫描, 忽略错误数据
-  skip-mime-scan: false
-
-output:
-  # 日志等级 trace,debug,info,warn,error
-  log-level: warn
-  # 日志时效 单位天. 超过这个时间之前的日志将会被自动删除. 设置为 0 表示永久保留.
-  log-aging: 15
-  # 是否在每次启动时强制创建全新的文件储存日志. 为 false 的情况下将会在上次启动时创建的日志文件续写
-  log-force-new: true
-  # 是否启用日志颜色
-  log-colorful: true
-  # 是否启用 DEBUG
-  debug: false # 开启调试模式
-
-# 默认中间件锚点
-default-middlewares: &default
-  # 访问密钥, 强烈推荐在公网的服务器设置
-  access-token: ''
-  # 事件过滤器文件目录
-  filter: ''
-  # API限速设置
-  # 该设置为全局生效
-  # 原 cqhttp 虽然启用了 rate_limit 后缀, 但是基本没插件适配
-  # 目前该限速设置为令牌桶算法, 请参考:
-  # https://baike.baidu.com/item/%E4%BB%A4%E7%89%8C%E6%A1%B6%E7%AE%97%E6%B3%95/6597000?fr=aladdin
-  rate-limit:
-    enabled: false # 是否启用限速
-    frequency: 1  # 令牌回复频率, 单位秒
-    bucket: 1     # 令牌桶大小
-
-database: # 数据库相关设置
-  leveldb:
-    # 是否启用内置leveldb数据库
-    # 启用将会增加10-20MB的内存占用和一定的磁盘空间
-    # 关闭将无法使用 撤回 回复 get_msg 等上下文相关功能
-    enable: true
-
-  # 媒体文件缓存， 删除此项则使用缓存文件(旧版行为)
-  cache:
-    image: data/image.db
-    video: data/video.db
-
-# 连接服务列表
-servers:
-  # 添加方式，同一连接方式可添加多个，具体配置说明请查看文档
-  #- http: # http 通信
-  #- ws:   # 正向 Websocket
-  #- ws-reverse: # 反向 Websocket
-  #- pprof: #性能分析服务器
-  # 正向WS设置
-  - ws:
-      # 正向WS服务器监听地址
-      host: 127.0.0.1
-      # 正向WS服务器监听端口
-      port: {WS端口}
-      # rc3
-      address: 127.0.0.1:{WS端口}
-      middlewares:
-        <<: *default # 引用默认中间件
-`
-
-func GenerateConfig(qq int64, port int, info GoCqhttpLoginInfo) string {
-	ret := strings.ReplaceAll(defaultConfig, "{WS端口}", strconv.Itoa(port))
-	ret = strings.Replace(ret, "{QQ帐号}", strconv.FormatInt(qq, 10), 1)
-	ret = strings.Replace(ret, "{QQ密码}", info.Password, 1)
-
-	if info.UseSignServer && info.SignServerConfig != nil {
-		ret = strings.Replace(ret, "{旧版签名服务相关配置信息}", generateOldSignServerConfigStr(info.SignServerConfig), 1)
-		ret = strings.Replace(ret, "{新版签名服务相关配置信息}", generateNewSignServerConfigStr(info.SignServerConfig), 1)
-	} else {
-		ret = strings.Replace(ret, "{旧版签名服务相关配置信息}", "", 1)
-		ret = strings.Replace(ret, "{新版签名服务相关配置信息}", "", 1)
-	}
-	return ret
-}
-
-func generateOldSignServerConfigStr(config *SignServerConfig) string {
-	if config.SignServers == nil {
-		return ""
-	}
-
-	mainServer := config.SignServers[0]
-	return fmt.Sprintf(`
-  # 旧版签名服务相关配置信息
-  sign-server: '%s'
-  # 如果签名服务器的版本在1.1.0及以下, 请将下面的参数改成true
-  # 该字段在新签名配置信息中也存在，防止重复此处不配置
-  # is-below-110: false
-  # 签名服务器所需要的apikey, 如果签名服务器的版本在1.1.0及以下则此项无效
-  key: '%s'
-`, mainServer.URL, mainServer.Key)
-}
-
-func generateNewSignServerConfigStr(config *SignServerConfig) string {
-	var signServers []string
-	for _, server := range config.SignServers {
-		signServers = append(
-			signServers,
-			fmt.Sprintf(`    - url: '%s'
-      key: "%s"
-      authorization: "%s"`, server.URL, server.Key, server.Authorization),
-		)
-	}
-	signServersStr := "  sign-servers:\n" + strings.Join(signServers, "\n")
-
-	return fmt.Sprintf(`  # 新版签名服务相关配置信息
-  # 数据包的签名服务器列表，第一个作为主签名服务器，后续作为备用
-  # 兼容 https://github.com/fuqiuluo/unidbg-fetch-qsign
-  # 如果遇到 登录 45 错误, 或者发送信息风控的话需要填入一个或多个服务器
-  # 不建议设置过多，设置主备各一个即可，超过 5 个只会取前五个
-  # 示例:
-  # sign-servers:
-  #   - url: 'http://127.0.0.1:8080' # 本地签名服务器
-  #     key: "114514"  # 相应 key
-  #     authorization: "-"   # authorization 内容, 依服务端设置
-  #   - url: 'https://signserver.example.com' # 线上签名服务器
-  #     key: "114514"
-  #     authorization: "-"
-  #   ...
-  #
-  # 服务器可使用docker在本地搭建或者使用他人开放的服务
-%s
-
-  # 判断签名服务不可用（需要切换）的额外规则
-  # 0: 不设置 （此时仅在请求无法返回结果时判定为不可用）
-  # 1: 在获取到的 sign 为空 （若选此建议关闭 auto-register，一般为实例未注册但是请求签名的情况）
-  # 2: 在获取到的 sign 或 token 为空（若选此建议关闭 auto-refresh-token ）
-  rule-change-sign-server: %d
-
-  # 连续寻找可用签名服务器最大尝试次数
-  # 为 0 时会在连续 3 次没有找到可用签名服务器后保持使用主签名服务器，不再尝试进行切换备用
-  # 否则会在达到指定次数后 **退出** 主程序
-  max-check-count: %d
-  # 签名服务请求超时时间(s)
-  sign-server-timeout: %d
-  # 如果签名服务器的版本在1.1.0及以下, 请将下面的参数改成true
-  # 建议使用 1.1.6 以上版本，低版本普遍半个月冻结一次
-  is-below-110: false
-  # 在实例可能丢失（获取到的签名为空）时是否尝试重新注册
-  # 为 true 时，在签名服务不可用时可能每次发消息都会尝试重新注册并签名。
-  # 为 false 时，将不会自动注册实例，在签名服务器重启或实例被销毁后需要重启 go-cqhttp 以获取实例
-  # 否则后续消息将不会正常签名。关闭此项后可以考虑开启签名服务器端 auto_register 避免需要重启
-  # 由于实现问题，当前建议关闭此项，推荐开启签名服务器的自动注册实例
-  auto-register: %v
-  # 是否在 token 过期后立即自动刷新签名 token（在需要签名时才会检测到，主要防止 token 意外丢失）
-  # 独立于定时刷新
-  auto-refresh-token: %v
-  # 定时刷新 token 间隔时间，单位为分钟, 建议 30~40 分钟, 不可超过 60 分钟
-  # 目前丢失token也不会有太大影响，可设置为 0 以关闭，推荐开启
-  refresh-interval: %d
-`,
-		signServersStr,
-		config.RuleChangeSignServer,
-		config.MaxCheckCount,
-		config.SignServerTimeout,
-		config.AutoRegister,
-		config.AutoRefreshToken,
-		config.RefreshInterval,
-	)
-}
-
 func NewGoCqhttpConnectInfoItem(account string) *EndPointInfo {
 	conn := new(EndPointInfo)
 	conn.ID = uuid.New().String()
@@ -537,8 +327,6 @@ func BuiltinQQServeProcessKillBase(dice *Dice, conn *EndPointInfo, isSync bool) 
 				_ = p.Wait() // 等待进程退出，因为Stop内部是Kill，这是不等待的
 			}
 		} else {
-			pa.GoCqhttpLoginDeviceLockURL = ""
-
 			workDir := gocqGetWorkDir(dice, conn)
 			qrcodeFile := filepath.Join(workDir, "qrcode.png")
 			if _, err := os.Stat(qrcodeFile); err == nil {
@@ -581,29 +369,12 @@ func GoCqhttpServeRemoveSessionToken(dice *Dice, conn *EndPointInfo) {
 }
 
 type GoCqhttpLoginInfo struct {
-	UIN              int64
-	Password         string
-	Protocol         int
-	AppVersion       string
-	IsAsyncRun       bool
-	UseSignServer    bool
-	SignServerConfig *SignServerConfig
-}
-
-type SignServerConfig struct {
-	SignServers          []*SignServer `json:"signServers"          yaml:"signServers"`
-	RuleChangeSignServer int           `json:"ruleChangeSignServer" yaml:"ruleChangeSignServer"`
-	MaxCheckCount        int           `json:"maxCheckCount"        yaml:"maxCheckCount"`
-	SignServerTimeout    int           `json:"signServerTimeout"    yaml:"signServerTimeout"`
-	AutoRegister         bool          `json:"autoRegister"         yaml:"autoRegister"`
-	AutoRefreshToken     bool          `json:"autoRefreshToken"     yaml:"autoRefreshToken"`
-	RefreshInterval      int           `json:"refreshInterval"      yaml:"refreshInterval"`
-}
-
-type SignServer struct {
-	URL           string `json:"url"           yaml:"url"`
-	Key           string `json:"key"           yaml:"key"`
-	Authorization string `json:"authorization" yaml:"authorization"`
+	UIN           int64
+	Password      string
+	Protocol      int
+	AppVersion    string
+	IsAsyncRun    bool
+	UseSignServer bool
 }
 
 func GoCqhttpServe(dice *Dice, conn *EndPointInfo, loginInfo GoCqhttpLoginInfo) {
@@ -650,7 +421,6 @@ func builtinGoCqhttpServe(dice *Dice, conn *EndPointInfo, loginInfo GoCqhttpLogi
 		qrcodeFile := filepath.Join(workDir, "qrcode.png")
 		deviceFilePath := filepath.Join(workDir, "device.json")
 		configFilePath := filepath.Join(workDir, "config.yml")
-		versionDirPath := filepath.Join(workDir, "data", "versions")
 		if _, err := os.Stat(qrcodeFile); err == nil {
 			// 如果已经存在二维码文件，将其删除
 			_ = os.Remove(qrcodeFile)
@@ -673,29 +443,6 @@ func builtinGoCqhttpServe(dice *Dice, conn *EndPointInfo, loginInfo GoCqhttpLogi
 			}
 		}
 
-		// 创建配置文件
-		if _, err := os.Stat(configFilePath); errors.Is(err, os.ErrNotExist) {
-			// 如果不存在 config.yml 那么启动一次，让它自动生成
-			// 改为：如果不存在，帮他创建
-			p, _ := GetRandomFreePort()
-			pa.ConnectURL = fmt.Sprintf("ws://localhost:%d", p)
-			qqid, _ := pa.mustExtractID(conn.UserID)
-			c := GenerateConfig(qqid, p, loginInfo)
-			_ = os.WriteFile(configFilePath, []byte(c), 0o644)
-		}
-
-		if versions, ok := GocqAppVersionMap[loginInfo.AppVersion]; ok {
-			if targetVersion, ok2 := versions[ProtocolType(loginInfo.Protocol)]; ok2 {
-				// 删除旧协议版本文件
-				_ = os.RemoveAll(versionDirPath)
-				// 创建协议版本文件
-				_ = os.MkdirAll(versionDirPath, 0o755)
-				versionFilePath := filepath.Join(versionDirPath, fmt.Sprintf("%d.json", loginInfo.Protocol))
-				jsonData, _ := json.Marshal(targetVersion)
-				_ = os.WriteFile(versionFilePath, jsonData, 0o644)
-			}
-		}
-
 		// 启动客户端
 		wd, _ := os.Getwd()
 		gocqhttpExePath, _ := filepath.Abs(filepath.Join(wd, "go-cqhttp/go-cqhttp"))
@@ -714,10 +461,6 @@ func builtinGoCqhttpServe(dice *Dice, conn *EndPointInfo, loginInfo GoCqhttpLogi
 		chQrCode := make(chan int, 1)
 		riskCount := 0
 		isSelfKilling := false
-
-		slideMode := 0
-		chSMS := make(chan string, 1)
-		chCaptcha := make(chan string, 1)
 
 		p.OutputHandler = func(line string, _type string) string {
 			if loginIndex != pa.CurLoginIndex {
@@ -753,119 +496,6 @@ func builtinGoCqhttpServe(dice *Dice, conn *EndPointInfo, loginInfo GoCqhttpLogi
 				if strings.Contains(line, "按 Enter 继续....") {
 					// 直接输入继续，基本都是登录失败
 					return "\n"
-				}
-
-				if strings.Contains(line, "WARNING") && strings.Contains(line, "账号已开启设备锁，请前往") {
-					re := regexp.MustCompile(`-> (.+?) <-`)
-					m := re.FindStringSubmatch(line)
-					dice.Logger.Info("触发设备锁流程: ", len(m) > 0)
-					if len(m) > 0 {
-						// 设备锁流程，因为需要重新登录，进行一个“已成功登录过”的标记，这样配置文件不会被删除
-						pa.GoCqhttpState = StateCodeInLoginDeviceLock
-						pa.GoCqhttpLoginSucceeded = true
-						pa.GoCqhttpLoginDeviceLockURL = m[1]
-						dice.LastUpdatedTime = time.Now().Unix()
-						dice.Save(false)
-					}
-				}
-
-				if strings.Contains(line, " 发送短信验证码") && strings.Contains(line, " [WARNING]: 1. 向手机 ") {
-					re := regexp.MustCompile(`\[WARNING\]: 发送短信验证码 (.+?) 发送短信验证码`)
-					m := re.FindStringSubmatch(line)
-					if len(m) > 0 {
-						pa.GoCqhttpSmsNumberTip = m[1]
-					}
-				}
-
-				if strings.Contains(line, " [WARNING]: 登录需要滑条验证码, 请验证后重试.") {
-					slideMode = 1
-				}
-
-				if strings.Contains(line, " [WARNING]: 账号已开启设备锁，请选择验证方式") {
-					slideMode = 2
-				}
-
-				// 直接短信验证，不过滑条
-				if slideMode == 2 {
-					// 账号已开启设备锁，请选择验证方式
-					// 1. 向手机 %v 发送短信验证码
-					// 2. 使用手机QQ扫码验证
-					// 请输入(1 - 2)：
-					if strings.Contains(line, "WARNING") && strings.Contains(line, "[WARNING]: 请输入(1 - 2)：") {
-						// gocq的tty检测太辣鸡了
-						return "1\n"
-					}
-				}
-
-				// 滑条流程
-				if slideMode == 1 {
-					if strings.Contains(line, "WARNING") && strings.Contains(line, "[WARNING]: 请输入(1 - 2)：") {
-						// gocq的tty检测太辣鸡了
-						return "2\n"
-					}
-
-					if strings.Contains(line, "WARNING") && strings.Contains(line, "请前往该地址验证") {
-						re := regexp.MustCompile(`-> (.+)`)
-						m := re.FindStringSubmatch(line)
-						dice.Logger.Info("触发滑条流程: ", len(m) > 0)
-
-						if len(m) > 0 {
-							pa.GoCqhttpState = GoCqhttpStateCodeInLoginBar
-							// pa.GoCqhttpLoginDeviceLockURL = strings.TrimSpace(m[1])
-							linkUrl := strings.TrimSpace(m[1])
-
-							urlPrefix := "https://ssl.captcha.qq.com/"
-							if strings.HasPrefix(linkUrl, "https://ssl.captcha.qq.com/") {
-								pa.GoCqhttpLoginDeviceLockURL = "https://gocqhelper.sealdice.com/" + linkUrl[len(urlPrefix):]
-							}
-
-							dice.Logger.Info("进入滑条验证码流程，等待输入")
-							pa.GoCqhttpLoginCaptcha = ""
-							go func() {
-								// 检查是否有短信验证码
-								for range 100 {
-									if pa.GoCqhttpState != GoCqhttpStateCodeInLoginBar {
-										break
-									}
-									time.Sleep(6 * time.Second)
-									if pa.GoCqhttpLoginCaptcha != "" {
-										chCaptcha <- pa.GoCqhttpLoginCaptcha
-										break
-									}
-								}
-							}()
-							code := <-chCaptcha
-							dice.Logger.Infof("即将输入token: %v", code)
-							return code + "\n"
-						}
-					}
-				}
-
-				if strings.Contains(line, " [WARNING]: 请输入短信验证码：") {
-					dice.Logger.Info("进入短信验证码流程，等待输入")
-					pa.GoCqhttpState = GoCqhttpStateCodeInLoginVerifyCode
-					pa.GoCqhttpLoginVerifyCode = ""
-					go func() {
-						// 检查是否有短信验证码
-						for range 100 {
-							if pa.GoCqhttpState != GoCqhttpStateCodeInLoginVerifyCode {
-								break
-							}
-							time.Sleep(6 * time.Second)
-							if pa.GoCqhttpLoginVerifyCode != "" {
-								chSMS <- pa.GoCqhttpLoginVerifyCode
-								break
-							}
-						}
-					}()
-					code := <-chSMS
-					dice.Logger.Infof("即将输入短信验证码: %v", code)
-					return code + "\n"
-				}
-
-				if strings.Contains(line, "发送验证码失败，可能是请求过于频繁.") {
-					pa.GoCqhttpState = StateCodeLoginFailed
-					pa.GocqhttpLoginFailedReason = "发送验证码失败，可能是请求过于频繁"
 				}
 
 				// 登录成功

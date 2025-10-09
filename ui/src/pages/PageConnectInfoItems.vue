@@ -54,59 +54,6 @@
             :src="store.curDice.qrcodes[i.id]" />
         </div>
 
-        <div
-          v-if="
-            i.adapter?.loginState === goCqHttpStateCode.InLoginBar &&
-            i.adapter?.goCqHttpLoginDeviceLockUrl
-          "
-          style="position: absolute; width: 17rem; height: 14rem; background: #fff">
-          <template v-if="i.id === curCaptchaIdSet">
-            <div>已提交 ticket，正在等待 gocqhttp 回应</div>
-          </template>
-          <template v-else>
-            <div style="margin-left: 2rem">滑条验证码流程</div>
-            <!-- <div><a style="line-break: anywhere;" :href="i.adapter?.goCqHttpLoginDeviceLockUrl" target="_blank">{{ i.adapter?.goCqHttpLoginDeviceLockUrl }}</a></div> -->
-            <div>
-              <a
-                style="line-break: anywhere"
-                href="javascript:void(0)"
-                @click="captchaUrlSet(i, i.adapter?.goCqHttpLoginDeviceLockUrl)">
-                {{ i.adapter?.goCqHttpLoginDeviceLockUrl }}
-              </a>
-            </div>
-          </template>
-        </div>
-
-        <div
-          v-if="i.adapter?.loginState === goCqHttpStateCode.InLoginVerifyCode"
-          style="position: absolute; width: 17rem; height: 18rem; background: #fff">
-          <div style="margin-left: 2rem">短信验证码流程</div>
-          <div style="margin-top: 4rem">
-            <n-descriptions label-placement="left">
-              <n-descriptions-item label="验证码">
-                <n-input v-model:value="smsCode"></n-input>
-              </n-descriptions-item>
-              <n-descriptions-item label="">
-                <n-button
-                  type="primary"
-                  tertiary
-                  :disabled="smsCode == ''"
-                  @click="submitSmsCode(i)">
-                  提交
-                </n-button>
-              </n-descriptions-item>
-            </n-descriptions>
-          </div>
-        </div>
-
-        <n-alert
-          v-if="i.platform === 'QQ' && i.protocolType === 'red'"
-          type="error"
-          :closable="false"
-          :bordered="false"
-          class="mb-4">
-          新版 Chronocat（0.2.x 以上）不再提供 red 协议，故海豹将在未来移除该支持，请尽快迁移。
-        </n-alert>
         <n-descriptions ref="formRef" :model="i" :column="1" label-placement="left">
           <n-descriptions-item label="状态">
             <n-flex>
@@ -165,9 +112,7 @@
 
           <template
             v-if="
-              i.platform === 'QQ' &&
-              (i.protocolType === 'onebot' || i.protocolType === 'walle-q') &&
-              i.adapter.builtinMode === 'gocq'
+              i.platform === 'QQ' && i.protocolType === 'onebot' && i.adapter.builtinMode === 'gocq'
             ">
             <n-descriptions-item v-if="i.adapter.useInPackGoCqhttp" label="协议">
               <div v-if="i.adapter?.inPackGoCqHttpProtocol === 0">Unset</div>
@@ -190,7 +135,6 @@
               <div v-if="i.adapter?.implementation === 'gocq' || i.adapter?.implementation === ''">
                 Go-Cqhttp
               </div>
-              <div v-if="i.adapter?.implementation === 'walle-q'">Walle-q</div>
             </n-descriptions-item>
             <n-descriptions-item v-else-if="i.adapter?.isReverse" label="特殊">
               <div>反向 WS</div>
@@ -234,27 +178,6 @@
             </n-descriptions-item>
           </template>
 
-          <template v-if="i.platform === 'QQ' && i.protocolType === 'red'">
-            <n-descriptions-item label="协议">
-              <div>[已弃用]Red</div>
-            </n-descriptions-item>
-            <n-descriptions-item label="协议版本">
-              <div>{{ i.adapter?.redVersion || '未知' }}</div>
-            </n-descriptions-item>
-            <n-descriptions-item label="连接地址">
-              <div>{{ i.adapter?.host + ':' + i.adapter?.port }}</div>
-            </n-descriptions-item>
-          </template>
-
-          <template v-if="i.platform === 'QQ' && i.protocolType === 'official'">
-            <n-descriptions-item label="协议">
-              <div>[WIP] 官方 QQ Bot</div>
-            </n-descriptions-item>
-            <n-descriptions-item label="AppID">
-              <div>{{ i.adapter?.appID }}</div>
-            </n-descriptions-item>
-          </template>
-
           <template
             v-if="
               i.platform === 'QQ' && i.protocolType === 'onebot' && i.adapter.builtinMode === 'gocq'
@@ -266,15 +189,6 @@
                 </template>
                 导出 gocq 设置，用于转分离部署
               </n-tooltip>
-            </n-descriptions-item>
-          </template>
-
-          <template v-if="i.protocolType === 'satori'">
-            <n-descriptions-item label="协议">
-              <div>[WIP]Satori</div>
-            </n-descriptions-item>
-            <n-descriptions-item label="平台">
-              <div>{{ i.platform }}</div>
             </n-descriptions-item>
           </template>
         </n-descriptions>
@@ -319,42 +233,10 @@
     </template>
     <template v-if="form.step === 1">
       <n-alert
-        v-if="form.accountType === 7"
-        type="error"
-        :closable="false"
-        style="margin-bottom: 1.5rem">
-        该支持功能不完善，所适配的目标 Chronocat 版本为 0.0.54，低于该版本不建议使用。<br />同时，新版
-        Chronocat（0.2.x 以上）不再提供 red 协议，海豹也将在未来移除该支持。
-      </n-alert>
-      <n-alert
-        v-if="form.accountType === 10"
-        type="warning"
-        :closable="false"
-        style="margin-bottom: 1.5rem">
-        该支持仍处于实验阶段，部分功能尚未完善。<br />同时，受到腾讯官方提供的 API
-        能力的限制，一些功能暂时无法实现。
-      </n-alert>
-      <n-alert
-        v-if="form.accountType === 14"
-        type="warning"
-        :closable="false"
-        style="margin-bottom: 1.5rem">
-        该支持仍处于实验阶段，部分功能尚未完善。<br />- QQ 平台适配目标版本 0.2.x 以上的 Chronocat。
-      </n-alert>
-      <n-alert
-        v-if="form.accountType === 0"
-        type="error"
-        :closable="false"
-        style="margin-bottom: 1.5rem">
-        内置 gocq 方案已不再支持，目前仅为兼容性保留，<strong>新增入口已关闭</strong>。<br />
-        使用内置方案请切换到新的内置客户端。<br />
-        如果你依然需要使用 gocq，可以切换到分离部署方式进行连接，但我们非常不建议您再继续使用 gocq。
-      </n-alert>
-      <n-alert
         v-if="
           store.diceServers.length > 0 &&
           store.diceServers[0].baseInfo.containerMode &&
-          (form.accountType === 15 || form.accountType === 0)
+          form.accountType === 15
         "
         type="warning"
         :closable="false"
@@ -365,7 +247,7 @@
         v-if="
           store.diceServers.length > 0 &&
           store.diceServers[0].baseInfo.containerMode &&
-          (form.accountType === 16 || form.accountType === 0)
+          form.accountType === 16
         "
         type="warning"
         :closable="false"
@@ -512,270 +394,6 @@
             </n-text>
           </n-spin>
         </n-form-item>
-        <n-form-item
-          v-if="form.accountType === 0"
-          label="账号"
-          :label-width="formLabelWidth"
-          required>
-          <n-input v-model:value="form.account"></n-input>
-        </n-form-item>
-
-        <n-form-item v-if="form.accountType === 0" label="密码" :label-width="formLabelWidth">
-          <n-input v-model:value="form.password" type="password"></n-input>
-          <small>
-            <div>提示：新设备首次登录多半需要手机版扫码，建议先准备好</div>
-            <div>能够进行扫码登录（不填写密码即可），但注意扫码登录不支持自动重连。</div>
-            <div>如果出现“要求同一 WIFI 扫码”可以本地登录后备份，复制到服务器上。</div>
-            <!-- v-if="form.protocol !== 2"  -->
-            <div style="color: #aa4422">
-              提示：首次登录时，建议先尝试 AndroidPad，如失败，切换使用 Android，再失败手表协议。
-            </div>
-            <!-- <div v-if="form.protocol !== 1" style="color: #aa4422;">提示：首次登录时，iPad 或者 Android 手表协议一般都会失败，建议用安卓登录后改协议。</div> -->
-          </small>
-        </n-form-item>
-
-        <n-form-item
-          v-if="form.accountType === 0 && (form.protocol === 1 || form.protocol === 6)"
-          :label-width="formLabelWidth">
-          <template #label>
-            <div style="display: flex; align-items: center">
-              <span>签名服务</span>
-              <n-tooltip>
-                <template #trigger>
-                  <n-icon><i-carbon-help-filled /></n-icon>
-                </template>
-                如果不知道这是什么，请选择 不使用。允许填写签名服务相关信息。
-              </n-tooltip>
-            </div>
-          </template>
-          <n-radio-group v-model:value="signConfigType" size="small" @change="signConfigTypeChange">
-            <n-radio-button value="none">不使用</n-radio-button>
-            <n-radio-button value="simple">简易配置</n-radio-button>
-            <n-radio-button value="advanced">高级配置</n-radio-button>
-          </n-radio-group>
-        </n-form-item>
-        <n-form-item
-          v-if="
-            form.accountType === 0 &&
-            (form.protocol === 1 || form.protocol === 6) &&
-            signConfigType === 'simple'
-          "
-          label="服务url"
-          :label-width="formLabelWidth">
-          <n-input
-            v-model:value="form.signServerConfig.signServers[0].url"
-            placeholder="http://127.0.0.1:8080"></n-input>
-        </n-form-item>
-        <n-form-item
-          v-if="
-            form.accountType === 0 &&
-            (form.protocol === 1 || form.protocol === 6) &&
-            signConfigType === 'simple'
-          "
-          label="服务key"
-          :label-width="formLabelWidth">
-          <n-input
-            v-model:value="form.signServerConfig.signServers[0].key"
-            placeholder="114514"></n-input>
-        </n-form-item>
-        <n-form-item
-          v-if="
-            form.accountType === 0 &&
-            (form.protocol === 1 || form.protocol === 6) &&
-            signConfigType === 'simple'
-          "
-          label="服务鉴权"
-          :label-width="formLabelWidth">
-          <n-input
-            v-model:value="form.signServerConfig.signServers[0].authorization"
-            placeholder="Bearer xxxx"></n-input>
-        </n-form-item>
-
-        <n-form-item
-          v-if="
-            form.accountType === 0 &&
-            (form.protocol === 1 || form.protocol === 6) &&
-            signConfigType === 'advanced'
-          ">
-          <n-alert type="warning" :closable="false">
-            如果不理解以下配置项，请使用 <strong>简易配置</strong>
-          </n-alert>
-        </n-form-item>
-        <n-form-item
-          v-if="
-            form.accountType === 0 &&
-            (form.protocol === 1 || form.protocol === 6) &&
-            signConfigType === 'advanced'
-          ">
-          <n-dynamic-input :data="form.signServerConfig.signServers" @create="handleSignServerAdd">
-            <template #create-button-default>新增一行</template>
-            <template #default="{ value }">
-              <n-flex>
-                <n-input v-model:value="value.url" placeholder="http://127.0.0.1:8080" />
-                <n-input v-model:value="value.key" placeholder="114514" />
-                <n-input v-model:value="value.authorization" placeholder="Bearer xxxx" />
-              </n-flex>
-            </template>
-          </n-dynamic-input>
-        </n-form-item>
-        <n-form-item
-          v-if="
-            form.accountType === 0 &&
-            (form.protocol === 1 || form.protocol === 6) &&
-            signConfigType === 'advanced'
-          "
-          :label-width="formLabelWidth">
-          <template #label>
-            <div style="display: flex; align-items: center">
-              <span>自动切换规则</span>
-              <n-tooltip style="">
-                <template #trigger>
-                  <n-icon><i-carbon-help-filled /></n-icon>
-                </template>
-                判断签名服务不可用（需要切换）的额外规则<br />
-                - 不设置（此时仅在请求无法返回结果时判定为不可用）<br />
-                - 在获取到的 sign 为空（若选此建议关闭
-                auto-register，一般为实例未注册但是请求签名的情况）<br />
-                - 在获取到的 sign 或 token 为空（若选此建议关闭 auto-refresh-token）
-              </n-tooltip>
-            </div>
-          </template>
-          <n-radio-group v-model:value="form.signServerConfig.ruleChangeSignServer" size="small">
-            <n-radio-button :value="0">不设置</n-radio-button>
-            <n-radio-button :value="1">sign 为空时切换</n-radio-button>
-            <n-radio-button :value="2">sign/token为空时切换</n-radio-button>
-          </n-radio-group>
-        </n-form-item>
-        <n-form-item
-          v-if="
-            form.accountType === 0 &&
-            (form.protocol === 1 || form.protocol === 6) &&
-            signConfigType === 'advanced'
-          "
-          :label-width="formLabelWidth">
-          <template #label>
-            <div style="display: flex; align-items: center">
-              <span>最大尝试次数</span>
-              <n-tooltip>
-                <template #trigger>
-                  <n-icon> <i-carbon-help-filled /></n-icon>
-                </template>
-                连续寻找可用签名服务器最大尝试次数<br />
-                为 0 时会在连续 3
-                次没有找到可用签名服务器后保持使用主签名服务器，不再尝试进行切换备用<br />
-                否则会在达到指定次数后 <strong>退出</strong> 主程序
-              </n-tooltip>
-            </div>
-          </template>
-          <n-input-number
-            v-model:value="form.signServerConfig.maxCheckCount"
-            size="small"
-            :precision="0"
-            :min="0" />
-        </n-form-item>
-        <n-form-item
-          v-if="
-            form.accountType === 0 &&
-            (form.protocol === 1 || form.protocol === 6) &&
-            signConfigType === 'advanced'
-          "
-          :label-width="formLabelWidth">
-          <template #label>
-            <div style="display: flex; align-items: center">
-              <span>请求超时时间</span>
-              <n-tooltip>
-                <template #trigger>
-                  <n-icon><i-carbon-help-filled /></n-icon>
-                </template>
-                签名服务请求超时时间 (s)
-              </n-tooltip>
-            </div>
-          </template>
-          <n-input-number
-            v-model:value="form.signServerConfig.signServerTimeout"
-            size="small"
-            :precision="0"
-            :min="0" />
-          <span>&nbsp;秒</span>
-        </n-form-item>
-        <n-form-item
-          v-if="
-            form.accountType === 0 &&
-            (form.protocol === 1 || form.protocol === 6) &&
-            signConfigType === 'advanced'
-          "
-          :label-width="formLabelWidth">
-          <template #label>
-            <div style="display: flex; align-items: center">
-              <span>自动注册实例</span>
-              <n-tooltip>
-                <template #trigger>
-                  <n-icon><i-carbon-help-filled /></n-icon>
-                </template>
-                在实例可能丢失（获取到的签名为空）时是否尝试重新注册<br />
-                为 true 时，在签名服务不可用时可能每次发消息都会尝试重新注册并签名。<br />
-                为 false 时，将不会自动注册实例，在签名服务器重启或实例被销毁后需要重启 go-cqhttp
-                以获取实例<br />
-                否则后续消息将不会正常签名。关闭此项后可以考虑开启签名服务器端 auto_register
-                避免需要重启<br />
-                由于实现问题，当前建议关闭此项，推荐开启签名服务器的自动注册实例
-              </n-tooltip>
-            </div>
-          </template>
-          <n-switch
-            v-model:value="form.signServerConfig.autoRegister"
-            style="--el-switch-on-color: #67c23a" />
-        </n-form-item>
-        <n-form-item
-          v-if="
-            form.accountType === 0 &&
-            (form.protocol === 1 || form.protocol === 6) &&
-            signConfigType === 'advanced'
-          "
-          :label-width="formLabelWidth">
-          <template #label>
-            <div style="display: flex; align-items: center">
-              <span>自动刷新 token</span>
-              <n-tooltip>
-                <template #trigger>
-                  <n-icon><i-carbon-help-filled /></n-icon>
-                </template>
-                是否在 token 过期后立即自动刷新签名 token（在需要签名时才会检测到，主要防止 token
-                意外丢失）<br />
-                独立于定时刷新
-              </n-tooltip>
-            </div>
-          </template>
-          <n-switch
-            v-model:value="form.signServerConfig.autoRefreshToken"
-            style="--el-switch-on-color: #67c23a" />
-        </n-form-item>
-        <n-form-item
-          v-if="
-            form.accountType === 0 &&
-            (form.protocol === 1 || form.protocol === 6) &&
-            signConfigType === 'advanced'
-          "
-          :label-width="formLabelWidth">
-          <template #label>
-            <div style="display: flex; align-items: center">
-              <span>刷新间隔</span>
-              <n-tooltip>
-                <template #trigger>
-                  <n-icon><i-carbon-help-filled /></n-icon>
-                </template>
-                定时刷新 token 间隔时间，单位为分钟，建议 30~40 分钟，不可超过 60 分钟<br />
-                目前丢失 token 也不会有太大影响，可设置为 0 以关闭，推荐开启
-              </n-tooltip>
-            </div>
-          </template>
-          <n-input-number
-            v-model:value="form.signServerConfig.refreshInterval"
-            size="small"
-            :precision="0"
-            :min="0" />
-          <span>&nbsp;分钟</span>
-        </n-form-item>
 
         <n-form-item
           v-if="form.accountType === 6"
@@ -872,69 +490,6 @@
         </n-form-item>
 
         <n-form-item
-          v-if="form.accountType === 7"
-          label="主机"
-          :label-width="formLabelWidth"
-          required>
-          <n-input v-model:value="form.host" placeholder="Red 服务的地址，如 127.0.0.1"></n-input>
-        </n-form-item>
-        <n-form-item
-          v-if="form.accountType === 7"
-          label="端口"
-          :label-width="formLabelWidth"
-          required>
-          <n-input-number v-model:value="form.port as any" placeholder="如 16530" />
-        </n-form-item>
-        <n-form-item
-          v-if="form.accountType === 7"
-          label="令牌"
-          :label-width="formLabelWidth"
-          required>
-          <n-input v-model:value="form.token" placeholder="Red 服务的 token"></n-input>
-        </n-form-item>
-
-        <n-form-item
-          v-if="form.accountType === 10"
-          label="机器人ID"
-          :label-width="formLabelWidth"
-          required>
-          <n-input v-model:value="form.appID" placeholder="填写在开放平台获取的 AppID" />
-        </n-form-item>
-        <n-form-item
-          v-if="form.accountType === 10"
-          label="机器人令牌"
-          :label-width="formLabelWidth"
-          required>
-          <n-input v-model:value="form.token" placeholder="填写在开放平台获取的 Token"></n-input>
-        </n-form-item>
-        <n-form-item
-          v-if="form.accountType === 10"
-          label="机器人密钥"
-          :label-width="formLabelWidth"
-          required>
-          <n-input
-            v-model:value="form.appSecret"
-            placeholder="填写在开放平台获取的AppSecret"
-            type="text"></n-input>
-        </n-form-item>
-        <n-form-item
-          v-if="form.accountType === 10"
-          label="只在频道使用"
-          :label-width="formLabelWidth"
-          required>
-          <n-switch v-model:value="form.onlyQQGuild" />
-        </n-form-item>
-
-        <n-form-item v-if="form.accountType === 10" :label-width="formLabelWidth">
-          <small>
-            <div>提示：进入腾讯开放平台创建一个机器人</div>
-            <div>https://q.qq.com/#/app/bot</div>
-            <div>创建之后进入机器人管理后台，切换到「开发 - 开发设置」页</div>
-            <div>把机器人的相关信息复制并粘贴进来</div>
-          </small>
-        </n-form-item>
-
-        <n-form-item
           v-if="form.accountType === 1"
           label="Token"
           :label-width="formLabelWidth"
@@ -952,10 +507,7 @@
           v-if="form.accountType === 1"
           label="http 代理地址"
           :label-width="formLabelWidth">
-          <n-input
-            v-model:value="form.proxyURL"
-            type="string"
-            placeholder="例：http://127.0.0.1:7890" />
+          <n-input v-model:value="form.proxyURL" placeholder="例：http://127.0.0.1:7890" />
         </n-form-item>
         <n-form-item
           v-if="form.accountType === 1"
@@ -978,7 +530,7 @@
           label="Token"
           :label-width="formLabelWidth"
           required>
-          <n-input v-model:value="form.token" type="string"></n-input>
+          <n-input v-model:value="form.token" />
           <small>
             <div>提示：进入 KOOK 开发者平台创建一个新的应用</div>
             <div>https://developer.kookapp.cn/app/index</div>
@@ -992,7 +544,7 @@
           label="Token"
           :label-width="formLabelWidth"
           required>
-          <n-input v-model:value="form.token" type="string"></n-input>
+          <n-input v-model:value="form.token" />
           <small>
             <div>提示：私聊 BotFather(https://t.me/BotFather)</div>
             <div>使用/newbot 申请一个新的机器人</div>
@@ -1007,112 +559,6 @@
           label="http 代理地址"
           :label-width="formLabelWidth">
           <n-input v-model:value="form.proxyURL" placeholder="http://127.0.0.1:7890" />
-        </n-form-item>
-
-        <n-form-item
-          v-if="form.accountType === 4"
-          label="Url"
-          :label-width="formLabelWidth"
-          required>
-          <n-input v-model:value="form.url" type="string"></n-input>
-          <small>
-            <div>提示：前往 https://github.com/sealdice/sealdice-minecraft/releases/latest</div>
-            <div>下载最新的 mc 插件然后安装在 mc 服务器中</div>
-            <div>按照 ip:端口 的格式写在框里，默认端口 8887</div>
-            <div>
-              详细的使用说明请阅读 Readme (https://github.com/sealdice/sealdice-minecraft#readme)
-            </div>
-          </small>
-        </n-form-item>
-
-        <n-form-item
-          v-if="form.accountType === 5"
-          label="ClientID"
-          :label-width="formLabelWidth"
-          required>
-          <n-input v-model:value="form.clientID" type="string"></n-input>
-        </n-form-item>
-
-        <n-form-item
-          v-if="form.accountType === 5"
-          label="Token"
-          :label-width="formLabelWidth"
-          required>
-          <n-input v-model:value="form.token" type="string"></n-input>
-          <small>
-            <div>提示：前往 Dodo 开发者平台 https://doker.imdodo.com/bot-list</div>
-            <div>如果需要提交审核可以写跑团机器人开发</div>
-            <div>你的帐号过审后，点击创建应用</div>
-            <div>创建完成之后将 clientID 和 Token 复制到这两个框中</div>
-          </small>
-        </n-form-item>
-
-        <n-form-item v-if="form.accountType === 8" label="昵称" :label-width="formLabelWidth">
-          <n-input v-model:value="form.nickname" placeholder="机器人的昵称"></n-input>
-        </n-form-item>
-        <n-form-item
-          v-if="form.accountType === 8"
-          label="ClientID"
-          :label-width="formLabelWidth"
-          required>
-          <n-input v-model:value="form.clientID" type="string"></n-input>
-        </n-form-item>
-        <n-form-item
-          v-if="form.accountType === 8"
-          label="RobotCode"
-          :label-width="formLabelWidth"
-          required>
-          <n-input v-model:value="form.robotCode"></n-input>
-        </n-form-item>
-
-        <n-form-item
-          v-if="form.accountType === 8"
-          label="Token"
-          :label-width="formLabelWidth"
-          required>
-          <n-input v-model:value="form.token"></n-input>
-          <small>
-            <div>提示：前往钉钉开发者平台 https://open-dev.dingtalk.com/fe/app</div>
-            <div>点击创建应用</div>
-            <div>点击 基础信息 - 应用信息</div>
-            <div>把 AppKey 复制到 ClientID 内</div>
-            <div>把 AppSecret 复制到 Token 内</div>
-            <div>创建完成之后点击 应用功能 - 机器人与消息推送 并将机器人配置的开关打开</div>
-            <div>请务必确保 推送方式/消息接受模式 都为 Stream 模式</div>
-            <div>点击发布后 复制 RobotCode 到 RobotCode 内</div>
-          </small>
-        </n-form-item>
-
-        <n-form-item
-          v-if="form.accountType === 9"
-          label="AppToken"
-          :label-width="formLabelWidth"
-          required>
-          <n-input v-model:value="form.appToken"></n-input>
-        </n-form-item>
-        <n-form-item
-          v-if="form.accountType === 9"
-          label="BotToken"
-          :label-width="formLabelWidth"
-          required>
-          <n-input v-model:value="form.botToken"></n-input>
-          <small>
-            <div>提示：前往 Slack 开发者平台 https://api.slack.com/apps</div>
-            <div>点击 Create an app 选择 From scratch</div>
-            <div>按照要求创建 APP 后，点击 OAuth & Permissions</div>
-            <div>在下方的 Scopes 中，为机器人添加 channels:write 和 im:write</div>
-            <div>点击 Install App to Workspace</div>
-            <div>随后将 Bot User OAuth Token 复制并粘贴在 Bot Token 内</div>
-            <div>点击 Socket Mode</div>
-            <div>把 Enable Socket Mode 打开</div>
-            <div>点击 Event Subscriptions</div>
-            <div>在 Subscribe to bot events 中，添加 app_mention message.groups 和 message.im</div>
-            <div>如果要求你 reinstall 按照提示照做</div>
-            <div>点击 Basic Information</div>
-            <div>在 App-Level Tokens 一栏，点击 Generate Token and Scopes</div>
-            <div>弹出的窗口添加 connections:write 命名随意</div>
-            <div>随后将生成的 Token 复制到 App Token 内</div>
-          </small>
         </n-form-item>
       </n-form>
 
@@ -1165,90 +611,6 @@
 
           <div
             v-else-if="
-              index === 2 &&
-              curConn.adapter?.loginState === goCqHttpStateCode.InLoginDeviceLock &&
-              curConn.adapter?.goCqHttpLoginDeviceLockUrl
-            ">
-            <template v-if="curConn.id === curCaptchaIdSet">
-              <div>已提交 ticket，正在等待 gocqhttp 回应</div>
-            </template>
-            <template v-else>
-              <div>账号已开启设备锁，请访问此链接进行验证：</div>
-              <div style="line-break: anywhere">
-                <n-button
-                  text
-                  link
-                  :href="curConn.adapter?.goCqHttpLoginDeviceLockUrl"
-                  target="_blank">
-                  {{ curConn.adapter?.goCqHttpLoginDeviceLockUrl }}
-                </n-button>
-              </div>
-            </template>
-
-            <div>
-              <div>确认验证完成后，点击此按钮：</div>
-              <div>
-                <!-- :disabled="duringRelogin" -->
-                <n-button secondary type="warning" @click="gocqhttpReLogin(curConn)">
-                  下一步
-                </n-button>
-              </div>
-            </div>
-          </div>
-
-          <div
-            v-else-if="
-              index === 2 &&
-              curConn.adapter?.loginState === goCqHttpStateCode.InLoginBar &&
-              curConn.adapter?.goCqHttpLoginDeviceLockUrl
-            ">
-            <template v-if="curConn.id === curCaptchaIdSet">
-              <div>已提交 ticket，正在等待 gocqhttp 回应</div>
-            </template>
-            <template v-else>
-              <div>滑条验证码流程，访问以下链接操作：</div>
-              <div style="line-break: anywhere">
-                <div>
-                  <a
-                    style="line-break: anywhere"
-                    href="javascript:void(0)"
-                    @click="captchaUrlSet(curConn, curConn.adapter?.goCqHttpLoginDeviceLockUrl)"
-                    >{{ curConn.adapter?.goCqHttpLoginDeviceLockUrl }}</a
-                  >
-                </div>
-              </div>
-            </template>
-          </div>
-
-          <div
-            v-else-if="
-              index === 2 && curConn.adapter?.loginState === goCqHttpStateCode.InLoginVerifyCode
-            ">
-            <!-- <div v-else-if="1"> -->
-            <div>短信验证码流程：</div>
-            <div style="line-break: anywhere">
-              <n-form label-width="5rem">
-                <n-form-item label="手机号">
-                  <div>{{ curConn.adapter?.goCqHttpSmsNumberTip }}</div>
-                </n-form-item>
-                <n-form-item label="验证码">
-                  <n-input v-model:value="smsCode"></n-input>
-                </n-form-item>
-                <n-descriptions-item label="">
-                  <n-button
-                    secondary
-                    :disabled="smsCode == ''"
-                    type="primary"
-                    @click="submitSmsCode(curConn)">
-                    提交
-                  </n-button>
-                </n-descriptions-item>
-              </n-form>
-            </div>
-          </div>
-
-          <div
-            v-else-if="
               index === 2 && curConn.adapter?.loginState === goCqHttpStateCode.LoginFailed
             ">
             <div>
@@ -1290,19 +652,10 @@
           <n-button
             type="primary"
             :disabled="
-              form.accountType === 0 ||
               ((form.accountType === 1 || form.accountType === 2 || form.accountType === 3) &&
                 form.token === '') ||
-              (form.accountType === 4 && form.url === '') ||
-              (form.accountType === 5 && (form.clientID === '' || form.token === '')) ||
-              (form.accountType === 8 &&
-                (form.clientID === '' || form.token === '' || form.robotCode === '')) ||
               (form.accountType === 6 && (form.account === '' || form.connectUrl === '')) ||
-              (form.accountType === 7 &&
-                (form.host === '' || form.port === '' || form.token === '')) ||
-              (form.accountType === 9 && (form.botToken === '' || form.appToken === '')) ||
               (form.accountType === 11 && (form.account === '' || form.reverseAddr === '')) ||
-              (form.accountType === 13 && (form.token === '' || form.url === '')) ||
               ((form.accountType === 15 || form.accountType === 16) &&
                 (form.account === '' ||
                   form.signServerVersion === '' ||
@@ -1369,14 +722,9 @@ import * as dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { urlBase } from '~/backend';
 import {
-  getConnectQQVersion,
   getLagrangeSignInfo,
   postConnectionDel,
   postConnectionQrcode,
-  postConnectSetEnable,
-  postGoCqCaptchaSet,
-  postGoCqHttpRelogin,
-  postSmsCodeSet,
   type SignInfo,
 } from '~/api/v1/im_connections';
 import { postToolOnebot } from '~/api/v1/others';
@@ -1440,17 +788,9 @@ const accountTypes = computed(() => {
     { label: 'QQ(Milky)', value: 17 },
     { label: 'QQ(onebot11 正向 WS)', value: 6 },
     { label: 'QQ(onebot11 反向 WS)', value: 11 },
-    { label: 'QQ(官方机器人)', value: 10 },
-    { label: '[WIP]Satori', value: 14 },
-    { label: '[WIP]SealChat', value: 13 },
     { label: 'Discord', value: 1 },
     { label: 'KOOK(开黑啦)', value: 2 },
     { label: 'Telegram', value: 3 },
-    { label: 'Minecraft 服务器 (Paper)', value: 4 },
-    { label: 'Dodo 语音', value: 5 },
-    { label: '钉钉', value: 8 },
-    { label: 'Slack', value: 9 },
-    { label: '[已弃用]QQ(red 协议)', value: 7 },
   ];
   return result;
 });
@@ -1470,87 +810,11 @@ const slideBottomShow = ref(false);
 
 const curConn = ref({} as DiceConnection);
 const curConnId = ref('');
-const smsCode = ref('');
 
 const signInfoLoaded = ref(false);
 const signInfos = ref([] as SignInfo[]);
 const signVerWarningText = ref('');
 const signServerWarningText = ref('');
-
-let captchaTimer = null as any;
-const captchaUrlSet = (i: DiceConnection, url: string) => {
-  if (slideIframe.value) {
-    dialogSlideVisible.value = true;
-    const el: HTMLIFrameElement = slideIframe.value;
-    slideLink.value = url;
-    el.src = url;
-
-    const x = new URL(url);
-    const key = x.searchParams.get('cap_cd');
-    clearTimeout(captchaTimer);
-
-    // window.addEventListener("message", (e) => {
-    //   const key = e.data.code;
-    const requestURL = `${urlBase}/sd-api/utils/get_token?key=${key}`;
-    console.log('code', key);
-    document.cookie = 'b=' + key + '; path=/;';
-
-    const ticketCheck = async () => {
-      const resp = await fetch(requestURL, {
-        method: 'GET',
-        timeout: 240000,
-      } as any);
-      const text = await resp.text();
-      if (text) {
-        console.log('ticket', text);
-        if (text === 'FAIL') {
-          captchaTimer = setTimeout(ticketCheck, 2000);
-          return;
-        }
-        curCaptchaIdSet.value = i.id;
-
-        submitCaptchaCode(i, text);
-        message.success('已自动读取 ticket:' + text, {
-          duration: 8000,
-        });
-        setTimeout(() => {
-          dialogSlideVisible.value = false;
-        }, 500);
-        clearTimeout(captchaTimer);
-        captchaTimer = null;
-        return;
-      }
-      captchaTimer = setTimeout(ticketCheck, 2000);
-    };
-    captchaTimer = setTimeout(ticketCheck, 5000);
-    // });
-
-    slideBottomShow.value = false;
-    setTimeout(() => {
-      // 等一小会再出来，防止误触
-      slideBottomShow.value = true;
-    }, 3000);
-  }
-};
-
-onMounted(() => {});
-
-const closeCaptchaFrame = () => {
-  clearTimeout(captchaTimer);
-  dialogSlideVisible.value = false;
-};
-
-const submitCaptchaCode = async (i: DiceConnection, code: string) => {
-  postGoCqCaptchaSet(i.id, code);
-};
-
-const submitSmsCode = async (i: DiceConnection) => {
-  console.log(smsCode.value);
-  if (!smsCode.value) return;
-  const code = smsCode.value;
-  smsCode.value = '';
-  postSmsCodeSet(i.id, code);
-};
 
 const setRecentLogin = () => {
   isRecentLogin.value = true;
@@ -1655,39 +919,6 @@ const formClose = async () => {
   form.isEnd = false;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const setEnable = async (i: DiceConnection, val: boolean) => {
-  const ret = await postConnectSetEnable(i.id, val);
-  i.enable = ret.enable;
-  curCaptchaIdSet.value = '';
-  message.success('状态修改完成');
-  if (val) {
-    setRecentLogin();
-    // 若是启用骰子，走登录流程
-    curConnId.value = ''; // 先改掉这个，以免和当前连接一致，导致被瞬间重置
-    nextTick(() => {
-      curConnId.value = i.id;
-    });
-    // store.gocqhttpReloginImConnection(i).then(theConn => {
-    //   curConnId.value = i.id;
-    // })
-
-    // 重复登录时，也打开这个窗口
-    activities.value = [];
-    dialogFormVisible.value = true;
-
-    if (i.adapter.useInPackGoCqhttp) {
-      form.step = 2;
-      activities.value.push(fullActivities[4]);
-      activities.value.push(fullActivities[5]);
-      activities.value.push(fullActivities[2]);
-    } else {
-      form.step = 4;
-      form.isEnd = true;
-    }
-  }
-};
-
 const askGocqhttpReLogin = async (i: DiceConnection) => {
   duringRelogin.value = false;
   dialog.warning({
@@ -1742,51 +973,6 @@ const gocqhttpReLogin = async (i: DiceConnection) => {
     activities.value.push(fullActivities[2]);
   } else {
     form.step = 4;
-  }
-};
-const signConfigType: Ref<'none' | 'simple' | 'advanced'> = ref('none');
-const signConfigTypeChange = (value: any) => {
-  switch (value) {
-    case 'simple':
-      form.useSignServer = true;
-      // 恢复其他配置项的默认值
-      form.signServerConfig = {
-        signServers: [
-          form?.signServerConfig?.signServers?.[0] ?? {
-            url: '',
-            key: '',
-            authorization: '',
-          },
-        ],
-        ruleChangeSignServer: 1,
-        maxCheckCount: 0,
-        signServerTimeout: 60,
-        autoRegister: false,
-        autoRefreshToken: false,
-        refreshInterval: 40,
-      };
-      break;
-    case 'advanced':
-      form.useSignServer = true;
-      form.signServerConfig = {
-        signServers: form.signServerConfig?.signServers ?? [
-          { url: '', key: '', authorization: '' },
-        ],
-        ruleChangeSignServer: 1,
-        maxCheckCount: 0,
-        signServerTimeout: 60,
-        autoRegister: false,
-        autoRefreshToken: false,
-        refreshInterval: 40,
-      };
-      break;
-    case 'none':
-    default:
-      form.useSignServer = false;
-      form.signServerConfig = {
-        signServers: [{ url: '', key: '', authorization: '' }],
-      } as any;
-      break;
   }
 };
 
@@ -1853,22 +1039,6 @@ const getSignInfo = async () => {
     }
   } catch {
     signInfoLoaded.value = false;
-  }
-};
-
-const handleSignServerAdd = () => {
-  return {
-    url: '',
-    key: '',
-    authorization: '',
-  };
-};
-
-const handleSignServerDelete = (url: string) => {
-  if (form.signServerConfig?.signServers) {
-    form.signServerConfig.signServers = form.signServerConfig.signServers.filter(server => {
-      return server.url != url;
-    });
   }
 };
 
@@ -1979,14 +1149,6 @@ onBeforeMount(async () => {
     await store.getImConnections();
 
     for (const i of store.curDice.conns || []) {
-      // 下一轮登录检查，移除二维码
-      // if (!lastIndex[i.id]) lastIndex[i.id] = i.adapter?.curLoginIndex;
-      // else {
-      //   if (lastIndex[i.id] != i.adapter?.curLoginIndex) {
-      //     ;
-      //   }
-      // }
-
       // 获取二维码
       if (i.adapter?.loginState === goCqHttpStateCode.InLoginQrCode) {
         store.curDice.qrcodes[i.id] = (await postConnectionQrcode(i.id)).img;
@@ -2034,22 +1196,10 @@ const doRemove = async (i: DiceConnection) => {
 </script>
 
 <style scoped>
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
 .btn-add {
   width: 3rem !important;
   height: 3rem !important;
   font-size: 2rem;
   font-weight: bold;
-}
-</style>
-
-<style>
-.the-dialog {
-  min-width: 370px;
 }
 </style>

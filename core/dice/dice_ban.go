@@ -167,12 +167,6 @@ func (i *BanListInfo) AddScoreBase(uid string, score int64, place string, reason
 				switch adapter := ctx.EndPoint.Adapter.(type) {
 				case *PlatformAdapterGocq:
 					adapter.DeleteFriend(ctx, place)
-				case *PlatformAdapterWalleQ:
-					adapter.DeleteFriend(ctx, place)
-				case *PlatformAdapterRed:
-					log.Warn("qq red 适配器不支持删除好友")
-				case *PlatformAdapterOfficialQQ:
-					log.Warn("official qq 适配器不支持删除好友")
 				default:
 					log.Error("unknown qq adapter")
 				}

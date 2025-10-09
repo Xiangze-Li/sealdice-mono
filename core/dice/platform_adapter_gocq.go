@@ -7,7 +7,6 @@ import (
 	"math/rand"
 	"os"
 	"os/signal"
-	"path/filepath"
 	"regexp"
 	"runtime/debug"
 	"strconv"
@@ -19,7 +18,6 @@ import (
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 	"go.uber.org/zap"
-	"gopkg.in/yaml.v3"
 
 	"github.com/sealdice-ce/sealdice-ce/core/dice/events"
 	"github.com/sealdice-ce/sealdice-ce/core/message"
@@ -70,11 +68,8 @@ type PlatformAdapterGocq struct {
 	GoCqhttpProcess           *procs.Process `json:"-"                    yaml:"-"`
 	GocqhttpLoginFailedReason string         `json:"curLoginFailedReason" yaml:"-"` // 当前登录失败原因
 
-	GoCqhttpLoginCaptcha       string `json:"goCqHttpLoginCaptcha"       yaml:"-"`
-	GoCqhttpLoginVerifyCode    string `json:"goCqHttpLoginVerifyCode"    yaml:"-"`
-	GoCqhttpLoginDeviceLockURL string `json:"goCqHttpLoginDeviceLockUrl" yaml:"-"`
-	GoCqhttpQrcodeData         []byte `json:"-"                          yaml:"-"` // 二维码数据
-	GoCqhttpSmsNumberTip       string `json:"goCqHttpSmsNumberTip"       yaml:"-"`
+	GoCqhttpLoginCaptcha string `json:"goCqHttpLoginCaptcha" yaml:"-"`
+	GoCqhttpQrcodeData   []byte `json:"-"                    yaml:"-"` // 二维码数据
 
 	GoCqLastAutoLoginTime      int64 `json:"-"                            yaml:"inPackGoCqLastAutoLoginTime"`  // 上次自动重新登录的时间
 	GoCqhttpLoginSucceeded     bool  `json:"-"                            yaml:"inPackGoCqHttpLoginSucceeded"` // 是否登录成功过
@@ -94,9 +89,8 @@ type PlatformAdapterGocq struct {
 	echoMap2       *SyncMap[any, *echoMapInfo]    `yaml:"-"`
 	Implementation string                         `json:"implementation" yaml:"implementation"`
 
-	UseSignServer    bool              `json:"useSignServer"    yaml:"useSignServer"`
-	SignServerConfig *SignServerConfig `json:"signServerConfig" yaml:"signServerConfig"`
-	ExtraArgs        string            `json:"extraArgs"        yaml:"extraArgs"`
+	UseSignServer bool   `json:"useSignServer" yaml:"useSignServer"`
+	ExtraArgs     string `json:"extraArgs"     yaml:"extraArgs"`
 
 	riskAlertShieldCount int  // 风控警告屏蔽次数，一个临时变量
 	useArrayMessage      bool `yaml:"-"` // 使用分段消息
@@ -1223,12 +1217,11 @@ func (pa *PlatformAdapterGocq) DoRelogin() bool {
 			myDice.LastUpdatedTime = time.Now().Unix()
 			myDice.Save(false)
 			GoCqhttpServe(myDice, ep, GoCqhttpLoginInfo{
-				Password:         pa.InPackGoCqhttpPassword,
-				Protocol:         pa.InPackGoCqhttpProtocol,
-				AppVersion:       pa.InPackGoCqhttpAppVersion,
-				IsAsyncRun:       true,
-				UseSignServer:    pa.UseSignServer,
-				SignServerConfig: pa.SignServerConfig,
+				Password:      pa.InPackGoCqhttpPassword,
+				Protocol:      pa.InPackGoCqhttpProtocol,
+				AppVersion:    pa.InPackGoCqhttpAppVersion,
+				IsAsyncRun:    true,
+				UseSignServer: pa.UseSignServer,
 			})
 			return true
 		}
@@ -1253,12 +1246,11 @@ func (pa *PlatformAdapterGocq) SetEnable(enable bool) {
 				BuiltinQQServeProcessKill(d, c)
 				time.Sleep(1 * time.Second)
 				GoCqhttpServe(d, c, GoCqhttpLoginInfo{
-					Password:         pa.InPackGoCqhttpPassword,
-					Protocol:         pa.InPackGoCqhttpProtocol,
-					AppVersion:       pa.InPackGoCqhttpAppVersion,
-					IsAsyncRun:       true,
-					UseSignServer:    pa.UseSignServer,
-					SignServerConfig: pa.SignServerConfig,
+					Password:      pa.InPackGoCqhttpPassword,
+					Protocol:      pa.InPackGoCqhttpProtocol,
+					AppVersion:    pa.InPackGoCqhttpAppVersion,
+					IsAsyncRun:    true,
+					UseSignServer: pa.UseSignServer,
 				})
 				go ServeQQ(d, c)
 			}
@@ -1279,61 +1271,6 @@ func (pa *PlatformAdapterGocq) SetEnable(enable bool) {
 
 	d.LastUpdatedTime = time.Now().Unix()
 	d.Save(false)
-}
-
-func (pa *PlatformAdapterGocq) SetQQProtocol(protocol int) bool {
-	// oldProtocol := pa.InPackGoCqHttpProtocol
-	pa.InPackGoCqhttpProtocol = protocol
-
-	// ep.Session.Parent.GetDiceDataPath(ep.RelWorkDir)
-	workDir := filepath.Join(pa.Session.Parent.BaseConfig.DataDir, pa.EndPoint.RelWorkDir)
-	deviceFilePath := filepath.Join(workDir, "device.json")
-	if _, err := os.Stat(deviceFilePath); err == nil {
-		configFile, _ := os.ReadFile(deviceFilePath)
-		info := map[string]interface{}{}
-		err = json.Unmarshal(configFile, &info)
-
-		if err == nil {
-			info["protocol"] = protocol
-			data, err := json.Marshal(info)
-			if err == nil {
-				_ = os.WriteFile(deviceFilePath, data, 0644)
-				return true
-			}
-		}
-	}
-	return false
-}
-
-func (pa *PlatformAdapterGocq) SetSignServer(signServerConfig *SignServerConfig) bool {
-	workDir := filepath.Join(pa.Session.Parent.BaseConfig.DataDir, pa.EndPoint.RelWorkDir)
-	configFilePath := filepath.Join(workDir, "config.yml")
-	if _, err := os.Stat(configFilePath); err == nil {
-		configFile, _ := os.ReadFile(configFilePath)
-		info := map[string]interface{}{}
-		err = yaml.Unmarshal(configFile, &info)
-
-		if err == nil {
-			if signServerConfig.SignServers != nil {
-				mainServer := signServerConfig.SignServers[0]
-				(info["account"]).(map[string]interface{})["sign-server"] = mainServer.URL
-				(info["account"]).(map[string]interface{})["key"] = mainServer.Key
-				(info["account"]).(map[string]interface{})["sign-servers"] = signServerConfig.SignServers
-				(info["account"]).(map[string]interface{})["ruleChangeSignServer"] = signServerConfig.RuleChangeSignServer
-				(info["account"]).(map[string]interface{})["maxCheckCount"] = signServerConfig.MaxCheckCount
-				(info["account"]).(map[string]interface{})["signServerTimeout"] = signServerConfig.SignServerTimeout
-				(info["account"]).(map[string]interface{})["autoRegister"] = signServerConfig.AutoRegister
-				(info["account"]).(map[string]interface{})["autoRefreshToken"] = signServerConfig.AutoRefreshToken
-				(info["account"]).(map[string]interface{})["refreshInterval"] = signServerConfig.RefreshInterval
-			}
-			data, err := yaml.Marshal(info)
-			if err == nil {
-				_ = os.WriteFile(configFilePath, data, 0644)
-				return true
-			}
-		}
-	}
-	return false
 }
 
 func (pa *PlatformAdapterGocq) IsInLogin() bool {

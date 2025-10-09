@@ -510,10 +510,6 @@ func diceServe(d *dice.Dice) {
 
 				switch conn.Platform {
 				case "QQ":
-					if conn.ProtocolType == "walle-q" {
-						pa := conn.Adapter.(*dice.PlatformAdapterWalleQ)
-						dice.WalleQServe(d, conn, pa.InPackWalleQPassword, pa.InPackWalleQProtocol, false)
-					}
 					if conn.ProtocolType == "onebot" {
 						pa := conn.Adapter.(*dice.PlatformAdapterGocq)
 						if pa.BuiltinMode == "lagrange" || pa.BuiltinMode == "lagrange-gocq" {
@@ -523,27 +519,13 @@ func diceServe(d *dice.Dice) {
 							return
 						} else {
 							dice.GoCqhttpServe(d, conn, dice.GoCqhttpLoginInfo{
-								Password:         pa.InPackGoCqhttpPassword,
-								Protocol:         pa.InPackGoCqhttpProtocol,
-								AppVersion:       pa.InPackGoCqhttpAppVersion,
-								IsAsyncRun:       true,
-								UseSignServer:    pa.UseSignServer,
-								SignServerConfig: pa.SignServerConfig,
+								Password:      pa.InPackGoCqhttpPassword,
+								Protocol:      pa.InPackGoCqhttpProtocol,
+								AppVersion:    pa.InPackGoCqhttpAppVersion,
+								IsAsyncRun:    true,
+								UseSignServer: pa.UseSignServer,
 							})
 						}
-					}
-					if conn.ProtocolType == "red" {
-						dice.ServeRed(d, conn)
-					}
-					if conn.ProtocolType == "official" {
-						dice.ServerOfficialQQ(d, conn)
-					}
-					if conn.ProtocolType == "satori" {
-						dice.ServeSatori(d, conn)
-					}
-					if conn.ProtocolType == "LagrangeGo" {
-						// dice.ServeLagrangeGo(d, conn)
-						return
 					}
 					if conn.ProtocolType == "milky" {
 						dice.ServeMilky(d, conn)
@@ -557,16 +539,6 @@ func diceServe(d *dice.Dice) {
 					dice.ServeKook(d, conn)
 				case "TG":
 					dice.ServeTelegram(d, conn)
-				case "MC":
-					dice.ServeMinecraft(d, conn)
-				case "DODO":
-					dice.ServeDodo(d, conn)
-				case "SLACK":
-					dice.ServeSlack(d, conn)
-				case "DINGTALK":
-					dice.ServeDingTalk(d, conn)
-				case "SEALCHAT":
-					dice.ServeSealChat(d, conn)
 				}
 			}(_conn)
 		} else {
