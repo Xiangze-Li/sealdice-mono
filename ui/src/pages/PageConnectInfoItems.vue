@@ -893,6 +893,7 @@ const goStepTwo = async () => {
         curConnId.value = conn.id;
       }
     })
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     .catch(e => {
       dialog.error('似乎已经添加了这个账号！', { title: '添加失败' });
       formClose();
