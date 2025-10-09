@@ -1,35 +1,27 @@
 {
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
   "include": [
     "tailwind.config.ts",
-    "src/**/*.ts",
+    "src/**/*",
     "src/**/*.d.ts",
     "src/**/*.tsx",
     "src/**/*.vue"
   ],
+  "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {
     "baseUrl": ".",
     "esModuleInterop": true,
     "jsx": "preserve",
-    "lib": [
-      "ESNext",
-      "dom"
-    ],
+    "jsxImportSource": "vue",
+    "lib": ["ESNext", "dom"],
     "module": "ESNext",
     "moduleResolution": "node",
     "paths": {
-      "hyperparam": [
-        "node_modules/hyperparam/lib/index.d.ts"
-      ],
-      "~/*": [
-        "src/*"
-      ]
+      "hyperparam": ["node_modules/hyperparam/lib/index.d.ts"],
+      "~/*": ["src/*"]
     },
-    "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "sourceMap": true,
     "strict": true,
     "target": "ESNext",
-    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
-    "useDefineForClassFields": true
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo"
   }
 }

@@ -85,6 +85,7 @@ jobs:
       matrix:
         package:
           - ui
+          - manual
           - story-painter
           - verify
     steps:
@@ -104,8 +105,7 @@ jobs:
         run: pnpm install
 
       - name: Check (${{ matrix.package }})
-        run: pnpm run check
-        working-directory: ${{ matrix.package }}
+        run: pnpm check:${{ matrix.package }}
 
   markdown-lint:
     name: Markdown Lint
